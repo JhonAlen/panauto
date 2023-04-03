@@ -1,0 +1,113 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-5" *ngIf="alert.show">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "QUOTATION.QUOTESBYFLEET.QUOTEBYFLEET" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right" type="button" (click)="cancelSave()" *ngIf="showSaveButton">
+                                <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "QUOTATION.QUOTESBYFLEET.CANCEL" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editQuoteByFleet()" *ngIf="canEdit && showEditButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "QUOTATION.QUOTESBYFLEET.EDIT" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "QUOTATION.QUOTESBYFLEET.SAVE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "QUOTATION.QUOTESBYFLEET.CLIENT" | translate }}</label>
+                                    <select formControlName="ccliente" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ccliente').errors }" (change)="associateDropdownDataRequest()">
+                                        <option></option>
+                                        <option *ngFor="let client of clientList" value="{{ client.id }}">{{ client.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('ccliente').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('ccliente').errors.required">{{ "QUOTATION.QUOTESBYFLEET.REQUIREDCLIENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "QUOTATION.QUOTESBYFLEET.ASSOCIATE" | translate }}</label>
+                                    <select formControlName="casociado" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('casociado').errors }">
+                                        <option></option>
+                                        <option *ngFor="let associate of associateList" value="{{ associate.id }}">{{ associate.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('casociado').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('casociado').errors.required">{{ "QUOTATION.QUOTESBYFLEET.REQUIREDASSOCIATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "QUOTATION.QUOTESBYFLEET.MEMBERSHIPAMOUNT" | translate }}</label>
+                                    <input type="number" formControlName="mmembresia" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mmembresia').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mmembresia').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mmembresia').errors.required">{{ "QUOTATION.QUOTESBYFLEET.REQUIREDMEMBERSHIPAMOUNT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
+                                    <label>{{ "QUOTATION.QUOTESBYFLEET.ACTIVE" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bactivo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bactivo').errors.required">{{ "QUOTATION.QUOTESBYFLEET.REQUIREDACTIVE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "QUOTATION.QUOTESBYFLEET.EXTRACOVERAGESLIST" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addExtraCoverage()" *ngIf="canEdit || canCreate">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "QUOTATION.QUOTESBYFLEET.ADDEXTRACOVERAGE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="extraCoverageList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="extraCoverageRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onExtraCoveragesGridReady($event)">
+                            <ag-grid-column headerName="Name" field="xcoberturaextra" [width]="1036" [sortable]="true"></ag-grid-column>
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
+
+

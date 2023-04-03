@@ -1,0 +1,129 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-5" *ngIf="alert.show">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "CONFIGURATION.TAXESCONFIGURATION.TAX" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right" type="button" (click)="cancelSave()" *ngIf="showSaveButton">
+                                <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.TAXESCONFIGURATION.CANCEL" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editTax()" *ngIf="canEdit && showEditButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.TAXESCONFIGURATION.EDIT" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.TAXESCONFIGURATION.SAVE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.NAME" | translate }}</label>
+                                    <input type="text" formControlName="ximpuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ximpuesto').errors }">
+                                    <div *ngIf="submitted && detail_form.get('ximpuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('ximpuesto').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.OBSERVATION" | translate }}</label>
+                                    <input type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xobservacion').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xobservacion').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xobservacion').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDOBSERVATION" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.ACTIVE" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bactivo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bactivo').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDACTIVE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.PERCENTAGE" | translate }}</label>
+                                    <input type="number" formControlName="pimpuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('pimpuesto').errors }">
+                                    <div *ngIf="submitted && detail_form.get('pimpuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('pimpuesto').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDPERCENTAGE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.PAYMENTTYPE" | translate }}</label>
+                                    <select formControlName="ctipopago" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctipopago').errors }">
+                                        <option></option>
+                                        <option *ngFor="let paymentType of paymentTypeList" value="{{ paymentType.id }}">{{ paymentType.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('ctipopago').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('ctipopago').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDPAYMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.DATEFROM" | translate }}</label>
+                                    <input type="date" formControlName="fdesde" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fdesde').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fdesde').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fdesde').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDDATEFROM" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.DATETO" | translate }}</label>
+                                    <input type="date" formControlName="fhasta" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fhasta').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fhasta').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fhasta').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDDATETO" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.AMOUNTFROM" | translate }}</label>
+                                    <input type="number" formControlName="mdesde" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mdesde').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mdesde').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mdesde').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDAMOUNTFROM" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.TAXESCONFIGURATION.AMOUNTTO" | translate }}</label>
+                                    <input type="number" formControlName="mhasta" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mhasta').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mhasta').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mhasta').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDAMOUNTTO" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
+
+

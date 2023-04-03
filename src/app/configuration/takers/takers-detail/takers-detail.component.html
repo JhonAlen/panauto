@@ -1,0 +1,169 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-5" *ngIf="alert.show">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            Información del Recibo
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right" type="button" (click)="cancelSave()" *ngIf="showSaveButton">
+                                <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.CANCEL" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editTakers()" *ngIf="canEdit && showEditButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.EDIT" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.SAVE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Tomador</label>
+                                    <input type="text" formControlName="xtomador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xtomador').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xtomador').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xtomador').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Profesión</label>
+                                    <input type="text" formControlName="xprofesion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xprofesion').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xprofesion').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xprofesion').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Rif</label>
+                                    <input type="text" formControlName="xrif" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xrif').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xrif').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xrif').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Domicilio</label>
+                                    <input type="text" formControlName="xdomicilio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xdomicilio').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xdomicilio').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xdomicilio').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Zona Postal</label>
+                                    <input type="text" formControlName="xzona_postal" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xzona_postal').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xzona_postal').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xzona_postal').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Telefono</label>
+                                    <input type="text" formControlName="xtelefono" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xtelefono').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xtelefono').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xtelefono').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Correo</label>
+                                    <input type="text" formControlName="xcorreo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xcorreo').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xcorreo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xcorreo').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4 pb-2">
+                                <div class="form-outline">
+                                  <label class="form-label required" for="form3Examplev3">País</label>
+                                  <select formControlName="cpais" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('cpais').errors }" (change)="changeStateData()">
+                                    <option></option>
+                                    <option *ngFor="let country of countryList" value="{{ country.id }}">{{ country.value }}</option>
+                                  </select>                     
+                                  <div *ngIf="submitted && detail_form.get('cpais').errors" class="invalid-feedback">
+                                    <div *ngIf="detail_form.get('cpais').errors.required">Se requiere completar el campo</div>
+                                  </div>
+                                </div>
+                            </div> 
+                            <div class="col-sm-12 col-md-4">
+                              <div class="form-outline">
+                                  <label class="form-label" for="form3Examplev5">Estado</label>
+                                  <div >
+                                  <ng-autocomplete  [data]="stateList" [searchKeyword]="keyword" 
+                                                  placeholder="Seleccionar Ciudad" (selected)='changeCityData($event)'
+                                                  [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                  </ng-autocomplete>
+                              
+                                  <ng-template #itemTemplate let-item >
+                                      <a [innerHTML]="item.value"></a>
+                                  </ng-template>
+                              
+                                  <ng-template #notFoundTemplate let-notFound  >
+                                      <div [innerHTML]="notFound"></div>
+                                  </ng-template>
+                                </div>
+                              </div>
+                            </div> 
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-outline">
+                                    <label class="form-label" for="form3Examplev5">Ciudad</label>
+                                    <div style="background: fixed">
+                                    <ng-autocomplete  [data]="cityList" [searchKeyword]="keyword" 
+                                                    placeholder="Seleccionar Ciudad" (selected)='selectCity($event)'
+                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    </ng-autocomplete>
+                                
+                                    <ng-template #itemTemplate let-item >
+                                        <a [innerHTML]="item.value"></a>
+                                    </ng-template>
+                                
+                                    <ng-template #notFoundTemplate let-notFound >
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                  </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-4 mb-4 pb-2">
+                                <div class="form-outline">
+                                  <label class="form-label required" for="form3Examplev3">Estatus</label>
+                                  <select formControlName="cestatusgeneral" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('cestatusgeneral').errors }">
+                                    <option></option>
+                                    <option *ngFor="let status of generalStatusList" value="{{ status.id }}">{{ status.value }}</option>
+                                  </select>                     
+                                  <div *ngIf="submitted && detail_form.get('cestatusgeneral').errors" class="invalid-feedback">
+                                    <div *ngIf="detail_form.get('cestatusgeneral').errors.required">Se requiere completar el campo</div>
+                                  </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>   
+<br>
+
+<app-footer></app-footer>

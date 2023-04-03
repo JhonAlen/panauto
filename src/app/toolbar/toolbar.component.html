@@ -1,0 +1,38 @@
+<header id="header" class="d-flex align-items-center" style="margin-bottom: -70px;">
+<div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -10px;">
+    <a href="home" class="image d-flex align-items-center">
+      <img class="logocompany-system">
+    </a>
+      <nav class="navbar-expand-md" style="font-weight: 500;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul *ngIf="auth" class="navbar-nav mr-auto" >
+            <li class="nav-item dropdown" *ngFor="let group of groupList">
+              
+              <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #000;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px; text-decoration:none">
+                {{ group.xgrupo | translate }}
+              </a>
+              
+              <div class="dropdown-menu scrollable-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #000;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
+              </div>
+            </li>
+                  
+            <li *ngIf="auth" class="nav-item">
+              <a class="nav-link" href="inicio" (click)="logOut()" style="color: #000;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ "TOOLBAR.LOGOUT" | translate }}</a>
+            </li>
+            <!-- <form [formGroup]="lang_form">
+                <select class="form-control" formControlName="langselect" (change)="changeLanguage(lang_form.value);">
+                  <option *ngFor="let lang of translate.getLangs()" value="{{ lang }}">{{ lang }}</option>
+                </select>
+            </form> -->
+          </ul>
+
+        </div>
+      </nav>
+  </div>
+</header> 
+

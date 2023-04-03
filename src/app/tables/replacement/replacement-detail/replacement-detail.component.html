@@ -1,0 +1,128 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-5" *ngIf="alert.show">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "TABLES.SPAREPARTS.REPLACEMENT" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right" type="button" (click)="cancelSave()" *ngIf="showSaveButton">
+                                <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "TABLES.SPAREPARTS.CANCEL" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editReplacement()" *ngIf="canEdit && showEditButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "TABLES.SPAREPARTS.EDIT" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "TABLES.SPAREPARTS.SAVE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "TABLES.SPAREPARTS.REPLACEMENTTYPE" | translate }}</label>
+                                    <select formControlName="ctiporepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctiporepuesto').errors }">
+                                        <option></option>
+                                        <option *ngFor="let replacementType of replacementTypeList" value="{{ replacementType.id }}">{{ replacementType.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('ctiporepuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('ctiporepuesto').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDREPLACEMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "TABLES.SPAREPARTS.NAME" | translate }}</label>
+                                    <input type="text" formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xrepuesto').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xrepuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xrepuesto').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bizquierda" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bizquierda').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.LEFT" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bizquierda').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bizquierda').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDLEFT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bderecha" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bderecha').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.RIGHT" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bderecha').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bderecha').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDRIGHT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bsuperior" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bsuperior').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.UP" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bsuperior').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bsuperior').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDUP" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="binferior" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('binferior').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.DOWN" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('binferior').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('binferior').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDDOWN" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bdelantero" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdelantero').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.FRONT" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bdelantero').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bdelantero').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDFRONT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="btrasero" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btrasero').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.BACK" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('btrasero').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('btrasero').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDBACK" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
+                                    <label>{{ "TABLES.SPAREPARTS.ACTIVE" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bactivo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bactivo').errors.required">{{ "TABLES.SPAREPARTS.REQUIREDACTIVE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
+

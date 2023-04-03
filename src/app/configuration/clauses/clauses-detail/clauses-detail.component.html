@@ -1,0 +1,144 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-5 mb-5" *ngIf="alert.show">
+        <div class="col-sm-12 col-md-6 mx-auto">
+            <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "CONFIGURATION.CLAUSES.EXHIBIT" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right" type="button" (click)="cancelSave()" *ngIf="showSaveButton">
+                                <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.CANCEL" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editExhibit()" *ngIf="canEdit && showEditButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.EDIT" | translate }}
+                            </button>
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.SAVE" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.CLAUSES.EXHIBIT" | translate }}</label>
+                                    <textarea type="text" formControlName="xanexo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xanexo').errors }"></textarea>
+                                    <div *ngIf="submitted && detail_form.get('xanexo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xanexo').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.CLAUSES.OBSERVATION" | translate }}</label>
+                                    <textarea type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xobservacion').errors }" ></textarea>
+                                    <div *ngIf="submitted && detail_form.get('xobservacion').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xobservacion').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDOBSERVATION" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
+                                    <label>{{ "CONFIGURATION.CLAUSES.ACTIVE" | translate }}</label>
+                                    <div *ngIf="submitted && detail_form.get('bactivo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bactivo').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDACTIVE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "CONFIGURATION.CLAUSES.ADDCLAUSES" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addClauses()" *ngIf="canEdit || canCreate">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.CREATECLAUSES" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="clausesList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="clausesRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onClausesGridReady($event)">
+                            <ag-grid-column headerName="Clausula" field="xclausulas" [width]="525" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Observacion" field="xobservacion" [width]="510" [sortable]="true"></ag-grid-column>
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "CONFIGURATION.CLAUSES.ADDOBJETIVES" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addObjetivesFromClauses()" *ngIf="canEdit || canCreate">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.CREATEOBJETIVES" | translate }}
+                            </button>
+                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "CONFIGURATION.CLAUSES.SEARCH" | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "CONFIGURATION.CLAUSES.CLAUSES" | translate }}</label>
+                                    <textarea type="text" formControlName="xclausulas" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xclausulas').errors }"></textarea>
+                                    <div *ngIf="submitted && detail_form.get('xclausulas').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xclausulas').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>            
+                <div class="card-body">
+                    <div class="container">
+                        <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="objetivesList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="objetivesRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onObjetivesGridReady($event)">
+                            <ag-grid-column headerName="Clausula" field="xclausulas" [width]="525" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Objetivo" field="xobjetivo" [width]="510" [sortable]="true"></ag-grid-column>
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
+
