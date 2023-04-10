@@ -8,7 +8,7 @@ body {
   }
   
   a {
-    color: #94c045;
+    color: #082356;
     text-decoration: none;
   }
   
@@ -42,7 +42,7 @@ body {
     right: 15px;
     bottom: 15px;
     z-index: 996;
-    background: #94c045;
+    background: #082356;
     width: 40px;
     height: 40px;
     border-radius: 4px;
@@ -139,6 +139,9 @@ body {
     align-items: center;
     flex-direction: column;
     text-align: center;
+    background-image: url('./../../../../assets/imagenes/fondo.jpg');
+    background-size: cover;
+
   }
   
   #hero h1 {
@@ -165,13 +168,13 @@ body {
     border-radius: 50px;
     transition: 0.5s;
     margin: 10px;
-    border: 2px solid #94c045;
+    border: 2px solid #082356;
     text-transform: uppercase;
     color: #fff;
   }
   
   #hero .btn-get-started:hover {
-    background: #94c045;
+    background: #082356;
   }
   
   @media (min-width: 1024px) {
@@ -246,7 +249,7 @@ body {
   
   .breadcrumbs .breadcrumb-hero {
     text-align: center;
-    background: #94c045;
+    background: #082356;
     padding: 20px 0;
     color: #fff;
   }
@@ -296,7 +299,7 @@ body {
   .about .count-box i {
     display: block;
     font-size: 48px;
-    color: #94c045;
+    color: #082356;
     float: left;
     line-height: 0;
   }
@@ -356,7 +359,7 @@ body {
   
   .about .content ul i {
     font-size: 24px;
-    color: #94c045;
+    color: #082356;
     position: absolute;
     left: 0;
     top: -2px;
@@ -369,7 +372,7 @@ body {
   .about .play-btn {
     width: 94px;
     height: 94px;
-    background: radial-gradient(#94c045 50%, rgba(148, 192, 69, 0.4) 52%);
+    background: radial-gradient(#082356 50%, rgba(148, 192, 69, 0.4) 52%);
     border-radius: 50%;
     display: block;
     position: absolute;
@@ -412,7 +415,7 @@ body {
   }
   
   .about .play-btn:hover::after {
-    border-left: 15px solid #94c045;
+    border-left: 15px solid #082356;
     transform: scale(20);
   }
   
@@ -524,7 +527,7 @@ body {
   }
   
   .services .icon-box:hover .title a {
-    color: #94c045;
+    color: #082356;
   }
   
   .services .description {
@@ -558,7 +561,7 @@ body {
   .work-process .content ul i {
     font-size: 20px;
     padding-right: 4px;
-    color: #94c045;
+    color: #082356;
   }
   
   .work-process .content p:last-child {
@@ -591,7 +594,7 @@ body {
   .skills .content ul i {
     font-size: 20px;
     padding-right: 4px;
-    color: #94c045;
+    color: #082356;
   }
   
   .skills .content p:last-child {
@@ -628,7 +631,7 @@ body {
     width: 1px;
     height: 10px;
     transition: 0.9s;
-    background-color: #94c045;
+    background-color: #082356;
   }
   
   /*--------------------------------------------------------------
@@ -716,11 +719,11 @@ body {
     height: 12px;
     background-color: #fff;
     opacity: 1;
-    border: 1px solid #94c045;
+    border: 1px solid #082356;
   }
   
   .testimonials .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: #94c045;
+    background-color: #082356;
   }
   
   @media (min-width: 992px) {
@@ -755,11 +758,11 @@ body {
     height: 12px;
     background-color: #fff;
     opacity: 1;
-    border: 1px solid #94c045;
+    border: 1px solid #082356;
   }
   
   .clients .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: #94c045;
+    background-color: #082356;
   }
   
   /*--------------------------------------------------------------
@@ -812,7 +815,7 @@ body {
   }
   
   .features .card:hover .card-body {
-    background: #94c045;
+    background: #082356;
   }
   
   .features .card:hover .read-more a,
@@ -853,7 +856,7 @@ body {
   .portfolio #portfolio-flters li:hover,
   .portfolio #portfolio-flters li.filter-active {
     color: #fff;
-    background: #94c045;
+    background: #082356;
   }
   
   .portfolio #portfolio-flters li:last-child {
@@ -966,11 +969,11 @@ body {
     height: 12px;
     background-color: #fff;
     opacity: 1;
-    border: 1px solid #94c045;
+    border: 1px solid #082356;
   }
   
   .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: #94c045;
+    background-color: #082356;
   }
   
   .portfolio-details .portfolio-info {
@@ -1035,7 +1038,7 @@ body {
   
   .pricing h4 {
     font-size: 36px;
-    color: #94c045;
+    color: #082356;
     font-weight: 600;
     font-family: "Poppins", sans-serif;
     margin-bottom: 20px;
@@ -1067,7 +1070,7 @@ body {
   }
   
   .pricing ul i {
-    color: #94c045;
+    color: #082356;
     font-size: 18px;
     padding-right: 4px;
   }
@@ -1085,7 +1088,7 @@ body {
   }
   
   .pricing .btn-buy {
-    background: #94c045;
+    background: #082356;
     display: inline-block;
     padding: 6px 35px 8px 35px;
     border-radius: 4px;
@@ -1105,7 +1108,7 @@ body {
   
   .pricing .featured h3 {
     color: #fff;
-    background: #94c045;
+    background: #082356;
     box-shadow: 0 3px 7px rgba(148, 192, 69, 0.4);
   }
   
@@ -1118,7 +1121,7 @@ body {
     z-index: 1;
     font-size: 14px;
     padding: 1px 0 3px 0;
-    background: #94c045;
+    background: #082356;
     color: #fff;
   }
   
@@ -1166,7 +1169,7 @@ body {
   
   .contact .info i {
     font-size: 20px;
-    color: #94c045;
+    color: #082356;
     float: left;
     width: 44px;
     height: 44px;
@@ -1201,7 +1204,7 @@ body {
   .contact .info .email:hover i,
   .contact .info .address:hover i,
   .contact .info .phone:hover i {
-    background: #94c045;
+    background: #082356;
     color: #fff;
   }
   
@@ -1271,7 +1274,7 @@ body {
   }
   
   .contact .php-email-form button[type=submit] {
-    background: #94c045;
+    background: #082356;
     border: 0;
     padding: 10px 24px;
     color: #fff;
@@ -1334,7 +1337,7 @@ body {
   }
   
   .team .member .social a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .team .member .social i {
@@ -1354,7 +1357,7 @@ body {
     text-transform: uppercase;
     font-weight: 400;
     margin-bottom: 15px;
-    color: #94c045;
+    color: #082356;
   }
   
   .team .member .member-info p {
@@ -1402,7 +1405,7 @@ body {
   }
   
   .blog .entry .entry-title a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .blog .entry .entry-meta {
@@ -1447,7 +1450,7 @@ body {
   
   .blog .entry .entry-content .read-more a {
     display: inline-block;
-    background: #94c045;
+    background: #082356;
     color: #fff;
     padding: 6px 20px;
     transition: 0.3s;
@@ -1511,7 +1514,7 @@ body {
   }
   
   .blog .entry .entry-footer a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .blog .entry .entry-footer .cats {
@@ -1620,7 +1623,7 @@ body {
   }
   
   .blog .blog-comments .comment h5 a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .blog .blog-comments .comment h5 .reply {
@@ -1721,7 +1724,7 @@ body {
   
   .blog .blog-pagination li.active,
   .blog .blog-pagination li:hover {
-    background: #94c045;
+    background: #082356;
   }
   
   .blog .blog-pagination li.active a,
@@ -1772,7 +1775,7 @@ body {
     font-size: 16px;
     padding: 0 15px;
     margin: -1px;
-    background: #94c045;
+    background: #082356;
     color: #fff;
     transition: 0.3s;
     border-radius: 0 4px 4px 0;
@@ -1802,7 +1805,7 @@ body {
   }
   
   .blog .sidebar .categories ul a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .blog .sidebar .categories ul a span {
@@ -1832,7 +1835,7 @@ body {
   }
   
   .blog .sidebar .recent-posts h4 a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   .blog .sidebar .recent-posts time {
@@ -1868,8 +1871,8 @@ body {
   
   .blog .sidebar .tags ul a:hover {
     color: #fff;
-    border: 1px solid #94c045;
-    background: #94c045;
+    border: 1px solid #082356;
+    background: #082356;
   }
   
   .blog .sidebar .tags ul a span {
@@ -1937,7 +1940,7 @@ body {
   }
   
   #footer .footer-top .social-links a:hover {
-    background: #94c045;
+    background: #082356;
     color: #fff;
     text-decoration: none;
   }
@@ -1966,7 +1969,7 @@ body {
   }
   
   #footer .footer-top h4::after {
-    background: #94c045;
+    background: #082356;
     width: 60px;
   }
   
@@ -1990,7 +1993,7 @@ body {
   }
   
   #footer .footer-top .footer-links ul a:hover {
-    color: #94c045;
+    color: #082356;
   }
   
   #footer .footer-top .footer-contact {
@@ -2013,7 +2016,7 @@ body {
   }
   
   #footer .footer-top .footer-newsletter input[type=submit] {
-    background: #94c045;
+    background: #082356;
     border: 0;
     border-radius: 0 4px 4px 0;
     width: 35%;

@@ -9,15 +9,17 @@
 
 
 .card-header{
-    background-color:#fdd213;
+    background-color:#72b6ff;
+    color: white;
+
 }
 .company-detail-button{
-    background-color:#fff0ad;
+    background-color:#55a6f1;
     color: #4e4e4e;
     text-transform: capitalize;
 }
 button{
-    background-color:#fff0ad;
+    background-color:#55a6f1;
     text-transform: capitalize;
 }
 .navbar{
@@ -34,7 +36,7 @@ button{
 .logocompany-system{
     background: url("./assets/imagenes/logo.png") no-repeat;
     background-size: contain;
-    padding: 83px;
+    padding: 78px 134px 41px 59px;
     margin-top: 9px;
     margin-bottom: 10px;
   }
@@ -50,11 +52,6 @@ nav{
     position: static;
 }
 
-:root {
-    --color-default: #364d59;
-    --color-primary: #fff0ad;
-    --color-secondary: #52565e;
-}
 .success-toast {
     background-color: green;
     color: white;
