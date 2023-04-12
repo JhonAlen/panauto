@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
 <app-toolbar></app-toolbar>
-<div class="container">
+<div class="container py-5">
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
           <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>

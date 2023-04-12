@@ -15,7 +15,7 @@
 }
 .company-detail-button{
     background-color:#55a6f1;
-    color: #4e4e4e;
+    color: #ffffff;
     text-transform: capitalize;
 }
 button{
@@ -23,7 +23,7 @@ button{
     text-transform: capitalize;
 }
 .navbar{
-    position: initial;
+    position: absolute;
     z-index: 999;
 }
 
@@ -41,11 +41,6 @@ button{
     margin-bottom: 10px;
   }
 
-nav{
-    /* margin-top: -96px; */
-    margin-left: 20px;
-}
-
 .col-sm-12,
 .col-6,
 .card{
@@ -60,3 +55,7 @@ nav{
   background-color: red;
   color: white;
 }
+
+.py-4, .py-5 {
+padding-top: 8rem !important;
+  }

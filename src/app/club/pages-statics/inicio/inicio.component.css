@@ -120,7 +120,7 @@ body {
   
   #hero:before {
     content: "";
-    background: rgba(60, 65, 51, 0.4);
+    background: #00000063;
     position: absolute;
     bottom: 0;
     top: 0;
@@ -140,8 +140,17 @@ body {
     flex-direction: column;
     text-align: center;
     background-image: url('./../../../../assets/imagenes/fondo.jpg');
-    background-size: cover;
+    background-size: inherit;
+    height: 137%;
+    background-position: center;
 
+  }
+
+  .hero::before {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    inset: 0;
   }
   
   #hero h1 {
@@ -150,12 +159,15 @@ body {
     font-weight: 700;
     line-height: 56px;
     color: #fff;
+    z-index: 4;
   }
   
   #hero h2 {
     color: #eee;
     margin-bottom: 50px;
     font-size: 24px;
+    z-index: 4;
+
   }
   
   #hero .btn-get-started {
@@ -1907,7 +1919,7 @@ body {
     line-height: 1;
     font-weight: 600;
     letter-spacing: 3px;
-    color: #9fc658;
+    color: white;
   }
   
   #footer .footer-top .footer-info p {

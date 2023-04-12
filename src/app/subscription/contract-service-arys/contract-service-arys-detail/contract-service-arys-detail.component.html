@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
 <app-toolbar></app-toolbar>
-<div class="container">
+<div class="container py-5">
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
           <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -308,7 +308,7 @@
                             </h5>
                           </div>
                         </div>
-                        <div class="container">
+                        <div class="container py-5">
                             <h5 class="font-weight-medium mb-0" style="font-family: revert;">Servicios que presta el plan</h5>
                             <h5 style="font-family: revert;">seleccionado</h5>
                             <ag-grid-angular #agGrid style="width: 42%; height: 250px;text-align: center;margin-top: 26px;" class="ag-theme-alpine" [rowData]="serviceList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServicesGridReady($event)">

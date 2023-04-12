@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -352,7 +352,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 440px;" class="ag-theme-alpine" [rowData]="realCoverageList" [pagination]="true" [paginationPageSize]="8" rowSelection="single" [enableCellChangeFlash]="true" (rowClicked)="rowClicked($event)" (gridReady)="onCoverageGridReady($event)">
                                 <ag-grid-column headerName="Código" field="ccobertura" [width]="120" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Cobertura" field="xcobertura" [width]="518" [sortable]="true"></ag-grid-column>
@@ -414,7 +414,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 345px;" class="ag-theme-alpine" [rowData]="serviceList" [pagination]="true" [paginationPageSize]="6" rowSelection="single" [enableCellChangeFlash]="true">
                                 <ag-grid-column headerName="Código" field="cservicio" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Servicio" field="xservicio" [width]="518" [sortable]="true"></ag-grid-column>
@@ -546,7 +546,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="inspectionList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="inspectionRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onInspectionsGridReady($event)">
                                 <ag-grid-column headerName="Type" field="xtipoinspeccion" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Proficient" field="xperito" [width]="518" [sortable]="true"></ag-grid-column>
@@ -644,7 +644,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="accesoryList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="accesoryRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onAccesoriesGridReady($event)">
                                 <ag-grid-column headerName="Name" field="xaccesorio" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Amount" field="maccesoriocontratoflota" [width]="518" [sortable]="true"></ag-grid-column>
@@ -665,7 +665,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="extraCoverageList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onExtraCoveragesGridReady($event)">
                                 <ag-grid-column headerName="Description" field="xdescripcion" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Amount" field="mcoberturaextra" [width]="518" [sortable]="true"></ag-grid-column>

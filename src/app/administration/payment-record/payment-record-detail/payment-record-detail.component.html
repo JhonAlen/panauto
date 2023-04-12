@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -100,8 +100,8 @@
                                   </div>
                               </div>
                               <div class="card-body">
-                                  <div class="container">
-                                    <ag-grid-angular style="width: 100%; height: 380px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single">
+                      <div class="container">
+                        <ag-grid-angular style="width: 100%; height: 380px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single">
                                       <ag-grid-column headerName="Código" field="corden" [width]="100" [sortable]="true"></ag-grid-column>
                                       <ag-grid-column headerName="Nombre" field="xnombre" [width]="225" [sortable]="true"></ag-grid-column>
                                   </ag-grid-angular>
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="container" style="margin-bottom: 109px">
+                                <div class="container py-5" style="margin-bottom: 109px">
                                   <ag-grid-angular style="width: 100%; height: 380px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single">
                                     <ag-grid-column headerName="Código" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
                                     <ag-grid-column headerName="Nombre" field="xnombre" [width]="225" [sortable]="true"></ag-grid-column>
