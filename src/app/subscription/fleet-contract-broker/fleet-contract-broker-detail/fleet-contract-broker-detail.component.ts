@@ -391,7 +391,7 @@ async getVersionData(){
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
   let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params = {
-      cpais: 58,
+      cpais: this.currentUser.data.cpais,
       cmarca: marca.id,
       cmodelo: modelo.id,
     };

@@ -93,7 +93,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 mb-4 pb-2" style="background-color: #ffbc0059;border-radius: 15px;" *ngIf="activaClave">
+                  <div class="col-md-4 mb-4 pb-2" style="background-color: #0086ff30;border-radius: 15px;" *ngIf="activaClave">
                     <div class="form-outline">
                       <p for="form3Examplev3" class="form-label">Contraseña predeterminada</p>
                       <h5>Ar654321!</h5>
@@ -113,7 +113,7 @@
                   </div> 
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev3">Estado</label>
+                      <label class="form-label required" for="form3Examplev3">Provincia</label>
                       <select formControlName="cestado" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cestado').errors } " (change)="getCity()">
                         <option></option>
                         <option *ngFor="let estado of StateList" value="{{ estado.id }}">{{ estado.value }}</option>
@@ -125,7 +125,7 @@
                   </div>
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev3">Ciudad</label>
+                      <label class="form-label required" for="form3Examplev3">Distrito</label>
                           <select formControlName="cciudad" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cciudad').errors } " >
                             <option></option>
                             <option *ngFor="let ciudad of CityList" value="{{ ciudad.id }}">{{ ciudad.value }}</option>
@@ -150,6 +150,15 @@
                       <input type="text" formControlName="xzona_postal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xzona_postal').errors }" />
                       <div *ngIf="submitted && search_form.get('xzona_postal').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xzona_postal').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mb-4 pb-2">
+                    <div class="form-outline ">
+                      <label class="form-label required" for="form3Examplea2"> Fecha de nacimiento</label>
+                      <input type="date" formControlName="fnac" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnac').errors }" />
+                      <div *ngIf="submitted && search_form.get('fnac').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('fnac').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>

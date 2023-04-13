@@ -270,7 +270,7 @@ export class InclusionContractComponent implements OnInit {
     let marca = this.brandList.find(element => element.control === parseInt(this.inclusion_form.get('cmarca').value));
     let modelo = this.modelList.find(element => element.control === parseInt(this.inclusion_form.get('cmodelo').value));
     let params = {
-      cpais: 58,
+      cpais: this.currentUser.data.cpais,
       cmarca: marca.id,
       cmodelo: modelo.id,
     };

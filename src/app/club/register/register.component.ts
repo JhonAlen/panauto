@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
   async initializeDropdownDataRequest(){
     this.getSexData();
     let params = {
-      cpais: 58
+      cpais: this.currentUser.data.cpais
     };
 
     let request = await this.webService.mostrarListaEstados(params);
@@ -122,7 +122,7 @@ export class RegisterComponent implements OnInit {
 
   async getSexData(){
     let params = {
-      cpais: 58
+      cpais: this.currentUser.data.cpais
     };
     let request = await this.webService.searchSex(params);
     if(request.error){

@@ -54,7 +54,7 @@
             <div class="row">
             <div class="col-md-4 mb-4 pb-2">
               <div class="form-outline">
-                <label class="form-label required" for="form3Examplev3">Estado</label>
+                <label class="form-label required" for="form3Examplev3">Provincia</label>
                 <select formControlName="cestado" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && servicePlanContract.get('cestado').errors } " (change)="getCity()">
                   <option></option>
                   <option *ngFor="let estado of StateList" value="{{ estado.id }}">{{ estado.value }}</option>
@@ -66,7 +66,7 @@
             </div>
             <div class="col-md-4 mb-4 pb-2">
               <div class="form-outline">
-                <label class="form-label required" for="form3Examplev3">Ciudad</label>
+                <label class="form-label required" for="form3Examplev3">Distrito</label>
                     <select formControlName="cciudad" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && servicePlanContract.get('cciudad').errors } " (change)="getProveedor()">
                       <option></option>
                       <option *ngFor="let ciudad of CityList" value="{{ ciudad.id }}">{{ ciudad.value }}</option>
