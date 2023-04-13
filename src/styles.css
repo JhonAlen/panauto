@@ -59,3 +59,7 @@ button{
 .py-4, .py-5 {
 padding-top: 3rem !important;
   }
+
+.modal {
+    z-index: 1058; 
+}  
