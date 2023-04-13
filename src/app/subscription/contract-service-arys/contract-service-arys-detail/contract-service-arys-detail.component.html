@@ -27,7 +27,10 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev2">Tipo Doc. Ide</label>
                       <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors } " >
-                        <option value="C.I.P">C.I.P</option>
+                        <option value="DNI">DNI</option>
+                        <option value="P">P</option>
+                        <option value="RUC">RUC</option>
+
                       </select>                      
                       <div *ngIf="submitted && search_form.get('icedula').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('icedula').errors.required">Se requiere completar el campo</div>
@@ -148,7 +151,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-8 mb-4 pb-2">
+                  <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline ">
                       <label class="form-label required" for="form3Examplea2">Dirección Fiscal</label>
                       <input type="text" formControlName="xdireccionfiscal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xdireccionfiscal').errors }" />

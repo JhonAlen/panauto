@@ -11,7 +11,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Buscar Póliza
+                            Buscar Contrato
                         </div>
                     </div>
                 </div>
@@ -20,10 +20,10 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
+                                    <label class="form-label" for="form3Examplev5">Contrato</label>
                                     <div style="background: fixed">
                                     <ng-autocomplete  [data]="chargeList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Póliza" (selected)='prueba($event)'
+                                                    placeholder="Seleccionar Contrato" (selected)='prueba($event)'
                                                     [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
@@ -49,7 +49,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Información de la Póliza
+                            Información del Contrato
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                             <ag-grid-column headerName="Versión" field="xversion" [width]="274" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Estatus" field="xestatusgeneral" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Póliza" field="xpoliza" [width]="130" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Contrato" field="xpoliza" [width]="130" [sortable]="true" [resizable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>

@@ -68,7 +68,7 @@ export class ParentPolicyIndexComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/corporative-charge`, params, options).subscribe((response : any) => {
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          this.parentPolicyList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} Póliza Nro. ${response.data.list[i].xpoliza}`});
+          this.parentPolicyList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} Contrato Nro. ${response.data.list[i].xpoliza}`});
         }
       }
     },
@@ -118,7 +118,7 @@ export class ParentPolicyIndexComponent implements OnInit {
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 404){ 
-        message = "No se encontraron pólizas que cumplan con los parámetros de búsqueda"; 
+        message = "No se encontraron Contratos que cumplan con los parámetros de búsqueda"; 
       }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;

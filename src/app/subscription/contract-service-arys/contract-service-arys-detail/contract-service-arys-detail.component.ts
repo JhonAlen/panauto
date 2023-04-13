@@ -469,7 +469,7 @@ async getModeloData(event){
         this.fdesde_pol_place = response.data.fdesde_pol;
         this.fhasta_pol_place = response.data.fhasta_pol;
         this.xpoliza_place = response.data.xpoliza;
-        window.alert(`La placa ingresada ya se encuentra activa con el número de póliza N° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
+        window.alert(`La placa ingresada ya se encuentra activa con el número de Contrato N° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
         this.search_form.get('xplaca').setValue('');
         }
       }

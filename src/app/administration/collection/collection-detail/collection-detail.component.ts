@@ -317,7 +317,7 @@ export class CollectionDetailComponent implements OnInit {
       let dateformat = datetimeformat[0].split('/');
       let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
       
-      window.alert(`Se ha procesado exitosamente el pago de la póliza`);
+      window.alert(`Se ha procesado exitosamente el pago del Contrato`);
       const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
         "method": "POST",
         "headers": {

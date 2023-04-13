@@ -24,12 +24,10 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev2">Tipo Doc. Ide</label>
                       <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors } " >
-                        <option value="V">V</option>
+                        <option value="DNI">DNI</option>
                         <option value="P">P</option>
-                        <option value="E">E</option>
-                        <option value="J">J</option>
-                        <option value="C">C</option>
-                        <option value="G">G</option>
+                        <option value="RUC">RUC</option>
+
                       </select>                      
                       <div *ngIf="submitted && search_form.get('icedula').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('icedula').errors.required">Se requiere completar el campo</div>
@@ -144,7 +142,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-3 mb-4 pb-2">
+                  <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline ">
                       <label class="form-label required" for="form3Examplea2"> Fecha de nacimiento</label>
                       <input type="date" formControlName="fnac" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnac').errors }" />
@@ -595,7 +593,7 @@
                 </div>
               <!--  <div class="col-md-2 mb-4 pb-2">
                   <div class="form-outline">
-                    <label class="form-label required" for="form3Examplev4">Fecha desde (Poliza)</label>
+                    <label class="form-label required" for="form3Examplev4">Fecha desde (Contrato)</label>
                     <input type="date" formControlName="fdesde_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fdesde_pol').errors }" />
                     <div *ngIf="submitted && search_form.get('fdesde_pol').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('fdesde_pol').errors.required">Se requiere completar el campo</div>
@@ -604,7 +602,7 @@
                 </div>
                 <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                   <div class="form-outline">
-                    <label class="form-label required" for="form3Examplev5">Fecha hasta (Poliza)</label>
+                    <label class="form-label required" for="form3Examplev5">Fecha hasta (Contrato)</label>
                     <input type="date" formControlName="fhasta_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta_pol').errors }" />
                     <div *ngIf="submitted && search_form.get('fhasta_pol').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('fhasta_pol').errors.required">Se requiere completar el campo</div>

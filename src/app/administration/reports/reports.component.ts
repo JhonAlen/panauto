@@ -30,7 +30,7 @@ export class ReportsComponent implements OnInit {
   mtotal;
 
   columnDefs: ColDef[] = [
-    { headerName: 'Póliza N°', field: 'xpoliza', width: 105, resizable: true },
+    { headerName: 'Contrato N°', field: 'xpoliza', width: 105, resizable: true },
     { headerName: 'Certificado N°', field: 'ccontratoflota', width: 135, resizable: true },
     { headerName: 'Nombre Asegurado', field: 'xnombrepropietario', width: 170, resizable: true },
     { headerName: 'Sucursal', field: 'xsucursalemision', width: 150, resizable: true },
@@ -332,7 +332,7 @@ export class ReportsComponent implements OnInit {
               headerRows: 1,
               widths: [120, 115, 120, 110],
               body: [
-                [{text: 'Póliza', style: 'tableHeader', fillColor: '#fdd213'},
+                [{text: 'Contrato', style: 'tableHeader', fillColor: '#fdd213'},
                  {text: 'Nombre', style: 'tableHeader', fillColor: '#fdd213'}, 
                  {text: 'N° de Contrato', style: 'tableHeader', fillColor: '#fdd213'},
                  {text: 'Monto Prima', style: 'tableHeader', fillColor: '#fdd213'},]
@@ -615,7 +615,7 @@ export class ReportsComponent implements OnInit {
               headerRows: 1,
               widths: [120, 115, 120, 110],
               body: [
-                [{text: 'Póliza', style: 'tableHeader', fillColor: '#fdd213'},
+                [{text: 'Contrato', style: 'tableHeader', fillColor: '#fdd213'},
                  {text: 'Nombre', style: 'tableHeader', fillColor: '#fdd213'}, 
                  {text: 'N° de Contrato', style: 'tableHeader', fillColor: '#fdd213'},
                  {text: 'Monto Prima', style: 'tableHeader', fillColor: '#fdd213'},]
