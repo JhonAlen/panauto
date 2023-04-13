@@ -11,7 +11,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Buscar Póliza
+                            Buscar Contrato
                         </div>
                         <div class="col-6">
                             <!--<button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
@@ -32,10 +32,10 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
+                                    <label class="form-label" for="form3Examplev5">Contrato</label>
                                     <div style="background: fixed">
                                     <ng-autocomplete  [data]="chargeList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Póliza" (selected)='batchDropdownDataRequest($event)'
+                                                    placeholder="Seleccionar Contrato" (selected)='batchDropdownDataRequest($event)'
                                                     [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
@@ -114,14 +114,14 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Información de la Póliza
+                            Información del Contrato
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 104px;" class="ag-theme-alpine" [rowData]="fleetContractList" [pagination]="false" [paginationPageSize]="1" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="Póliza" field="xpoliza" [width]="90" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Contrato" field="xpoliza" [width]="90" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Cliente" field="xcliente" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Marca" field="xmarca" [width]="150" [sortable]="true" [resizable]="true"></ag-grid-column>
@@ -140,7 +140,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Información de los recibos de la póliza
+                            Información de los recibos del Contrato
                         </div>
                     </div>
                 </div>

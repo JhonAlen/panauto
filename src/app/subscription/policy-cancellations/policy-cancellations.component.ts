@@ -95,7 +95,7 @@ export class PolicyCancellationsComponent implements OnInit {
       if(response.data.status){
         this.chargeList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Póliza Nro. ${response.data.list[i].xpoliza} - Placa ${response.data.list[i].xplaca}` });
+          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Contrato Nro. ${response.data.list[i].xpoliza} - Placa ${response.data.list[i].xplaca}` });
         }
         this.chargeList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
@@ -192,7 +192,7 @@ export class PolicyCancellationsComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/cancellations`, params, options).subscribe((response : any) => {
       if(response.data.status){
-        window.alert('Se ha anulado esta póliza con éxito')
+        window.alert('Se ha anulado esta Contrato con éxito')
         location.reload();
       }
     },

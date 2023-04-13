@@ -77,7 +77,7 @@ export class CorporativeIssuanceComponent implements OnInit {
   columnDefs: ColDef[] = [
     { headerName: 'Id', field: 'id', width: 65, resizable: true },
     { headerName: 'N° Certificado', field: 'xcertificado', width: 125, resizable: true },
-    { headerName: 'N° Póliza', field: 'xpoliza', width: 120, resizable: true },
+    { headerName: 'N° Contrato', field: 'xpoliza', width: 120, resizable: true },
     { headerName: 'Propietario', field: 'xpropietario', width: 140, resizable: true},
     { headerName: 'N° Placa', field: 'xplaca', width: 100, resizable: true},
     { headerName: 'Marca', field: 'xmarca', width: 100, resizable: true},
@@ -143,7 +143,7 @@ export class CorporativeIssuanceComponent implements OnInit {
       if(response.data.status){
         this.chargeList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Póliza Nro. ${response.data.list[i].xpoliza}` });
+          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Contrato Nro. ${response.data.list[i].xpoliza}` });
         }
         this.chargeList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
@@ -377,7 +377,7 @@ export class CorporativeIssuanceComponent implements OnInit {
             widths: [165, 216, 35, '*'],
             body: [
               [ {image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKQAAAAyCAIAAABd6OdIAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQCSURBVHhe7ZprkqMwDIRzrhwo58lpchkOk/ULsK2WLINTNbXS92snyHK3GrIMw+PrmMHDNoSHbQgP2xAetiE8bEN42IbwsA3hYRvCwzaEh20ID9sQHrYh2LC3rfzDDv+9ZRz29n4+Wp5vaRLb5/V89kt6QsXr/WnbfF7lYCQUxJpPOVbY3rF3oFQFgJht+8Q6fFDDtOWmPgl8d8qDu/R5qUlkd43tIf1EMsFwmkwpioSf4oRZ2TBsajyAt8zABRxB0CEHLKRhk5ImhpRyOZC4lPYKy6QcZJpr7oVNHBPoVZVAYTPRSdbn1J+BXBvZGWe4dspnNZJSzLzlO2EzuzG0Jy92jKAnPQibDU64ZGbD3pvdCpufmaAUcsEy3ZzWcsonp3VOZHbM3f+JNGyhIW99VkUkCSEL14yMV4q4YvlG2JJwRGk8932wU8dNwhaVsNbJqroy3Dyh7x7GONmDKUHew90AI1DikuU7V3aLplNAVClxxt2HPWrZfi8ckGWkDjSONTCyei0SlArASkbcgFWWaUS6GFVVaE6hsLkR427cjnZd2L2D/jcHzjpxTsu44YhxoyA06yZYZplGtC5sZBb1kiubsElhqEKflfKKcdiCJTZRJLzqjNbNxv1Ly0A/kidM5oBaFYyyxXXY2KTKuuw8jI9+v9RtUGzP8W9VdEwBmAzHzywnqD4Y0biTstEOaVj0V2GTjqWhxjpKS6ZTq2tALcJ14iRqllqmuyozGnfS6Kngys+wOeMqzZNhI63jFnBSQF0Al/astUz3VHSJkE5kPMpGO1zDI2zSr9qR5tDvNU7q5IWe5EXkJrw9OorBMAqLLdMtdRnRKnotjOVUsMV72PKgKZ2eieXUyQnfRvAG05Z2Kay2TLdcFzZwGHohi6hy71fCnjXeC+Kdg82l4JBWYL4BPbIZLAnctKzxRbe4GjaeS3wcej5Fyn/4K0dqjnY57HnjnSI+bNQcmDlQnxzBW/4jX6lqkU6oxHrLgeoJXpg8UHY57GuCE+eeKeyLfSrlpEOtV51fRFmMz/Qd6WzK/MCyAqhLGfbAMkfdK4Z9/5wZJAQOs3EMWp3wqsdRL7B8afbQCdCCHV+Q3TYKYdMO6unuhcOE9IZAJRMenjZ50wWxwHIAHBVhfOhnE5n4ezbp8lBfSZIq0KRzpnYECtkrtatl3s8gLLGcQE8GMfXrOR3q0excf1OFbsXuhC6lXDwO+wvuV2CIM2GX6vjmlS7mzBLLJ3H26WWzcvwgfpalidqmw86EbePtab3rvl2pIOS78a2QfhhSivXT/YsUD3/H8u93KGE7JvCwDeFhG8LDNoSHbQgP2xAetiE8bEN42IbwsA3hYRvCwzaEh20ID9sM3+8/pLIUAd5A5JoAAAAASUVORK5CYII=', width: 160, height: 50, border:[true, true, false, false]},
-              {text: `\n\nCERTIFICADO Afilicación de Automóvil Arys AutoClub`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nPóliza N°\n\nRecibo N°\n\nNota N°', bold: true, border: [true, true, false, false]}, {text: `\n${this.xpoliza}\n\n  \n\n`, border:[false, true, true, false]}]
+              {text: `\n\nCERTIFICADO Afilicación de Automóvil Arys AutoClub`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nContrato N°\n\nRecibo N°\n\nNota N°', bold: true, border: [true, true, false, false]}, {text: `\n${this.xpoliza}\n\n  \n\n`, border:[false, true, true, false]}]
             ]
           }
         },

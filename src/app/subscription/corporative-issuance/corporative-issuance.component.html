@@ -6,7 +6,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Buscar Póliza Corporativa
+                            Buscar Contrato Corporativa
                         </div>
                         <div class="col-6">
                             <button [disabled]="loading || !searchStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
@@ -25,10 +25,10 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
+                                    <label class="form-label" for="form3Examplev5">Contrato</label>
                                     <div style="background: fixed">
                                     <ng-autocomplete  [data]="chargeList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Póliza" (selected)='batchDropdownDataRequest($event)'
+                                                    placeholder="Seleccionar Contrato" (selected)='batchDropdownDataRequest($event)'
                                                     [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
