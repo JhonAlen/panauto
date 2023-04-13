@@ -63,3 +63,6 @@ padding-top: 3rem !important;
 .modal {
     z-index: 1058; 
 }  
+.modal-content {
+    width: 102%;
+}  
