@@ -103,11 +103,8 @@ export class DashboardComponent implements OnInit {
     .post(environment.apiUrl + '/api/club/search/client-agenda' ,params)
     .subscribe((res: any) => {
       console.log(res)
-      const datagend = res.data.datagenda
-      const dataevent = res.data.list
-      const data = datagend.contact(dataevent)
-      this.Events = data
-      console.log(this.Events)
+      this.Events = []
+      this.Events = res.data.list 
       this.calendarOptions = {
         initialView: 'dayGridMonth',
         events: this.Events,
