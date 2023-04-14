@@ -642,6 +642,7 @@ async getModeloData(event){
         cpais: this.currentUser.data.cpais,
         cestado: this.search_form.get('cestado').value,
         cciudad: this.search_form.get('cciudad').value,
+        ccorregimiento: this.search_form.get('ccorregimiento').value,
         xdireccionfiscal: form.xdireccionfiscal,
         xplaca: form.xplaca,
         cmarca: marca.id,
@@ -650,9 +651,16 @@ async getModeloData(event){
         cano:form.cano,
         cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
-        xcolor:this.search_form.get('xcolor').value,    
+        xcolor: this.search_form.get('xcolor').value,    
         xserialcarroceria: form.xserialcarroceria,
         xserialmotor: form.xserialmotor,  
+        cuso: form.cuso,
+        ctipovehiculo: form.ctipovehiculo,
+        cclase: form.cclase,
+        fdesde_pol: form.fdesde_pol,
+        fhasta_pol: form.fhasta_pol,
+        ccorredor: form.ccorredor,
+        fnac: form.fnac,
         xcedula: form.xrif_cliente,
         femision: form.femision,
         xzona_postal: form.xzona_postal,
@@ -660,9 +668,6 @@ async getModeloData(event){
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
-          // if(this.currentUser.data.crol == 18||this.currentUser.data.crol == 17||this.currentUser.data.crol == 3  || this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV'){
-          //   // this.getFleetContractDetail(this.ccontratoflota);
-          // }
           window.alert(`Se ha generado un contrato Arys, por el beneficiario ${form.xnombre + ' ' + form.xapellido}`)
           location.reload()
         }
