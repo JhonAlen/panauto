@@ -6,7 +6,7 @@
           <div class="card shadow">
             <div class="table-responsive" *ngIf="ListTypeService.length !== 0">
               <table class="table align-items-center table-flush">
-                <thead  style="background-color: #ffefa9;">
+                <thead  style="background-color: #72b6ff;">
                   <tr>
                     <th scope="col">Tipo de Servicio</th>
                   </tr>
@@ -26,7 +26,7 @@
           <div class="card shadow">
             <div class="table-responsive" *ngIf="ListService.length !== 0">
               <table class="table align-items-center table-flush">
-                <thead  style="background-color: #ffefa9;">
+                <thead  style="background-color: #72b6ff;">
                   <tr>
                     <th scope="col">Servicios</th>
                     <td scope="col"></td>
@@ -49,9 +49,18 @@
 
     <form [formGroup]="servicePlanContract">
         <div  *ngIf="solicitud">
-          <div class="card shadow">      
+          <div class="card shadow" style="margin-top: 15px;">      
             <h3>Infomación de la Solicitud</h3>
             <div class="row">
+              <div class="col-md-4 mb-4 pb-2">
+                <div class="form-outline">                    
+                    <label class="form-label required" for="form3Examplev3">Fecha estimada de atención</label>
+                    <input formControlName="fsolicitud" type="date" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && servicePlanContract.get('fsolicitud').errors } " >
+                    <div *ngIf="submitted && servicePlanContract.get('fsolicitud').errors" class="invalid-feedback">
+                        <div *ngIf="servicePlanContract.get('cestado').errors.required">Se requiere completar el campo</div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4 mb-4 pb-2">
               <div class="form-outline">
                 <label class="form-label required" for="form3Examplev3">Provincia</label>

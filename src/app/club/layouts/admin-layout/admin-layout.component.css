@@ -1,11 +1,13 @@
+@import '~mdb-ui-kit/css/mdb.min.css';
+
 mat-toolbar {
-  background: #ffefa9;
+  background: #72b6ff
 }
 
 mat-sidenav {
   width: 200px;
   border-right: none;
-  background: #ffefa9;
+  background: #72b6ff;
   text-align: center;
 
 }
@@ -15,9 +17,22 @@ mat-sidenav-content{
   width: 98%;
   overflow: inherit;
 }
+.mat-toolbar-row,.mat-toolbar-single-row {
+  height: 64px;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
 
+}
+/* .mat-elevation-z8 {
+  box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;
+} */
 .content {
-  height: calc(100vh - 130px);
+  /* height: calc(100vh - 130px); */
   border-radius: 10px;
   margin: 16px;
   margin-left: 32px;
@@ -77,27 +92,10 @@ mat-divider {
   margin-bottom: 16px;
   background-color: rgba(255, 255, 255, 0.5);
 }
-  
-html,
-body {
-    height: 100%;
-}
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
 
-h1,
-h2,
-h3,
-h4,
-p {
-    margin: 0;
-}
-
-
-body{
-  background: linear-gradient(to bottom, #2e34be 0%,#70a8ff 100%);
-
-}
-
+.modal {
+  z-index: 1058; 
+}  
+.modal-content {
+  width: 102%;
+}  
