@@ -1,45 +1,109 @@
 <app-toolbar ></app-toolbar>
-<div css="row mt-5 mb-5">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-header company-card-header">
-             <form [formGroup]="search_form">
-                    <div class="row">
-                        <div class="col-6">
-                            <p>hola</p>
-                        </div>
+
+  <div css="row mt-5 mb-5" style="margin-top: 30px;">
+      <div class="col-sm-12">
+          <div class="card">
+              <div class="card-header company-card-header">
+              <form [formGroup]="search_form">
+                      <div class="row">
+                          <div class="col-6">
+                              <p>Contratos</p>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="card-body">
+                <div>
+                  <div style="display: grid;place-items: center;margin-top: 19px;">
+                    <div class="col-sm-12 col-md-4">
+                        <input type="text" class="form-control" placeholder="Buscar..." (input)="filterData($event.target.value)">
                     </div>
-                </form>
-            </div>
-            <div class="card-body">
-                <div class="container py-5">
-                    <mat-form-field>
-                        <mat-label>Buscar</mat-label>
-                        <input matInput (keyup)="applyFilter()" [(ngModel)]="filterValue">
-                      </mat-form-field>
-                    
-                    <mat-table [dataSource]="dataSource">
-                        <ng-container matColumnDef="name">
-                          <mat-header-cell *matHeaderCellDef> name </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                        </ng-container>
-                      
-                        <ng-container matColumnDef="age">
-                          <mat-header-cell *matHeaderCellDef> age  </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell>
-                        </ng-container>
-                      
-                        <ng-container matColumnDef="city">
-                          <mat-header-cell *matHeaderCellDef> city </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
-                        </ng-container>
-                      
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
-                      </mat-table>
-                      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                  </div>
+                  <br>
+                  <table class="table table-hover">
+                    <thead class="table-borderless">
+                      <tr>
+                        <th class="border-bottom">Código</th>
+                        <th class="border-bottom">Nombre y Apellido</th>
+                        <th class="border-bottom">Identificación</th>
+                        <th class="border-bottom">Vehículo</th>
+                        <th class="border-bottom">Placa</th>
+                        <th class="border-bottom">Año</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of filteredData | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
+                        <td>{{ item.ccontratoflota }}</td>
+                        <td style="white-space: nowrap">{{ item.xnombres }}</td>
+                        <td>{{ item.identificacion }}</td>
+                        <td style="white-space: nowrap">{{ item.xvehiculo }}</td>
+                        <td style="white-space: nowrap">{{ item.xplaca }}</td>
+                        <td style="white-space: nowrap">{{ item.fano }}</td>
+                        <td style="white-space: nowrap"><button class="btn btn-success" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Descargar Certificado</button></td>
+                        <td><button class="btn btn-danger" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Anular</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="display: grid;place-items: center;">
+                  <ngb-pagination [collectionSize]="filteredData.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
+                  </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- <div class="container"> 
+  <div class="row mt-5 mb-5">
+      <div class="col-sm-12">
+          <div class="card">
+              <div class="card-header company-card-header">
+              <form [formGroup]="search_form">
+                      <div class="row">
+                          <div class="col-6">
+                              <p>Contratos</p>
+                          </div>
+                          <div class="col-6">
+                              <div class="row">
+                                  <div class="col-sm-12 col-md-8 offset-md-4">
+                                      <input type="text" class="form-control" placeholder="Buscar..." (input)="filterData($event.target.value)">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="card-body">
+                <div class="container">
+                  <table class="table table-hover">
+                    <thead class="table-borderless">
+                      <tr>
+                        <th class="border-bottom">Código</th>
+                        <th class="border-bottom">Nombre y Apellido</th>
+                        <th class="border-bottom">Identificación</th>
+                        <th class="border-bottom">Vehículo</th>
+                        <th class="border-bottom">Placa</th>
+                        <th class="border-bottom">Año</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of filteredData | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
+                        <td style="white-space: nowrap">{{ item.ccontratoflota }}</td>
+                        <td style="white-space: nowrap">{{ item.xnombres }}</td>
+                        <td style="white-space: nowrap">{{ item.identificacion }}</td>
+                        <td style="white-space: nowrap">{{ item.xvehiculo }}</td>
+                        <td style="white-space: nowrap">{{ item.xplaca }}</td>
+                        <td style="white-space: nowrap">{{ item.fano }}</td>
+                        <td style="white-space: nowrap"><button class="btn btn-success" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Descargar Certificado</button></td>
+                        <td style="white-space: nowrap"><button class="btn btn-danger" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Anular</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="display: grid;place-items: center;">
+                  <ngb-pagination [collectionSize]="filteredData.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div> -->
