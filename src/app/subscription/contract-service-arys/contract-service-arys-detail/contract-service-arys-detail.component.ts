@@ -138,6 +138,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
   fhasta_pol_place : Date ;
   xpoliza_place : string;
   activaClave: boolean = false;
+  townshipList: any[] = [];
 
   
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -168,51 +169,27 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xtelefono_emp: ['', Validators.required],
       cplan: ['', Validators.required],
       ccorredor:['', Validators.required],
-      xcobertura: ['', Validators.required],
-      ctarifa_exceso: ['', Validators.required],
       ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
-      msuma_aseg:[''],
-      pcasco:[''],
-      mprima_casco:[''],
-      mcatastrofico:[''],
-      msuma_blindaje:[''],
-      mprima_blindaje:[''],
-      pdescuento:[''],
-      mgrua:[''],
-      bgrua:[false],
-      ncuotas:[''],
-      mprima_bruta:[''],
-      pcatastrofico:[''],
-      pmotin:[''],
-      mmotin:[''],
-      pblindaje:[''],
-      tarifas:[''],
+      cmetodologiapago: [''],
       cestado:['', Validators.required],
       cciudad:['', Validators.required],
       icedula:['', Validators.required],
       femision:['', Validators.required],
       ivigencia:[''],
-      cpais:['', Validators.required],
-      xpago: [''],
-      ncobro:[''],
-      ccodigo_ubii:[''],
-      ctipopago:[''],
-      xreferencia:[''],
-      fcobro:[''],
-      mprima_pagada:[''],
-      cbanco: [''],
       xcedula: [''],
-      binternacional: [''],
-      ctomador: [''],
       cuso: [''],
       cclase: [''],
       ctipovehiculo: [''],
       xzona_postal:[''],
       nkilometraje: [''],
       xmoneda: [''],
+      fdesde_pol: [''],
+      fhasta_pol: [''],
+      xclave_club: [''],
+      ccorregimiento: [''],
+      ncobro: ['']
     });
-  
+    this.search_form.get('xclave_club').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -393,6 +370,25 @@ async getCity(){
       },);
   } 
 
+  async getTownship(){
+    let params =  {  
+      cestado: this.search_form.get('cestado').value,
+      cciudad: this.search_form.get('cciudad').value
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/township`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.townshipList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.townshipList.push({ 
+            id: response.data.list[i].ccorregimiento,
+            value: response.data.list[i].xcorregimiento,
+          });
+          this.townshipList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }
+      },);
+  } 
+
 async getModeloData(event){
   this.keyword;
   this.search_form.get('cmarca').setValue(event.control)
@@ -490,6 +486,7 @@ async getModeloData(event){
         this.search_form.get('email').setValue(response.data.xemail);
         if(this.search_form.get('email').value){
           this.activaClave = true;
+          this.activePassword();
         }
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
@@ -615,9 +612,12 @@ async getModeloData(event){
   }
 
   activePassword(){
-    if(this.search_form.get('email').value){
-      this.activaClave = true;
-    }
+    let params;
+    this.http.post(`${environment.apiUrl}/api/contract-arys/password`, params).subscribe((response : any) => {
+      if(response.data.status){
+        this.search_form.get('xclave_club').setValue(response.data.xclave_club)
+      }
+    }, );
   }
 
   onSubmit(form){
