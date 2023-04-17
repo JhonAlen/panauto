@@ -451,9 +451,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     let dataRow = [];
     for (let i = 0; i < this.serviceList.length; i++) {
       if (dataRow.length === 3) {
-        console.log(dataRow);
         body.push(dataRow);
-        dataRow = [];
+        dataRow = []
       }
       if (dataRow.length === 2) {
         dataRow.push({text: this.serviceList[i].xservicio, border:[false, false, true, false]})
@@ -648,6 +647,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     pdf.download(`Póliza - ${this.xnombrecliente}`);
     pdf.open();
     this.search_form.disable()
+
+    window.alert("El PDF se generó correctamente.");
+    location.reload();
   }
     catch(err){console.log(err.message)}
   }
