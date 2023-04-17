@@ -6,6 +6,8 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { GridApi } from 'ag-grid-community';
 import { NgbPaginationModule, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CauseForCancellationComponent } from '@app/pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -142,11 +144,14 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   xmoneda;
   mmonto_plan;
   serviceList = [];
+  cancellationData: {};
+  banular: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder,
               private authenticationService : AuthenticationService,
               private http: HttpClient,
-              private router: Router) { }
+              private router: Router,
+              private modalService : NgbModal) { }
 
   async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
@@ -227,6 +232,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
       this.contractList = [];
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
+          const contract = response.data.list[i];
+          const anulado = contract.xestadocontrato == 'Anulado';
           this.contractList.push({
             ccontratoflota: response.data.list[i].ccontratoflota,
             xnombres: response.data.list[i].xnombres,
@@ -234,6 +241,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
             fano: response.data.list[i].fano,
             identificacion: response.data.list[i].identificacion,
             xplaca: response.data.list[i].xplaca,
+            banular: !anulado
           })
         }
         this.filteredData = this.contractList;
@@ -444,6 +452,54 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+  }
+
+  getCancellationPolicy(ccontratoflota){
+    let cancellation = {};
+    const modalRef = this.modalService.open(CauseForCancellationComponent);
+    modalRef.componentInstance.cancellation = cancellation;
+    modalRef.result.then((result: any) => { 
+
+      if(result){
+        this.cancellationData = {
+          ccausaanulacion: result.ccausaanulacion,
+        }
+        this.onSubmit(ccontratoflota);
+      }
+    });
+  }
+
+  onSubmit(ccontratoflota){
+    let params = {}
+    if(ccontratoflota){
+      params = {
+        ccontratoflota: ccontratoflota,
+        cancellationData: this.cancellationData
+      }
+      this.http.post(`${environment.apiUrl}/api/contract-arys/cancellation`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.alert.message = 'Se ha anulado el contrato seleccionado.';
+          this.alert.type = 'success';
+          this.alert.show = true;
+    
+          setTimeout(() => {
+            this.alert.show = false;
+          }, 3000);
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 401){
+          let condition = err.error.data.condition;
+          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
   }
 
   buildServiceBody() {
