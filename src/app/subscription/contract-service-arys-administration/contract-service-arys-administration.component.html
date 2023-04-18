@@ -1,5 +1,7 @@
 <app-toolbar ></app-toolbar>
-
+  <div data-aos="fade-in-down" data-aos-delay="200" *ngIf="alert.show" class="alert-container">
+    <ngb-alert *ngIf="alert.show" [type]="alert.type" [ngClass]="{'alert-success': alert.type === 'success', 'alert-danger': alert.type === 'danger'}">{{ alert.message | translate }}</ngb-alert>
+  </div>
   <div css="row mt-5 mb-5" style="margin-top: 30px;">
       <div class="col-sm-12">
           <div class="card">
@@ -29,6 +31,7 @@
                         <th class="border-bottom">Vehículo</th>
                         <th class="border-bottom">Placa</th>
                         <th class="border-bottom">Año</th>
+                        <th class="border-bottom">Estado</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -39,8 +42,9 @@
                         <td style="white-space: nowrap">{{ item.xvehiculo }}</td>
                         <td style="white-space: nowrap">{{ item.xplaca }}</td>
                         <td style="white-space: nowrap">{{ item.fano }}</td>
+                        <td style="white-space: nowrap">{{ item.xestadocontrato }}</td>
                         <td style="white-space: nowrap"><button class="btn btn-success" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Descargar Certificado</button></td>
-                        <td><button class="btn btn-danger" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Anular</button></td>
+                        <td><button  *ngIf="item.puedeAnular" class="btn btn-danger" (click)="getCancellationPolicy(item.ccontratoflota)" data-name="{{item.xnombres}}">Anular</button></td>
                       </tr>
                     </tbody>
                   </table>
