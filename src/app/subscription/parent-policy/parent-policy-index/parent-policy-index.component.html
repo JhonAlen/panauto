@@ -5,41 +5,30 @@
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-2">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header company-card-header">
                     <div class="row">
-                        <div class="col-6">
-                            Buscar Contrato
+                        <div class="col-2">
+                            Carga Masiva de Contratos
                         </div>
-                        <div class="col-6">
-                            <button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
-                                Crear
-                            </button>
-                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
+                        <div class="col-10">
+                            <button [disabled]="loading || !activateSave" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit()">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                Buscar
+                                Guardar
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form [formGroup]="search_form">
+                    <div class="container">
                         <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Contrato</label>
-                                    <select formControlName="ccarga" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccarga').errors }">
-                                        <option></option>
-                                        <option *ngFor="let parentPolicy of parentPolicyList" value="{{ parentPolicy.id }}">{{ parentPolicy.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('ccarga').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                <input type="file" name="xdocumento" class="form-control"  accept=" .csv" (change)="onFileSelect($event)" #Ximagen>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,18 +39,19 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            Lista de Contratos Matriz
+                            Lista de Contratos
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 520px;" class="ag-theme-alpine" [rowData]="parentPolicyResultList" [pagination]="true" [paginationPageSize]="10" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="Código" field="ccarga" [width]="122" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="N° de Contrato" field="xpoliza" [width]="160" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Descripción" field="xdescripcion" [width]="300" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Corredor" field="xcorredor" [width]="300" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Fecha de Creación" field="fcreacion" [width]="172" [sortable]="true" [resizable]="true"></ag-grid-column>
+                        <ag-grid-angular #agGrid style="width: 100%; height: 520px;" class="ag-theme-alpine" [rowData]="fleetContractList" [pagination]="true" [paginationPageSize]="10" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true">
+                            <ag-grid-column headerName="Cédula" field="ncedula" [width]="173" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Propietario" field="xpropietario" [width]="173" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Placa" field="xplaca" [width]="173" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Marca" field="xmarca" [width]="173" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Modelo" field="xmodelo" [width]="173" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Versión" field="xversion" [width]="173" [sortable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
