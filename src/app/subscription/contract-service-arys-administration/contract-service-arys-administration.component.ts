@@ -147,6 +147,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   serviceList = [];
   cancellationData: {};
   banular: boolean = false;
+  estatus;
 
   constructor(private formBuilder: UntypedFormBuilder,
               private authenticationService : AuthenticationService,
@@ -233,8 +234,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
       this.contractList = [];
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          const contract = response.data.list[i];
-          const anulado = contract.xestadocontrato == 'Anulado';
+          let estadoContrato = response.data.list[i].xestadocontrato;
+          let puedeAnular = estadoContrato === 'Vigente'; // establece la propiedad "puedeAnular" en verdadero si el estado del contrato es "Vigente", y en falso si es "Anulado"
           this.contractList.push({
             ccontratoflota: response.data.list[i].ccontratoflota,
             xnombres: response.data.list[i].xnombres,
@@ -242,8 +243,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
             fano: response.data.list[i].fano,
             identificacion: response.data.list[i].identificacion,
             xplaca: response.data.list[i].xplaca,
-            banular: !anulado
-          })
+            xestadocontrato: estadoContrato,
+            puedeAnular: puedeAnular // agrega la propiedad "puedeAnular" al objeto del contrato
+          });
         }
         this.filteredData = this.contractList;
       }
@@ -369,6 +371,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
         this.xzona_postal_propietario = response.data.xzona_postal_propietario;
+        this.estatus = response.data.xestadocontrato;
         this.mmonto_plan = response.data.mtotal_plan
         this.femision = response.data.femision;
         let fechaInicio = this.femision;
@@ -487,6 +490,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           setTimeout(() => {
             this.alert.show = false;
           }, 3000);
+
+          location.reload();
         }
       },
       (err) => {
@@ -543,14 +548,14 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [165, 216, 35, '*'],
+            widths: [165, 216, 55, '*'],
             body: [
-              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\n${this.xtituloreporte}`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccarga}\n\n`, border:[false, true, true, false]}]
+              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\n${this.xtituloreporte}`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control\n\nEstatus', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccontratoflota}\n\n${this.estatus}`, border:[false, true, true, false]}]
             ]
           }
         },
         {
-          style: 'data',
+          style: 'data', 
           table: {
             widths: [130, 80, 30, 55, 30, 55, '*'],
             body: [
@@ -693,8 +698,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     pdf.download(`Póliza - ${this.xnombrecliente}`);
     pdf.open();
     this.search_form.disable()
-
-    window.alert("El PDF se generó correctamente.");
+    
     location.reload();
   }
     catch(err){console.log(err.message)}
