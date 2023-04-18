@@ -94,6 +94,7 @@ export class ProviderBankComponent implements OnInit {
           this.canSave = false;
         }else if(this.bank.type == 1){
           this.popup_form.get('cbanco').setValue(this.bank.cbanco);
+          this.popup_form.get('cbanco').disable();
           this.popup_form.get('ctipocuentabancaria').setValue(this.bank.ctipocuentabancaria);
           this.popup_form.get('xnumerocuenta').setValue(this.bank.xnumerocuenta);
           this.popup_form.get('bprincipal').setValue(this.bank.bprincipal);
@@ -111,9 +112,9 @@ export class ProviderBankComponent implements OnInit {
       this.loading = false;
       return;
     }
-    let bankFilter = this.bankList.filter((option) => { return option.id == form.cbanco; });
+    let bankFilter = this.bankList.filter((option) => { return option.id == this.popup_form.get('cbanco').value });
     let bankAccountTypeFilter = this.bankAccountTypeList.filter((option) => { return option.id == form.ctipocuentabancaria; });
-    this.bank.cbanco = form.cbanco;
+    this.bank.cbanco = this.popup_form.get('cbanco').value;
     this.bank.xbanco = bankFilter[0].value;
     this.bank.ctipocuentabancaria = form.ctipocuentabancaria;
     this.bank.xtipocuentabancaria = bankAccountTypeFilter[0].value;
