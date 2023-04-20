@@ -55,7 +55,8 @@ export class HomeComponent implements OnInit {
       npersonas_cobradas: [''],
       npersonas_pendientes: [''],
       nnotificacion: [''],
-      npersonas_arys: ['']
+      npersonas_arys: [''],
+      xusuario: ['']
     })
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -89,7 +90,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.getDataNotification();
-    this.getCountArysService();
+    this.getUser();
     this.getAmountsCharged();
     this.getAmountsOutstanding();
     this.getNotificationCount();
@@ -117,20 +118,35 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getCountArysService(){
+  // getCountArysService(){
+  //   //busca usuario que inicio sesión
+  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   let options = { headers: headers };
+  //   let params = {
+  //     cusuario: this.currentUser.data.cusuario
+  //   };
+  //   this.http.post(`${environment.apiUrl}/api/home/arys-service`, params, options).subscribe((response : any) => {
+  //     if(response.data.npersonas_arys){
+  //       this.home_form.get('npersonas_arys').setValue(response.data.npersonas_arys)
+  //       this.home_form.get('npersonas_arys').disable();
+  //     }else{
+  //       this.home_form.get('npersonas_arys').setValue(0)
+  //       this.home_form.get('npersonas_arys').disable();
+  //     }
+  //   });
+  // }
+
+  getUser(){
     //busca usuario que inicio sesión
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
       cusuario: this.currentUser.data.cusuario
     };
-    this.http.post(`${environment.apiUrl}/api/home/arys-service`, params, options).subscribe((response : any) => {
-      if(response.data.npersonas_arys){
-        this.home_form.get('npersonas_arys').setValue(response.data.npersonas_arys)
-        this.home_form.get('npersonas_arys').disable();
-      }else{
-        this.home_form.get('npersonas_arys').setValue(0)
-        this.home_form.get('npersonas_arys').disable();
+    this.http.post(`${environment.apiUrl}/api/home/user`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.home_form.get('xusuario').setValue(response.data.xusuario)
+        this.home_form.get('xusuario').disable();
       }
     });
   }
