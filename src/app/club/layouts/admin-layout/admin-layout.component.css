@@ -45,9 +45,7 @@ mat-sidenav-content{
 /* .container{
   max-width: 94%;
 } */
-mat-sidenav-container {
-  height: calc(100vh - 65px);
-}
+
 
 .menu-button {
   width: 100%;
@@ -55,7 +53,7 @@ mat-sidenav-container {
   align-items: center;
   justify-content: flex-start;
   font-size: 1rem;
-  margin-top: 20px;
+  margin-top: 47px;
   background-color: transparent;
 
 } 
