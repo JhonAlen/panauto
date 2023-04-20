@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef , OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef , OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '@services/authentication.service';
@@ -7,6 +7,10 @@ import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import dayGridPlugin from '@fullcalendar/daygrid'; // fo
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as $ from 'jquery';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +19,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 })
 
 export class DashboardComponent implements OnInit {
-  savedatacalendar = false
+  date : any
   code
   Events: any[] = [];
   calendarVisible = true;
@@ -52,8 +56,9 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authenticationService : AuthenticationService,
     private http : HttpClient,
-    private changeDetector: ChangeDetectorRef
-  ) { }
+    private changeDetector: ChangeDetectorRef,
+    private modalService : NgbModal ) { 
+  }
 
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
@@ -63,7 +68,6 @@ export class DashboardComponent implements OnInit {
     calendarOptions.weekends = !calendarOptions.weekends;
   }
   handleDateSelect(selectInfo: DateSelectArg) {
-    this.savedatacalendar = true
     const title = prompt('¿Qué actividad planea realizar?');
     const calendarApi = selectInfo.view.calendar;
     this.currentUser = this.authenticationService.currentUserValue;
@@ -102,15 +106,15 @@ export class DashboardComponent implements OnInit {
     this.http
     .post(environment.apiUrl + '/api/club/search/client-agenda' ,params)
     .subscribe((res: any) => {
-      console.log(res)
       this.Events = []
       this.Events = res.data.list 
       this.calendarOptions = {
         initialView: 'dayGridMonth',
         events: this.Events,
       };
-    });    
+    });
+    
+ 
   }
-
 
 }

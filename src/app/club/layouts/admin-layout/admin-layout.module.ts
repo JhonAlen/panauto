@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -29,7 +30,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    FullCalendarModule
+    FullCalendarModule,
+    NgbModule,
+  
   ],
   declarations: [
     DashboardComponent,
