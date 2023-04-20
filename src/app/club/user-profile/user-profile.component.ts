@@ -1,10 +1,12 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, UntypedFormGroup, Validators,FormControl, FormGroup, AbstractControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, } from '@angular/core';
+import { FormBuilder, FormGroup} from '@angular/forms';
+import { Router,  } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '@services/authentication.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { WebServiceConnectionService } from '@services/web-service-connection.service';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -20,6 +22,7 @@ export class UserProfileComponent implements OnInit {
   currentUser;
   DataClient : any = [];
   DataVehicle : any = [];
+  xrutaarchivo: string;
 
 
   constructor(
@@ -27,36 +30,36 @@ export class UserProfileComponent implements OnInit {
     private authenticationService : AuthenticationService,
     private http : HttpClient,
     private router : Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private webService : WebServiceConnectionService
   ) { }
 
   ngOnInit() {
-    this.DataUser = this.formBuilder.group({
-      xnombre:  [''],
-      xapellido:  [''],
-      xzona_postal:  [''],
-      icedula:  [''],
-      xdocidentidad :  [''],
-      xemail :  [''],
-      xmarca:  [''],
-      xmodelo:  [''],
-      xversion:  [''],
-      xplaca:  [''],
-      fano :  [''],
-      xcolor :  [''],
-      xserialcarroceria :  [''],
-      xseriamotor :  [''],
-    });
+    // this.DataUser = this.formBuilder.group({
+    //   xnombre:  [''],
+    //   xapellido:  [''],
+    //   xzona_postal:  [''],
+    //   icedula:  [''],
+    //   xdocidentidad :  [''],
+    //   xemail :  [''],
+    //   xmarca:  [''],
+    //   xmodelo:  [''],
+    //   xversion:  [''],
+    //   xplaca:  [''],
+    //   fano :  [''],
+    //   xcolor :  [''],
+    //   xserialcarroceria :  [''],
+    //   xseriamotor :  [''],
+    // });
 
     this.DataUserDocuments = this.formBuilder.group({
       cpropietario:  [''],
-      xruta:  [''],
+      xdocumento:  [''],
+      xarchivo:  [''],
       itipodocumento:  [''],
       fvencimiento:  [''],
       fcreacion :  [''],
-      fmodificacion :  [''],
       cusuariocreacion:  [''],
-      cusuariomodificacion:  [''],
 
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -85,20 +88,43 @@ export class UserProfileComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    },);
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+  onFileSelect(event){
+    const file = event.target.files[0];
+    this.DataUserDocuments.get('xarchivo').setValue(file);
+    this.submitted=true
+  }
+
+
+  onSubmit(form){
+    const formData = new FormData();
+    formData.append('xdocumento',this.DataUserDocuments.get('xarchivo').value);
+    formData.append('agentId', '007');
+    this.http.post<any>(`${environment.apiUrl}/api/upload/document`, formData).subscribe(response => {
+      if(response.data.status){
+        this.xrutaarchivo = `${environment.apiUrl}/documents/${response.data.uploadedFile.filename}`;
+        
+        let params = {
+          cpropietario: this.currentUser.data.cpropietario,
+          xarchivo: this.xrutaarchivo,
+          itipodocumento: form.itipodocumento,
+          fvencimiento: form.fvencimiento,
+          cusuariocreacion: this.currentUser.data.cusuario,
+        }
+
+        this.http.post<any>(environment.apiUrl + `/api/club/upload/client-agenda`, params).subscribe(response => {
+          if(response.data.status){
+            this.DataUserDocuments.reset()
+            this.message = 'Documento guardado con éxito'
+          }
+        })
+
+        
+      }
+    })
+    
   }
 }
 
