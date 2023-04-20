@@ -1,0 +1,142 @@
+<div class="container py-5">
+    <div class="row">
+      <div class="col">
+      </div>
+    </div>
+
+    <div class="row" *ngIf="DataClient.length !== 0">
+      
+        <div class="col-lg-4">
+          <div style="margin-top: 25px;">
+            <div class="card-body text-center">
+              <img src="./../../../assets/imagenes/logo.png" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px;">
+              <h5 class="my-3">Bienvenidos a PanautoClub</h5>
+              <p class="text-muted mb-1"></p>
+              <div class="d-flex justify-content-center mb-2">
+                <button type="button" class="btn btn-primary" routerLink="/notifications">Solicitar Servicio</button>
+                <button type="button" class="btn btn-outline-primary ms-1">Llamar Call Center</button>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4 mb-lg-0">
+            <div class="d-flex justify-content-center mb-2">
+              <button type="button" class="btn btn-primary" (click)="open(content)">Adjuntar documentos</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8" *ngFor="let Data of DataClient">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Nombre</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ Data.xnombre }} {{ Data.xapellido }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ Data.xemail }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Telefono</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{Data.telefono}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Cédula</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{Data.icedula}}-{{Data.xdocidentidad}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="DataVehicle.length !== 0">
+            <div class="card mb-4" *ngFor="let Data of DataVehicle">
+              <div >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Marca</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{ Data.xmarca }}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Modelo</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{ Data.xmodelo }}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Placa</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{Data.xplaca}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Año</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{Data.fano}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+
+
