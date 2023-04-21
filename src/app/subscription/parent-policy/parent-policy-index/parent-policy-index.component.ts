@@ -58,47 +58,42 @@ export class ParentPolicyIndexComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.saveStatus && this.createBatch) {
-      let batch = this.batchList.filter(batch => !batch.clote);
-      this.submitted = true;
-      this.loading = true;
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        cusuario: this.currentUser.data.cusuario,
-        xobservacion: batch[0].xobservacion,
-        parsedData: batch[0].contratosCSV
-      }
-      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/charge-contracts`, params, options).subscribe((response : any) => {
-        if (response.data.status) {
-          this.showSaveButton = false;
-          this.saveStatus = false;
-          this.showEditButton = true;
-          this.createBatch = false;
-          alert(response.data.message);
-          this.loading = false;
-        }
-      },
-      (err) => {
-        let message = err.error.data.message;
+    let batch = this.batchList.filter(batch => !batch.clote);
+    this.submitted = true;
+    this.loading = true;
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cusuario: this.currentUser.data.cusuario,
+      parsedData: this.parsedData
+    }
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/charge-contracts`, params, options).subscribe((response : any) => {
+      if (response.data.status) {
         this.showSaveButton = false;
         this.saveStatus = false;
         this.showEditButton = true;
-        this.createBatch = false;
-        alert(message);
+        alert(response.data.message);
         this.loading = false;
-      });
-  
-    }
+        this.activateSave = false;
+      }
+    },
+    (err) => {
+      let message = err.error.data.message;
+      this.showSaveButton = false;
+      this.saveStatus = false;
+      this.showEditButton = true;
+      alert(message);
+      this.loading = false;
+    });
   }
   
   parseCSV(file) {
 
     const requiredHeaders: any[] = [
-      "No", "POLIZA", "CERTIFICADO", "Rif_Cliente", "PROPIETARIO", "letra", "CEDULA", "FNAC", "CPLAN", "SERIAL CARROCERIA", 
-      "SERIAL MOTOR", "PLACA", "CMARCA", "CMODELO", "CVERSION", "XMARCA", "XMODELO", "XVERSION", "AÑO", "COLOR", 
-      "Tipo Vehiculo", "CLASE", "PTOS", "XTELEFONO1", "XTELEFONO2", "XDIRECCION", "EMAIL", "FEMISION", "FPOLIZA_DES", "FPOLIZA_HAS", 
-      "CASEGURADORA", "SUMA ASEGURADA", "SUMA ASEGURADA OTROS", "MONTO DEDUCIBLE", "XTIPO_DEDUCIBLE", "FCREACION", "CUSUARIOCREACION"
+      "No", "Rif_Cliente", "POLIZA", "NOMBRE", "APELLIDO", "letra", "CEDULA", "FNAC", "CMETODOLOGIAPAGO", "CPLAN", "SERIAL CARROCERIA", 
+      "SERIAL MOTOR", "PLACA", "CMARCA", "CMODELO", "CVERSION", "XMARCA", "XMODELO", "XVERSION", "AÑO", "COLOR", "IFRACCIONAMIENTO",
+      "XDIRECCION", "XTELEFONO1", "XTELEFONO2", "EMAIL", "FEMISION", "FPOLIZA_DES", "FPOLIZA_HAS", "CPROVINCIA", "CDISTRITO", "CCORREGIMIENTO",
+      "SUMA ASEGURADA", "PRIMA", "CASEGURADORA", "CTIPOVEHICULO", "CCLASE", "CUSO", "CCORREDOR", "FCREACION", "CUSUARIOCREACION", "XZONA_POSTAL"
     ]
 
     return new Promise <any[]>((resolve, reject) => {
@@ -146,6 +141,7 @@ export class ParentPolicyIndexComponent implements OnInit {
   async onFileSelect(event){
     //La lista fixedData representa los campos de los contratos que serán cargados solo en la tabla html fleetContractList
     //parsedData son todos los campos de cada contrato del CSV, los cuales serán insertados en la BD
+    this.activateSave = false;
     let fixedData: any[] = [];
     let file = event.target.files[0];
     this.fleetContractList = [];
@@ -160,13 +156,14 @@ export class ParentPolicyIndexComponent implements OnInit {
           xmodelo: this.parsedData[i].XMODELO,
           xplaca: this.parsedData[i].PLACA,
           xversion: this.parsedData[i].XVERSION,
-          xpropietario: this.parsedData[i].PROPIETARIO
+          xcliente: this.parsedData[i].NOMBRE + ' ' + this.parsedData[i].APELLIDO
         })
       }
+      this.fleetContractList = fixedData;
+      this.activateSave = true;
     }
     else {
       event.target.value = null;
-      this.activateSave = false;
     }
   }
 }
