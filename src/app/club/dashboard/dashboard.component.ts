@@ -7,7 +7,7 @@ import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import dayGridPlugin from '@fullcalendar/daygrid'; // fo
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import * as $ from 'jquery';
 
 
@@ -19,6 +19,10 @@ import * as $ from 'jquery';
 })
 
 export class DashboardComponent implements OnInit {
+  @ViewChild("content") private contentRef: TemplateRef<Object>;
+  closeResult: string;
+  name : string
+  apellido: string
   date : any
   code
   Events: any[] = [];
@@ -112,9 +116,20 @@ export class DashboardComponent implements OnInit {
         initialView: 'dayGridMonth',
         events: this.Events,
       };
+      if(res.data.message){
+        this.message = res.data.message
+        this.name = res.data.name
+        this.apellido = res.data.apellido
+        this.open(this.contentRef);
+      }
     });
     
- 
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    },);
   }
 
 }
