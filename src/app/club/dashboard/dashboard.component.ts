@@ -20,6 +20,7 @@ import * as $ from 'jquery';
 
 export class DashboardComponent implements OnInit {
   @ViewChild("content") private contentRef: TemplateRef<Object>;
+  @ViewChild("calendar") private content: TemplateRef<Object>;
   closeResult: string;
   name : string
   apellido: string
@@ -72,11 +73,12 @@ export class DashboardComponent implements OnInit {
     calendarOptions.weekends = !calendarOptions.weekends;
   }
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('¿Qué actividad planea realizar?');
+    this.open(this.content)
+    // const title = prompt('¿Qué actividad planea realizar?');
     const calendarApi = selectInfo.view.calendar;
     this.currentUser = this.authenticationService.currentUserValue;
     let params = {
-      title: title,
+      // title: title,
       start: selectInfo.startStr,
       end: selectInfo.endStr,
       allDay: selectInfo.allDay,

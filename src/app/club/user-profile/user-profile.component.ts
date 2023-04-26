@@ -23,6 +23,9 @@ export class UserProfileComponent implements OnInit {
   DataClient : any = [];
   DataVehicle : any = [];
   xrutaarchivo: string;
+  ListTypeService: any;
+  monto : any
+  xtitulo : any
 
 
   constructor(
@@ -51,6 +54,7 @@ export class UserProfileComponent implements OnInit {
     //   xserialcarroceria :  [''],
     //   xseriamotor :  [''],
     // });
+
 
     this.DataUserDocuments = this.formBuilder.group({
       cpropietario:  [''],
@@ -84,6 +88,25 @@ export class UserProfileComponent implements OnInit {
       this.DataClient = response.data.UserProfile
   });
 
+
+  let plandata = {
+    cpais: this.currentUser.data.cpais,
+    cpropietario: this.currentUser.data.cpropietario
+  } 
+  this.http.post(environment.apiUrl + '/api/club/Data/Client/Plan', plandata).subscribe((response : any) => {
+
+    let DataTypeServiceI = response.data.listTypeService
+
+    const DataTypeServiceP = DataTypeServiceI.filter
+    ((data, index, j) => index === j.findIndex((t) => (t.ctiposervicio === data.ctiposervicio && t.xtiposervicio === data.xtiposervicio)))
+    this.ListTypeService = DataTypeServiceP
+    this.monto = response.data.mcosto
+    this.xtitulo = response.data.xplan
+
+
+
+  })
+
   }
 
   open(content) {
@@ -96,6 +119,7 @@ export class UserProfileComponent implements OnInit {
     this.DataUserDocuments.get('xarchivo').setValue(file);
     this.submitted=true
   }
+
 
 
   onSubmit(form){
