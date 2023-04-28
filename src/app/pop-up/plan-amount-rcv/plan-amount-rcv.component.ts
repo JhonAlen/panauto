@@ -23,6 +23,19 @@ export class PlanAmountRcvComponent implements OnInit {
   coverageList: any[] = [];
   alert = { show : false, type : "", message : "" }
 
+  lesionesCorp: number;
+  lesionesCorpPorPers: number;
+  danosPropAjena: number;
+  gastosMedicos: number;
+  muerteCondPasaj: number;
+  servFunerarios: number;
+  primaSinImp: number;
+  impuesto: number;
+  prima: number;
+
+  datos: any[] = [];
+  registros: any[] = [];
+
   constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
               private authenticationService : AuthenticationService,
@@ -43,57 +56,26 @@ export class PlanAmountRcvComponent implements OnInit {
     this.canSave = true;
   }
 
+  actualizarDato(dato: any, valor: string) {
+    // dato.monto = parseFloat(nuevoValor) || 0; // parseamos el valor a un número
+    // const valorGuardado = `${dato.nombre}: ${dato.monto}`; // generamos el valor guardado
+    // this.valoresGuardados.push(valorGuardado);
+    // console.log(this.valoresGuardados)
+
+    const monto = parseFloat(valor) || 0; // Convertir a número o establecer en cero si no se puede
+    dato.monto = monto;
+  
+    const nuevoRegistro = { nombre: dato.nombre, monto: monto };
+    this.registros.push(nuevoRegistro);
+    console.log(this.registros)
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
 
-    if(form.msuma_dc){
-      this.rcv.msuma_dc = form.msuma_dc
-    }else{
-      this.rcv.msuma_dc = 0
-    }
 
-    if(form.msuma_personas){
-      this.rcv.msuma_personas = form.msuma_personas
-    }else{
-      this.rcv.msuma_personas = 0
-    }
-
-    if(form.msuma_exceso){
-      this.rcv.msuma_exceso = form.msuma_exceso
-    }else{
-      this.rcv.msuma_exceso = 0
-    }
-
-    if(form.msuma_dp){
-      this.rcv.msuma_dp = form.msuma_dp
-    }else{
-      this.rcv.msuma_dp = 0
-    }
-
-    if(form.msuma_muerte){
-      this.rcv.msuma_muerte = form.msuma_muerte
-    }else{
-      this.rcv.msuma_muerte = 0
-    }
-
-    if(form.msuma_invalidez){
-      this.rcv.msuma_invalidez = form.msuma_invalidez
-    }else{
-      this.rcv.msuma_invalidez = 0
-    }
-
-    if(form.msuma_gm){
-      this.rcv.msuma_gm = form.msuma_gm
-    }else{
-      this.rcv.msuma_gm = 0
-    }
-
-    if(form.msuma_gf){
-      this.rcv.msuma_gf = form.msuma_gf
-    }else{
-      this.rcv.msuma_msuma_gfgm = 0
-    }
+    console.log(form)
     
     this.activeModal.close(this.rcv);
   }

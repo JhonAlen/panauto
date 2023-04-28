@@ -613,6 +613,7 @@ async getModeloData(event){
 
   activePassword(){
     let params;
+    this.activaClave = true
     this.http.post(`${environment.apiUrl}/api/contract-arys/password`, params).subscribe((response : any) => {
       if(response.data.status){
         this.search_form.get('xclave_club').setValue(response.data.xclave_club)
