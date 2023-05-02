@@ -7,8 +7,8 @@ import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import dayGridPlugin from '@fullcalendar/daygrid'; // fo
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import * as $ from 'jquery';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, UntypedFormGroup, Validators,FormControl, FormGroup, AbstractControl } from '@angular/forms';
 
 
 
@@ -20,10 +20,17 @@ import * as $ from 'jquery';
 
 export class DashboardComponent implements OnInit {
   @ViewChild("content") private contentRef: TemplateRef<Object>;
+  @ViewChild("calendar") private content: TemplateRef<Object>;
+  EventsCalendar : FormGroup
+
   closeResult: string;
+
   name : string
   apellido: string
   date : any
+  message = false;
+  datamessage : any
+
   code
   Events: any[] = [];
   calendarVisible = true;
@@ -54,14 +61,16 @@ export class DashboardComponent implements OnInit {
     eventRemove:
     */
   };
+
   currentEvents: EventApi[] = [];
-  message : any;
+
   currentUser;
   constructor(
     private authenticationService : AuthenticationService,
     private http : HttpClient,
     private changeDetector: ChangeDetectorRef,
-    private modalService : NgbModal ) { 
+    private modalService : NgbModal,
+    private formBuilder: FormBuilder, ) { 
   }
 
   handleCalendarToggle() {
@@ -72,26 +81,33 @@ export class DashboardComponent implements OnInit {
     calendarOptions.weekends = !calendarOptions.weekends;
   }
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('¿Qué actividad planea realizar?');
+    this.date = selectInfo.startStr
+    this.open(this.content)
     const calendarApi = selectInfo.view.calendar;
     this.currentUser = this.authenticationService.currentUserValue;
-    let params = {
-      title: title,
-      start: selectInfo.startStr,
-      end: selectInfo.endStr,
-      allDay: selectInfo.allDay,
-      cpropietario: this.currentUser.data.cpropietario
+    if(this.EventsCalendar.get('evento').value == null){
+      this.message = false
+      let params = {
+        title: this.EventsCalendar.get('evento').value,
+        start: selectInfo.startStr + this.EventsCalendar.get('hora').value,
+        end: this.EventsCalendar.get('fhasta').value + this.EventsCalendar.get('hora').value,
+        cpropietario: this.currentUser.data.cpropietario
+      }
+      this.http
+      .post(environment.apiUrl + '/api/club/client-agenda' ,params)
+      .subscribe((res: any) => {
+        this.Events = []
+        this.Events = res.data.list
+        this.calendarOptions = {
+          initialView: 'dayGridMonth',
+          events: this.Events,
+        };
+      });
+    }else{
+      this.message = true
+      this.datamessage = 'Es requerida la descripción del evento'
     }
-    this.http
-    .post(environment.apiUrl + '/api/club/client-agenda' ,params)
-    .subscribe((res: any) => {
-      this.Events = []
-      this.Events = res.data.list
-      this.calendarOptions = {
-        initialView: 'dayGridMonth',
-        events: this.Events,
-      };
-    });
+
   }
   handleEventClick(clickInfo: EventClickArg) {
     if (confirm(`¿Seguro de que deseas elminar '${clickInfo.event.title}'?`)) {
@@ -103,6 +119,14 @@ export class DashboardComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
   ngOnInit(){
+
+    this.EventsCalendar = this.formBuilder.group({
+      evento:  [''],
+      hora:  [''],
+      fdesde:  [''],
+      fhasta:  [''],
+    });
+
     this.currentUser = this.authenticationService.currentUserValue;
     let params = {
       cpropietario: this.currentUser.data.cpropietario

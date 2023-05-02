@@ -23,6 +23,31 @@
               <button type="button" class="btn btn-primary" (click)="open(content)">Adjuntar documentos</button>
             </div>
           </div>
+          <div class="mb-4 mb-lg-0">
+            <div class="container">
+              <div class="row">
+                  <div>
+                      <div class="pricingTable">
+                          <div class="pricing_heading">
+                              <h3 class="title">{{xtitulo}}</h3>
+                              <span class="value">
+                                 
+                                {{monto}} $
+                              </span>
+                          </div>
+                          <div class="content" *ngFor="let Data of ListTypeService">
+                              <ul>
+                                  <li>{{ Data.xtiposervicio }}</li>
+                              </ul>
+                              <!-- <div class="link">
+                                  <a href="#">sign up</a>
+                              </div> -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
         </div>
         <div class="col-lg-8" *ngFor="let Data of DataClient">
           <div class="card mb-4">
