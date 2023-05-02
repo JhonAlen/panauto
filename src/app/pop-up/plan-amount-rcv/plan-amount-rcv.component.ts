@@ -23,19 +23,6 @@ export class PlanAmountRcvComponent implements OnInit {
   coverageList: any[] = [];
   alert = { show : false, type : "", message : "" }
 
-  lesionesCorp: number;
-  lesionesCorpPorPers: number;
-  danosPropAjena: number;
-  gastosMedicos: number;
-  muerteCondPasaj: number;
-  servFunerarios: number;
-  primaSinImp: number;
-  impuesto: number;
-  prima: number;
-
-  datos: any[] = [];
-  registros: any[] = [];
-
   constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
               private authenticationService : AuthenticationService,
@@ -44,38 +31,69 @@ export class PlanAmountRcvComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      msuma_dc: [''],
-      msuma_personas: [''],
-      msuma_exceso: [''],
-      msuma_dp: [''],
-      msuma_muerte: [''],
-      msuma_invalidez: [''],
-      msuma_gm: [''],
-      msuma_gf: ['']
+      mlesioncor: [''],
+      mlesioncor_per: [''],
+      mdanosp_ajena: [''],
+      mgastos_medicos: [''],
+      mmuerte: [''],
+      mservicios_fune: [''],
+      mprima_sin_rep: [''],
+      mimpuesto: ['']
     });
     this.canSave = true;
-  }
-
-  actualizarDato(dato: any, valor: string) {
-    // dato.monto = parseFloat(nuevoValor) || 0; // parseamos el valor a un número
-    // const valorGuardado = `${dato.nombre}: ${dato.monto}`; // generamos el valor guardado
-    // this.valoresGuardados.push(valorGuardado);
-    // console.log(this.valoresGuardados)
-
-    const monto = parseFloat(valor) || 0; // Convertir a número o establecer en cero si no se puede
-    dato.monto = monto;
-  
-    const nuevoRegistro = { nombre: dato.nombre, monto: monto };
-    this.registros.push(nuevoRegistro);
-    console.log(this.registros)
   }
 
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
 
+    if(this.popup_form.get('mlesioncor').value){
+      this.rcv.mlesioncor = this.popup_form.get('mlesioncor').value;
+    }else{
+      this.rcv.mlesioncor = 0;
+    }
 
-    console.log(form)
+    if(this.popup_form.get('mlesioncor_per').value){
+      this.rcv.mlesioncor_per = this.popup_form.get('mlesioncor_per').value;
+    }else{
+      this.rcv.mlesioncor_per = 0;
+    }
+
+    if(this.popup_form.get('mdanosp_ajena').value){
+      this.rcv.mdanosp_ajena = this.popup_form.get('mdanosp_ajena').value;
+    }else{
+      this.rcv.mdanosp_ajena = 0;
+    }
+
+    if(this.popup_form.get('mgastos_medicos').value){
+      this.rcv.mgastos_medicos = this.popup_form.get('mgastos_medicos').value;
+    }else{
+      this.rcv.mgastos_medicos = 0;
+    }
+
+    if(this.popup_form.get('mmuerte').value){
+      this.rcv.mmuerte = this.popup_form.get('mmuerte').value;
+    }else{
+      this.rcv.mmuerte = 0;
+    }
+
+    if(this.popup_form.get('mservicios_fune').value){
+      this.rcv.mservicios_fune = this.popup_form.get('mservicios_fune').value;
+    }else{
+      this.rcv.mservicios_fune = 0;
+    }
+
+    if(this.popup_form.get('mprima_sin_rep').value){
+      this.rcv.mprima_sin_rep = this.popup_form.get('mprima_sin_rep').value;
+    }else{
+      this.rcv.mprima_sin_rep = 0;
+    }
+
+    if(this.popup_form.get('mimpuesto').value){
+      this.rcv.mimpuesto = this.popup_form.get('mimpuesto').value;
+    }else{
+      this.rcv.mimpuesto = 0;
+    }
     
     this.activeModal.close(this.rcv);
   }
