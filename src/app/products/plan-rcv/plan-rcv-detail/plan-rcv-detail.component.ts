@@ -35,9 +35,7 @@ export class PlanRcvDetailComponent implements OnInit {
   showSaveButton: boolean = false;
   showEditButton: boolean = false;
   editStatus: boolean = false;
-  paymentMethodologyDeletedRowList: any[] = [];
-  insurerDeletedRowList: any[] = [];
-  serviceDeletedRowList: any[] = [];
+  data: any[] = [];
   ctarifa;
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -53,28 +51,17 @@ export class PlanRcvDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
-      cplan_rc: [''],
       xplan_rc: [''],
-      ctarifa: [''],
-      xclase: [''],
-      xtipo: [''],
-      xgrupo: [''],
-      msuma_cosas_rc: [''],
-      msuma_personas_rc: [''],
-      mprima_rc: [''],
-      msuma_defensa_per: [''],
-      mprima_defensa_per: [''],
-      msuma_limite_ind: [''],
-      mprima_limite_ind: [''],
-      msuma_apov_mu: [''],
-      mapov_mu: [''],
-      msuma_apov_in: [''],
-      mapov_in: [''],
-      msuma_apov_ga: [''],
-      mapov_ga: [''],
-      msuma_apov_fu: [''],
-      mapov_fu: [''],
-      bactivo: [true]
+      mcosto: [''],
+      mlesioncor: [''],
+      mlesioncor_per: [''],
+      mdanosp_ajena: [''],
+      mgastos_medicos: [''],
+      mmuerte: [''],
+      mservicios_fune: [''],
+      mprima_sin_rep: [''],
+      mimpuesto: [''],
+      mprima: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -217,6 +204,13 @@ export class PlanRcvDetailComponent implements OnInit {
     this.editStatus = true;
   }
 
+  amount(){
+    if(!this.detail_form.get('mcosto').value){
+      this.detail_form.get('mcosto').setValue(this.detail_form.get('mprima').value);
+      this.detail_form.get('mcosto').disable();
+    }
+  }
+
   cancelSave(){
     if(this.code){
       this.loading_cancel = true;
@@ -229,13 +223,41 @@ export class PlanRcvDetailComponent implements OnInit {
     }
   }
 
-  onSubmit(form){
+  convertCamp() {
+    const coberturas = [
+      {xcobertura: 'LESIONES CORPORALES', xsoat: this.detail_form.get('mlesioncor').value},
+      {xcobertura: 'LESIONES CORPORALES POR PERSONAS', xsoat: this.detail_form.get('mlesioncor_per').value},
+      {xcobertura: 'DAÑOS A LA PROPIEDAD AJENA', xsoat: this.detail_form.get('mdanosp_ajena').value},
+      {xcobertura: 'GASTOS MEDICOS', xsoat: this.detail_form.get('mgastos_medicos').value},
+      {xcobertura: 'MUERTE CONDUCTOR / PASAJEROS', xsoat: this.detail_form.get('mmuerte').value},
+      {xcobertura: 'SERVICIOS FUNERARIOS', xsoat: this.detail_form.get('mservicios_fune').value},
+      {xcobertura: 'PRIMA SIN IMPUESTO', xsoat: this.detail_form.get('mprima_sin_rep').value},
+      {xcobertura: 'IMPUESTO', xsoat: this.detail_form.get('mimpuesto').value},
+      {xcobertura: 'PRIMA', xsoat: this.detail_form.get('mprima').value}
+    ];
+  
+    const data = [];
+  
+    for (const cobertura of coberturas) {
+      const valor = cobertura.xsoat ? cobertura.xsoat : 0;
+      data.push({
+        xcobertura: cobertura.xcobertura,
+        xsoat: valor
+      });
+    }
+  
+    this.data.push(...data);
+
+    if(this.data){
+      this.onSubmit();
+    }
+
+  }
+
+  onSubmit(){
     this.submitted = true;
     this.loading = true;
-    if(this.detail_form.invalid){
-      this.loading = false;
-      return;
-    }
+
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params;
@@ -243,36 +265,23 @@ export class PlanRcvDetailComponent implements OnInit {
 
     if(this.code){
       params = {
-        cusuario: this.currentUser.data.cusuario,
-        cplan_rc: this.code,
-        xplan_rc: form.xplan_rc,
-        ctarifa: this.ctarifa,
-        xclase: form.xclase,
-        xtipo: form.xtipo,
-        xgrupo: form.xgrupo,
-        msuma_cosas_rc: form.msuma_cosas_rc,
-        msuma_personas_rc: form.msuma_personas_rc,
-        mprima_rc: form.mprima_rc,
-        msuma_defensa_per: form.msuma_defensa_per,
-        mprima_defensa_per: form.mprima_defensa_per,
-        msuma_limite_ind: form.msuma_limite_ind,
-        mprima_limite_ind: form.mprima_limite_ind,
-        msuma_apov_ga: form.msuma_apov_ga,
-        msuma_apov_mu: form.msuma_apov_mu,
-        mapov_mu: form.mapov_mu,
-        msuma_apov_in: form.msuma_apov_in,
-        mapov_in: form.mapov_in,
-        mapov_ga: form.mapov_ga,
-        msuma_apov_fu: form.msuma_apov_fu,
-        mapov_fu: form.mapov_fu
       };
       url = `${environment.apiUrl}/api/plan-rcv/update`;
+    }else{
+      params = {
+        datos: this.data,
+        cusuario: this.currentUser.data.cusuario,
+        xdescripcion: this.detail_form.get('xplan_rc').value,
+        mcosto: this.detail_form.get('mcosto').value,
+      }
+      url = `${environment.apiUrl}/api/plan-rcv/create`;
     }
     this.http.post(url, params, options).subscribe((response: any) => {
       if(response.data.status){
         if(this.code){
           location.reload();
         }else{
+          console.log(response.data.cplan_rc)
           this.router.navigate([`/plan-rcv/plan-rcv-detail/${response.data.cplan_rc}`]);
         }
       }else{
