@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container py-5">
+<div class="container">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "PRODUCTS.PLAN_RCV.PLAN" | translate }}</label>
+                                    <label>Nombre del Plan</label>
                                     <input type="text" formControlName="xplan_rc" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xplan_rc').errors }">
                                     <div *ngIf="submitted && detail_form.get('xplan_rc').errors"  class="invalid-feedback">
                                     </div>
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-8 col-md-4">
+                            <!-- <div class="col-sm-8 col-md-4">
                                 <div class="form-group">
                                     <label>
                                         <em>PRIMA SIN IMPUESTO</em>
@@ -155,7 +155,7 @@
                                         <div *ngIf="detail_form.get('mimpuesto').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-8 col-md-4">
                                 <div class="form-group">
                                     <label>
