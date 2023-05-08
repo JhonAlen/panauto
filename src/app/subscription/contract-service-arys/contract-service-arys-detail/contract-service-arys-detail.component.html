@@ -385,6 +385,30 @@
                         </div>
                     </div>
                 </div>
+                  <div class="col-sm-12 col-md-4">
+                    <div class="form-check form-switch">
+                        <label style="margin-left: 78px;margin-top: 13px;">¿Posee RCV?</label>
+                        <div class="row">
+                          <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -56px;">No</p>
+                          <input type="checkbox" formControlName="brcv" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && search_form.get('brcv').errors }" style="margin-left: 122px;" (change)="changeRcv()"> 
+                          <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                      </div>
+                        <div *ngIf="submitted && search_form.get('brcv').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('brcv').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 pb-2" *ngIf="bactivar_rcv">
+                  <div class="form-outline">
+                    <label class="form-label required" for="form3Examplev4">Planes RCV</label>
+                    <select formControlName="cplan_rc" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan_rc').errors }">
+                      <option *ngFor="let planrcv of planRcvList" value="{{ planrcv.id }}">{{ planrcv.value }}</option>
+                    </select>
+                    <div *ngIf="submitted && search_form.get('cplan_rc').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('cplan_rc').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- Detalles del recibo -->

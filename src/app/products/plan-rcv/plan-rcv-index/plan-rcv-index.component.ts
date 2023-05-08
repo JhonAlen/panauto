@@ -116,12 +116,12 @@ export class PlanRcvIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.planRcvList.push({ 
             cplan_rc: response.data.list[i].cplan_rc,
-            ctarifa: response.data.list[i].ctarifa,
-            xclase: response.data.list[i].xclase,
-            xtipo: response.data.list[i].xtipo,
-            xgrupo: response.data.list[i].xgrupo,
-            msuma_cosas_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_cosas_rc)}`,
-            mprima_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mprima_rc)}`
+            xdescripcion: response.data.list[i].xdescripcion,
+            mcosto: response.data.list[i].mcosto,
+            fcreacion: response.data.list[i].fcreacion,
+            // xgrupo: response.data.list[i].xgrupo,
+            // msuma_cosas_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_cosas_rc)}`,
+            // mprima_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mprima_rc)}`
           });
         }
       }
