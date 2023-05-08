@@ -22,7 +22,7 @@
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "PRODUCTS.PLANS.EDIT" | translate }}
                             </button>
-                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
+                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="convertCamp()" *ngIf="showSaveButton">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "PRODUCTS.PLAN_RCV.SAVE" | translate }}
                             </button>
@@ -34,9 +34,17 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "PRODUCTS.PLAN_RCV.PLAN" | translate }}</label>
+                                    <label>Nombre del Plan</label>
                                     <input type="text" formControlName="xplan_rc" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xplan_rc').errors }">
                                     <div *ngIf="submitted && detail_form.get('xplan_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Costo</label>
+                                    <input type="text" formControlName="mcosto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mcosto').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mcosto').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
@@ -49,192 +57,118 @@
     <br>
     <div class="row mt-8">
         <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card" style= "width: 470px;height: 507px;">
-                        <div class="card-header company-card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    {{ "PRODUCTS.PLAN_RCV.GENERALINFORMATION" | translate }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <form [formGroup]="detail_form">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="form-group">
-                                            <label>{{ "PRODUCTS.PLAN_RCV.RATECODE" | translate }}</label>
-                                            <input type="number" formControlName="ctarifa" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctarifa').errors }">
-                                            <div *ngIf="submitted && detail_form.get('ctarifa').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>{{ "PRODUCTS.PLAN_RCV.CLASS" | translate }}</label>
-                                            <input type="text" formControlName="xclase" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xclase').errors }">
-                                            <div *ngIf="submitted && detail_form.get('xclase').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>{{ "PRODUCTS.PLAN_RCV.TYPE" | translate }}</label>
-                                            <input type="text" formControlName="xtipo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xtipo').errors }">
-                                            <div *ngIf="submitted && detail_form.get('xtipo').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="form-group">
-                                            <label>{{ "PRODUCTS.PLAN_RCV.GROUP" | translate }}</label>
-                                            <input type="text" formControlName="xgrupo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xgrupo').errors }">
-                                            <div *ngIf="submitted && detail_form.get('xgrupo').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "PRODUCTS.PLAN_RCV.AMOUNTS" | translate }}
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6" style="margin-left: -171px;">
-                    <div class="card" style="width: 808px;">
-                        <div class="card-header company-card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    {{ "PRODUCTS.PLAN_RCV.AMOUNTS" | translate }}
+                <div class="card-body">
+                    <form [formGroup]="detail_form">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>LESIONES CORPORALES</em>
+                                    </label>
+                                    <input type="text" formControlName="mlesioncor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mlesioncor').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mlesioncor').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mlesioncor').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>LESIONES CORPORALES POR PERSONAS</em>
+                                    </label>
+                                    <input type="text" formControlName="mlesioncor_per" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mlesioncor_per').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mlesioncor_per').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mlesioncor_per').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>DAÑOS A LA PROPIEDAD AJENA</em>
+                                    </label>
+                                    <input type="text" formControlName="mdanosp_ajena" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mdanosp_ajena').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mdanosp_ajena').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mdanosp_ajena').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>GASTOS MEDICOS</em>
+                                    </label>
+                                    <input type="text" formControlName="mgastos_medicos" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mgastos_medicos').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mgastos_medicos').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mgastos_medicos').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>MUERTE CONDUCTOR / PASAJEROS</em>
+                                    </label>
+                                    <input type="text" formControlName="mmuerte" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mmuerte').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mmuerte').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mmuerte').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>SERVICIOS FUNERARIOS</em>
+                                    </label>
+                                    <input type="text" formControlName="mservicios_fune" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mservicios_fune').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mservicios_fune').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mservicios_fune').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>PRIMA SIN IMPUESTO</em>
+                                    </label>
+                                    <input type="text" formControlName="mprima_sin_rep" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima_sin_rep').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mprima_sin_rep').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mprima_sin_rep').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>IMPUESTO</em>
+                                    </label>
+                                    <input type="text" formControlName="mimpuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mimpuesto').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mimpuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mimpuesto').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-8 col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <em>Prima</em>
+                                    </label>
+                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima').errors }" (change)="amount()">
+                                    <div *ngIf="submitted && detail_form.get('mprima').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mprima').errors.required">{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDSTARTDATE" | translate }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <form [formGroup]="detail_form">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S.A. Daños a Cosas</label>
-                                            <input type="number" formControlName="msuma_cosas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_cosas_rc').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_cosas_rc').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P.A. Daños a Personas</label>
-                                            <input type="number" formControlName="msuma_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mut_personas_rc').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mut_personas_rc').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P. A. Daños a Cosas</label>
-                                            <input type="number" formControlName="mprima_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima_rc').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mprima_rc').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S.A. Defensa Penal</label>
-                                            <input type="number" formControlName="msuma_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_defensa_per').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_defensa_per').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>Prima Defensa Penal</label>
-                                            <input type="number" formControlName="mprima_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima_defensa_per').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mprima_defensa_per').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S.A. Exceso de Limite</label>
-                                            <input type="number" formControlName="msuma_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_limite_ind').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_limite_ind').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>Defensa Penal</label>
-                                            <input type="number" formControlName="mprima_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima_limite_ind').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mprima_limite_ind').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S. A. Muerte</label>
-                                            <input type="number" formControlName="msuma_apov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_apov_mu').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_apov_mu').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P. A. Muerte</label>
-                                            <input type="number" formControlName="mapov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mapov_mu').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mapov_mu').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S. A. Invalidez</label>
-                                            <input type="number" formControlName="msuma_apov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_apov_in').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_apov_in').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P. A. Invalidez</label>
-                                            <input type="number" formControlName="mapov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mapov_in').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mapov_in').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S. A. Gastos Medicos</label>
-                                            <input type="number" formControlName="msuma_apov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_apov_ga').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_apov_ga').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P. A. Gastos</label>
-                                            <input type="number" formControlName="mapov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mapov_ga').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mapov_ga').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>S. A. Gastos Funerario</label>
-                                            <input type="number" formControlName="msuma_apov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_apov_fu').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('msuma_apov_fu').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="form-group">
-                                            <label>P. A. Funerario</label>
-                                            <input type="number" formControlName="mapov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mapov_fu').errors }" >
-                                            <div *ngIf="submitted && detail_form.get('mapov_fu').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

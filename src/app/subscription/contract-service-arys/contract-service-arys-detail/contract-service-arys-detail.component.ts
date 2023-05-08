@@ -138,6 +138,9 @@ export class ContractServiceArysDetailComponent implements OnInit {
   fhasta_pol_place : Date ;
   xpoliza_place : string;
   activaClave: boolean = false;
+  townshipList: any[] = [];
+  bactivar_rcv: boolean = false;
+  planRcvList: any[] = [];
 
   
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -152,6 +155,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
+      fnac:['', Validators.required],
       cano: ['', Validators.required],
       xcolor: ['', Validators.required],
       cmarca: ['', Validators.required],
@@ -167,51 +171,29 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xtelefono_emp: ['', Validators.required],
       cplan: ['', Validators.required],
       ccorredor:['', Validators.required],
-      xcobertura: ['', Validators.required],
-      ctarifa_exceso: ['', Validators.required],
       ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
-      msuma_aseg:[''],
-      pcasco:[''],
-      mprima_casco:[''],
-      mcatastrofico:[''],
-      msuma_blindaje:[''],
-      mprima_blindaje:[''],
-      pdescuento:[''],
-      mgrua:[''],
-      bgrua:[false],
-      ncuotas:[''],
-      mprima_bruta:[''],
-      pcatastrofico:[''],
-      pmotin:[''],
-      mmotin:[''],
-      pblindaje:[''],
-      tarifas:[''],
+      cmetodologiapago: [''],
       cestado:['', Validators.required],
       cciudad:['', Validators.required],
       icedula:['', Validators.required],
       femision:['', Validators.required],
       ivigencia:[''],
-      cpais:['', Validators.required],
-      xpago: [''],
-      ncobro:[''],
-      ccodigo_ubii:[''],
-      ctipopago:[''],
-      xreferencia:[''],
-      fcobro:[''],
-      mprima_pagada:[''],
-      cbanco: [''],
       xcedula: [''],
-      binternacional: [''],
-      ctomador: [''],
       cuso: [''],
       cclase: [''],
       ctipovehiculo: [''],
       xzona_postal:[''],
       nkilometraje: [''],
       xmoneda: [''],
+      fdesde_pol: [''],
+      fhasta_pol: [''],
+      xclave_club: [''],
+      ccorregimiento: [''],
+      ncobro: [''],
+      brcv: [false],
+      cplan_rc: [''],
     });
-  
+    this.search_form.get('xclave_club').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -258,7 +240,11 @@ export class ContractServiceArysDetailComponent implements OnInit {
   async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
-    this.getCountry();
+    this.getState();
+    this.getUtilityVehicle();
+    this.ClaseData();
+    this.getTypeVehicle();
+    this.getCorredorData();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -353,7 +339,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
 
 async getState(){
     let params =  {
-      cpais: this.search_form.get('cpais').value 
+      cpais: this.currentUser.data.cpais 
     };
     this.http.post(`${environment.apiUrl}/api/valrep/state`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -371,7 +357,7 @@ async getState(){
 
 async getCity(){
     let params =  {
-      cpais: this.search_form.get('cpais').value,  
+      cpais: this.currentUser.data.cpais,  
       cestado: this.search_form.get('cestado').value
     };
     this.http.post(`${environment.apiUrl}/api/valrep/city`, params).subscribe((response: any) => {
@@ -383,6 +369,25 @@ async getCity(){
             value: response.data.list[i].xciudad,
           });
           this.CityList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }
+      },);
+  } 
+
+  async getTownship(){
+    let params =  {  
+      cestado: this.search_form.get('cestado').value,
+      cciudad: this.search_form.get('cciudad').value
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/township`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.townshipList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.townshipList.push({ 
+            id: response.data.list[i].ccorregimiento,
+            value: response.data.list[i].xcorregimiento,
+          });
+          this.townshipList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
       }
       },);
@@ -422,7 +427,8 @@ async getModeloData(event){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params = {
-      cpais: 58,
+
+      cpais: this.currentUser.data.cpais,
       cmarca: marca.id,
       cmodelo: modelo.id,
     };
@@ -463,7 +469,7 @@ async getModeloData(event){
         this.fdesde_pol_place = response.data.fdesde_pol;
         this.fhasta_pol_place = response.data.fhasta_pol;
         this.xpoliza_place = response.data.xpoliza;
-        window.alert(`La placa ingresada ya se encuentra activa con el número de póliza N° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
+        window.alert(`La placa ingresada ya se encuentra activa con el número de Contrato N° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
         this.search_form.get('xplaca').setValue('');
         }
       }
@@ -484,10 +490,10 @@ async getModeloData(event){
         this.search_form.get('email').setValue(response.data.xemail);
         if(this.search_form.get('email').value){
           this.activaClave = true;
+          this.activePassword();
         }
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
-        this.CountryList.push({ id: response.data.cpais, value: response.data.xpais});
         this.StateList.push({ id: response.data.cestado, value: response.data.xestado});
         this.CityList.push({ id: response.data.cciudad, value: response.data.xciudad});
         this.search_form.get('cpais').setValue(response.data.cpais);
@@ -527,13 +533,116 @@ async getModeloData(event){
     },);
   }
 
+  async getUtilityVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.UtilityVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.UtilityVehicle.push({ 
+            id: response.data.list[i].cuso,
+            value: response.data.list[i].xuso,
+          });
+        }
+      }
+      },);
+     
+   }
+
+   async ClaseData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/clase/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.ListClase = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.ListClase.push({ 
+            id: response.data.list[i].cclase,
+            value: response.data.list[i].xclase,
+          });
+        }
+      }
+      },);
+  }
+
+  async getTypeVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/vehicle/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicleList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicle.push({ 
+            id: response.data.list[i].ctipovehiculo,
+            value: response.data.list[i].xtipovehiculo,
+          });
+        }
+      }
+      },);
+  }
+
+  async getCorredorData() {
+    let params={
+     cpais: this.currentUser.data.cpais,
+     ccompania: this.currentUser.data.ccompania,
+     };
+     this.http.post(`${environment.apiUrl}/api/valrep/broker`, params).subscribe((response : any) => {
+       if(response.data.status){
+         this.corredorList = [];
+         for(let i = 0; i < response.data.list.length; i++){
+           this.corredorList.push({ 
+             id: response.data.list[i].ccorredor,
+             value: response.data.list[i].xcorredor,
+           });
+         }
+         this.corredorList.sort((a, b) => a.value > b.value ? 1 : -1)
+       }
+     }, );
+   
+   }
+
   onServicesGridReady(event){
     this.serviceGridApi = event.api;
   }
 
   activePassword(){
-    if(this.search_form.get('email').value){
-      this.activaClave = true;
+    let params;
+    this.activaClave = true
+    this.http.post(`${environment.apiUrl}/api/contract-arys/password`, params).subscribe((response : any) => {
+      if(response.data.status){
+        this.search_form.get('xclave_club').setValue(response.data.xclave_club)
+      }
+    }, );
+  }
+
+  changeRcv(){
+    if(this.search_form.get('brcv').value == true){
+      this.bactivar_rcv = true;
+      let params;
+      this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.planRcvList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.planRcvList.push({ 
+              id: response.data.list[i].cplan_rc,
+              value: response.data.list[i].xplan_rc,
+            });
+          }
+          this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }, );
+    }else{
+      this.bactivar_rcv = false;
     }
   }
 
@@ -556,9 +665,10 @@ async getModeloData(event){
         xtelefono_emp: form.xtelefono_emp,
         xtelefono_prop: form.xtelefono_prop,
         email: form.email,
-        cpais:this.search_form.get('cpais').value,
+        cpais: this.currentUser.data.cpais,
         cestado: this.search_form.get('cestado').value,
         cciudad: this.search_form.get('cciudad').value,
+        ccorregimiento: this.search_form.get('ccorregimiento').value,
         xdireccionfiscal: form.xdireccionfiscal,
         xplaca: form.xplaca,
         cmarca: marca.id,
@@ -567,19 +677,24 @@ async getModeloData(event){
         cano:form.cano,
         cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
-        xcolor:this.search_form.get('xcolor').value,    
+        xcolor: this.search_form.get('xcolor').value,    
         xserialcarroceria: form.xserialcarroceria,
         xserialmotor: form.xserialmotor,  
+        cuso: form.cuso,
+        ctipovehiculo: form.ctipovehiculo,
+        cclase: form.cclase,
+        fdesde_pol: form.fdesde_pol,
+        fhasta_pol: form.fhasta_pol,
+        ccorredor: form.ccorredor,
+        fnac: form.fnac,
         xcedula: form.xrif_cliente,
         femision: form.femision,
         xzona_postal: form.xzona_postal,
+        cplan_rc: this.search_form.get('cplan_rc').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
-          // if(this.currentUser.data.crol == 18||this.currentUser.data.crol == 17||this.currentUser.data.crol == 3  || this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV'){
-          //   // this.getFleetContractDetail(this.ccontratoflota);
-          // }
           window.alert(`Se ha generado un contrato Arys, por el beneficiario ${form.xnombre + ' ' + form.xapellido}`)
           location.reload()
         }

@@ -35,13 +35,8 @@
               "./node_modules/@popperjs/core/dist/umd/popper.min.js",
               "./node_modules/jquery/dist/jquery.js",
               "./node_modules/bootstrap/dist/js/bootstrap.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "./src/styles_Club/js/main.js",
-              "./src/styles_Club/vendor/aos/aos.js",
-              "./src/styles_Club/vendor/glightbox/js/glightbox.min.js",
-              "./src/styles_Club/vendor/isotope-layout/isotope.pkgd.min.js",
-              "./src/styles_Club/vendor/swiper/swiper-bundle.min.js",
-              "./src/styles_Club/vendor/purecounter/purecounter_vanilla.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+
             ]
           },
           "configurations": {

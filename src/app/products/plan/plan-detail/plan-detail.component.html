@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -94,19 +94,19 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    <div class="col-sm-12 col-md-4" *ngIf="boculta_rcv">
+                                    <!-- <div class="col-sm-12 col-md-4" *ngIf="boculta_rcv"> 
                                         <div class="form-check form-switch">
-                                            <label style="margin-left: 78px;margin-top: 13px;">¿Posee RCV?</label>
+                                            <label style="margin-left: 61px;margin-top: 13px;">¿Posee RCV?</label>
                                             <div class="row">
                                               <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                              <input type="checkbox" formControlName="brcv" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('brcv').errors }" style="margin-left: 122px;" (change)="changeRcv()"> 
+                                              <input type="checkbox" formControlName="brcv" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('brcv').errors }" style="margin-left: 106px;" (change)="changeRcv()"> 
                                               <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                            </div>
                                             <div *ngIf="submitted && detail_form.get('brcv').errors"  class="invalid-feedback">
                                                 <div *ngIf="detail_form.get('brcv').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group form-check">
                                             <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
@@ -273,7 +273,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                            <div class="col-sm-12 col-md-4" *ngIf="boculta_rcv">
+                            <!-- <div class="col-sm-12 col-md-4" *ngIf="boculta_rcv">
                                 <div class="form-check form-switch">
                                     <label style="margin-left: 78px;margin-top: 13px;">¿Posee RCV?</label>
                                     <div class="row">
@@ -285,7 +285,7 @@
                                         <div *ngIf="detail_form.get('brcv').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
                                     <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">

@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">alert.message</ngb-alert>
@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Número de Póliza</label>
+                                    <label>Número de Contrato</label>
                                     <input type="number" formControlName="npoliza" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('npoliza').errors }">
                                     <div *ngIf="submitted && detail_form.get('npoliza').errors"  class="invalid-feedback">
                                     </div>

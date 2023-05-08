@@ -1,0 +1,27 @@
+.card {
+    width: 100%;
+    max-width: 1415px;
+    margin: 0 auto;
+  }
+  
+  .card-body {
+    padding: 0 10px;
+  }
+.card-body h2 {
+    font-size: 24px;
+  }
+  
+  .card-body p {
+    font-size: 16px;
+  }
+  .alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+  }
+  
+  .alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+  }

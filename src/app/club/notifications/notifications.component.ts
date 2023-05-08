@@ -49,6 +49,8 @@ export class NotificationsComponent implements OnInit {
       cproveedor :  [''],
       ccontratoflota :  [''],
       cplan :  [''],
+      fsolicitud:[''],
+
     });
 
   this.currentUser = this.authenticationService.currentUserValue;
@@ -170,7 +172,24 @@ export class NotificationsComponent implements OnInit {
       }
       this.ListProveedor.sort((a, b) => a.value > b.value ? 1 : -1)
     }else{
-      window.alert('No se encontraron proveedores en la zona,por favor comuniquese con el Call Center.Gracias!')
+      this.codeservice 
+      let params = {
+        cestado: this.servicePlanContract.get('cestado').value,
+        cciudad: this.servicePlanContract.get('cciudad').value,
+        cservicio: this.codeservice,
+        ctiposervicio: this.codetypeservice,
+        cpropietario: this.currentUser.data.cpropietario,
+        ccontratoflota: this.servicePlanContract.get('ccontratoflota').value,
+        cpais: this.currentUser.data.cpais,
+        fsolicitud: this.servicePlanContract.get('fsolicitud').value,
+      }
+  //guardar insert  from evsolicitudservicio
+      this.http.post(environment.apiUrl + '/api/club/Data/Solicitud',params).subscribe((response : any) => {
+        if(response.data.status){
+          window.alert('No se encontraron proveedores en la zona,por favor comuniquese con el Call Center.Gracias!')
+        }
+    }
+    );
     }
     },);
 
@@ -187,7 +206,9 @@ export class NotificationsComponent implements OnInit {
       ctiposervicio: this.codetypeservice,
       cproveedor: this.servicePlanContract.get('cproveedor').value,
       cpropietario: this.currentUser.data.cpropietario,
-      ccontratoflota: this.servicePlanContract.get('ccontratoflota').value
+      ccontratoflota: this.servicePlanContract.get('ccontratoflota').value,
+      cpais: this.currentUser.data.cpais,
+      fsolicitud: this.servicePlanContract.get('fsolicitud').value,
     }
 //guardar insert  from evsolicitudservicio
     this.http.post(environment.apiUrl + '/api/club/Data/Solicitud',params).subscribe((response : any) => {

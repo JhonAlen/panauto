@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container py-5">
     <!-- <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -47,7 +47,7 @@
                             </div>-->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Póliza Matriz</label>
+                                    <label>Contrato</label>
                                     <!-- <select formControlName="ccarga" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccarga').errors }" (change)="batchDropdownDataRequest()">
                                         <option></option>
                                         <option *ngFor="let charge of chargeList" value="{{ charge.id }}">{{ charge.value }}</option>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="container">
+                    <div class="container py-5">
 
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                             <ag-grid-column headerName="Versión" field="xversion" [width]="274" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Estatus" field="xestatusgeneral" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Póliza" field="xpoliza" [width]="130" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Contrato" field="xpoliza" [width]="130" [sortable]="true" [resizable]="true"></ag-grid-column>
                         </ag-grid-angular>
 
 

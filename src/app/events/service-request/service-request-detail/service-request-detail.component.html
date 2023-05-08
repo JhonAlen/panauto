@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -315,7 +315,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="tracingList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="tracingRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onTracingsGridReady($event)">
                                 <ag-grid-column headerName="Type" field="xtiposeguimiento" [width]="207" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Motive" field="xmotivoseguimiento" [width]="207" [sortable]="true"></ag-grid-column>

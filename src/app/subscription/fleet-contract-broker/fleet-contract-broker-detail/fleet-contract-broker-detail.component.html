@@ -1,5 +1,5 @@
 <app-toolbar></app-toolbar>
-<div class="container">
+<div class="container py-5">
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
           <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -105,7 +105,7 @@
                     </div> 
                     <div class="col-md-4 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label required" for="form3Examplev3">Estado</label>
+                        <label class="form-label required" for="form3Examplev3">Provincia</label>
                         <select formControlName="cestado" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cestado').errors } " (change)="getCity()">
                           <option></option>
                           <option *ngFor="let estado of StateList" value="{{ estado.id }}">{{ estado.value }}</option>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-md-4 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label required" for="form3Examplev3">Ciudad</label>
+                        <label class="form-label required" for="form3Examplev3">Distrito</label>
                             <select formControlName="cciudad" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cciudad').errors } " >
                               <option></option>
                               <option *ngFor="let ciudad of CityList" value="{{ ciudad.id }}">{{ ciudad.value }}</option>
@@ -536,7 +536,7 @@
                     </div>
                   </div>
                   <div class="button" *ngIf="bemitir">
-                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
+                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Contrato</button>
                   </div>
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
@@ -609,7 +609,7 @@
                     </div>
                   </div>
                   <div class="button" *ngIf="bemitir">
-                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
+                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Contrato</button>
                   </div> 
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>

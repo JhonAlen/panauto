@@ -22,7 +22,7 @@ export class PendingPaymentsComponent implements OnInit {
   receiptList: any[] = [];
 
   columnDefs: ColDef[] = [
-    { headerName: 'Póliza N°', field: 'xpoliza', width: 105, resizable: true },
+    { headerName: 'Contrato N°', field: 'xpoliza', width: 105, resizable: true },
     { headerName: 'Certificado N°', field: 'ccontratoflota', width: 135, resizable: true },
     { headerName: 'Nombre Asegurado', field: 'xnombrepropietario', width: 170, resizable: true },
     { headerName: 'Sucursal', field: 'xsucursalemision', width: 150, resizable: true },

@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="container">
+                <div class="container py-5">
                     <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="settlementRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
                         <ag-grid-column headerName="Código" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
                         <ag-grid-column headerName="Cliente" field="xcliente" [width]="320" [sortable]="true" style="text-align: center;"></ag-grid-column>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="container">
+                <div class="container py-5">
                     <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="acceptedSettlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single"  [enableCellChangeFlash]="true" (gridReady)="onAcceptedSettlementGridReady($event)">
                         <ag-grid-column headerName="Código" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
                         <ag-grid-column headerName="Cliente" field="xcliente" [width]="320" [sortable]="true" style="text-align: center;"></ag-grid-column>

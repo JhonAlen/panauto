@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -440,7 +440,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container">
+                        <div class="container py-5">
                             <ag-grid-angular #agGrid style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="paymentVoucherList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="paymentVoucherRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onPaymentVouchersGridReady($event)">
                                 <ag-grid-column headerName="Code" field="ccomprobantepago" [width]="259" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Bank" field="xbanco" [width]="259" [sortable]="true"></ag-grid-column>

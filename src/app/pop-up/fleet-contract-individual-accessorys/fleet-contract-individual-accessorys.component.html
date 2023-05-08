@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="container">
+                <div class="container py-5">
                     <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="accesoryList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="accesoryRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onAccesoryGridReady($event)">
                         <ag-grid-column headerName="Código" field="caccesorio" [width]="173" [sortable]="true"></ag-grid-column>
                         <ag-grid-column headerName="Accesorio" field="xaccesorio" [width]="300" [sortable]="true" style="text-align: center;"></ag-grid-column>
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="container">
+                <div class="container py-5">
                     <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="acceptedAccesoryList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single"  (rowClicked)="accesoryAmountRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onAcceptedAccesoryGridReady($event)">
                         <ag-grid-column headerName="Código" field="caccesorio" [width]="173" [sortable]="true"></ag-grid-column>
                         <ag-grid-column headerName="Accesorio" field="xaccesorio" [width]="300" [sortable]="true" style="text-align: center;"></ag-grid-column>

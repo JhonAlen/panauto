@@ -1543,8 +1543,8 @@
             "GROUPER": "Agrupador",
             "MANAGEMENTCERTIFICATE": "Certificado de Gestión",
             "ASSOCIATECERTIFICATE": "Certificado Asociado",
-            "STARTDATE": "Fecha de Inicio de la Poliza",
-            "DATEUNTIL": "Fecha Final de la vigencia de la Poliza",
+            "STARTDATE": "Fecha de Inicio del Contrato",
+            "DATEUNTIL": "Fecha Final de la vigencia del Contrato",
             "WORKER": "Trabajador",
             "SEARCHWORKER": "Buscar Trabajador",
             "NAME": "Nombre",
@@ -1823,10 +1823,10 @@
             "VEHICLESLIST": "Lista de Vehículos"
         },
         "PARENTPOLICY": {
-            "PARENTPOLICY":"Póliza Matriz"
+            "PARENTPOLICY":"Contrato"
         },
         "POLICY-CANCELLATIONS": {
-            "POLICY-CANCELLATIONS": "Anulación de Pólizas"
+            "POLICY-CANCELLATIONS": "Anulación de Contratos"
         }
     },
     "EVENTS": {
@@ -1943,8 +1943,8 @@
             "ACCEPTEDLIST": "Lista de Aceptados",
             "THIRDPARTYTRACINGSLIST": "Lista de Seguimientos de Terceros",
             "OWNERDATA": "Propietario",
-            "DATEFROM": "Inicio de la Poliza",
-            "DATEUNTIL": "Fin de la Poliza",
+            "DATEFROM": "Inicio del Contrato",
+            "DATEUNTIL": "Fin del Contrato",
             "VEHICLETYPE": "Tipo de Vehículo",
             "SERVICEORDER": "Ordenes de Servicios",
             "GENERATESERVICEORDER": "Generar Orden de Servicio",

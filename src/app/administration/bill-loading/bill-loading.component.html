@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container">
+<div class="container py-5">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -223,7 +223,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="container">
+                            <div class="container py-5">
                                 <ag-grid-angular #agGrid style="width: 100%; height: 161px;" class="ag-theme-alpine" [rowData]="billList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onBillGridReady($event)">
                                     <ag-grid-column headerName="Ruta" field="xrutaarchivo" [width]="650" [sortable]="true"></ag-grid-column>
                                 </ag-grid-angular>
@@ -250,8 +250,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="container">
-                                    <ag-grid-angular #agGrid style="width: 100%; height: 274px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
+                    <div class="container">
+                        <ag-grid-angular #agGrid style="width: 100%; height: 274px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
                                         <ag-grid-column headerName="Codigo" field="corden" [width]="100" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Servicio" field="xservicio" [width]="180" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto grúa" field="mmontototal" [width]="130" [sortable]="true"></ag-grid-column>
@@ -298,8 +298,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="container">
-                                    <ag-grid-angular #agGrid style="width: 100%; height: 270px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
+                    <div class="container">
+                        <ag-grid-angular #agGrid style="width: 100%; height: 270px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
                                         <ag-grid-column headerName="Codigo" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Servicio" field="xdanos" [width]="200" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto grúa" field="mmontofiniquito" [width]="130" [sortable]="true"></ag-grid-column>
