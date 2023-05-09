@@ -90,10 +90,10 @@ export class ParentPolicyIndexComponent implements OnInit {
   parseCSV(file) {
 
     const requiredHeaders: any[] = [
-      "No", "Rif_Cliente", "POLIZA", "NOMBRE", "APELLIDO", "letra", "CEDULA", "FNAC", "CMETODOLOGIAPAGO", "CPLAN", "SERIAL CARROCERIA", 
-      "SERIAL MOTOR", "PLACA", "CMARCA", "CMODELO", "CVERSION", "XMARCA", "XMODELO", "XVERSION", "AÑO", "COLOR", "IFRACCIONAMIENTO",
-      "XDIRECCION", "XTELEFONO1", "XTELEFONO2", "EMAIL", "FEMISION", "FPOLIZA_DES", "FPOLIZA_HAS", "CPROVINCIA", "CDISTRITO", "CCORREGIMIENTO",
-      "SUMA ASEGURADA", "PRIMA", "CASEGURADORA", "CTIPOVEHICULO", "CCLASE", "CUSO", "CCORREDOR", "FCREACION", "CUSUARIOCREACION", "XZONA_POSTAL"
+      "XPOLIZA", "XNOMBRE", "XAPELLIDO", "ICEDULA", "XCEDULA", "FNAC", "CPLAN", "CPLAN_RC", "XSERIALCARROCERIA",
+      "XSERIALMOTOR", "XPLACA", "XMARCA", "XMODELO", "XVERSION", "CANO", "XCOLOR", "XDIRECCIONFISCAL", "XTELEFONO_EMP",
+      "XTELEFONO_PROP", "EMAIL", "FDESDE_POL", "FHASTA_POL", "FEMISION", "XPROVINCIA", "XDISTRITO", "XCORREGIMIENTO",
+      "MPRIMA", "XCANAL_VENTA"
     ]
 
     return new Promise <any[]>((resolve, reject) => {
@@ -151,12 +151,12 @@ export class ParentPolicyIndexComponent implements OnInit {
       this.parsedData = parsedCSV;
       for (let i = 0; i < (this.parsedData.length); i++){
         fixedData.push({
-          ncedula: this.parsedData[i].CEDULA,
+          ncedula: this.parsedData[i].XCEDULA,
           xmarca: this.parsedData[i].XMARCA,
           xmodelo: this.parsedData[i].XMODELO,
-          xplaca: this.parsedData[i].PLACA,
+          xplaca: this.parsedData[i].XPLACA,
           xversion: this.parsedData[i].XVERSION,
-          xcliente: this.parsedData[i].NOMBRE + ' ' + this.parsedData[i].APELLIDO
+          xcliente: this.parsedData[i].XNOMBRE + ' ' + this.parsedData[i].XAPELLIDO
         })
       }
       this.fleetContractList = fixedData;
