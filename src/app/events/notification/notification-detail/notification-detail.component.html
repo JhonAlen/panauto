@@ -1,5 +1,5 @@
 <app-toolbar ></app-toolbar>
-<div class="container py-5">
+<div class="container ">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
@@ -333,7 +333,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.VEHICLEDAMAGE" | translate }}</label>
                                     <div class="row">
                                       <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                      <input type="checkbox" formControlName="bdano" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdano').errors }" style="margin-left: 122px;"> 
+                                      <input type="checkbox" formControlName="bdano" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdano').errors }" style="margin-left: 107px;"> 
                                       <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                    </div>
                                     <div *ngIf="submitted && detail_form.get('bdano').errors"  class="invalid-feedback">
@@ -346,7 +346,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.CANTRANSIT" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="btransitar" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransitar').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="btransitar" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransitar').errors }" style="margin-left: 107px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('btransitar').errors"  class="invalid-feedback">
@@ -359,7 +359,7 @@
                                     <label style="margin-left: -40px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.OTHERDAMAGE" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="bdanootro" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdanootro').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="bdanootro" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdanootro').errors }" style="margin-left: 107px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('bdanootro').errors"  class="invalid-feedback">
@@ -372,7 +372,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.INJURED" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="blesionado" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('blesionado').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="blesionado" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('blesionado').errors }" style="margin-left: 107px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('blesionado').errors"  class="invalid-feedback">
@@ -385,7 +385,7 @@
                                     <label style="margin-left: 4px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.OWNER" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="bpropietario" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpropietario').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="bpropietario" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpropietario').errors }" style="margin-left: 107px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('bpropietario').errors"  class="invalid-feedback">
@@ -497,7 +497,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.TRANSITACT" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="btransito" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransito').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="btransito" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransito').errors }" style="margin-left: 108px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('btransito').errors"  class="invalid-feedback">
@@ -510,7 +510,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.HADCARGO" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="bcarga" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bcarga').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="bcarga" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bcarga').errors }" style="margin-left: 108px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('bcarga').errors"  class="invalid-feedback">
@@ -523,7 +523,7 @@
                                     <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.HADPASSENGERS" | translate }}</label>
                                     <div class="row">
                                         <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
-                                        <input type="checkbox" formControlName="bpasajero" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpasajero').errors }" style="margin-left: 122px;">
+                                        <input type="checkbox" formControlName="bpasajero" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpasajero').errors }" style="margin-left: 108px;">
                                         <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
                                      </div>
                                     <div *ngIf="submitted && detail_form.get('bpasajero').errors"  class="invalid-feedback">
@@ -570,7 +570,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="serviceOrderRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
                                 <ag-grid-column headerName="Servicio" field="xservicio" [width]="200" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Observacion" field="xobservacion" [width]="300" [sortable]="true"></ag-grid-column>
@@ -599,7 +599,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="noteList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="noteRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onNotesGridReady($event)">
                                 <ag-grid-column headerName="Nota" field="xnotanotificacion" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Motivo" field="xcausafiniquito" [width]="250" [sortable]="true"></ag-grid-column>
@@ -627,7 +627,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="replacementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="replacementRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onReplacementsGridReady($event)">
                                 <ag-grid-column headerName="Repuestos" field="xrepuesto" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Cantidad" field="ncantidad" [width]="518" [sortable]="true"></ag-grid-column>
@@ -654,7 +654,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="thirdpartyList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="thirdpartyRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onThirdpartiesGridReady($event)">
                                 <ag-grid-column headerName="Name" field="xnombre" [width]="259" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Lastname" field="xapellido" [width]="259" [sortable]="true"></ag-grid-column>
@@ -677,7 +677,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="thirdPartyTracingList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single">
                                 <ag-grid-column headerName="Type" field="xtiposeguimiento" [width]="207" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Motive" field="xmotivoseguimiento" [width]="207" [sortable]="true"></ag-grid-column>
@@ -707,7 +707,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="materialDamageList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="materialDamageRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onMaterialDamagesGridReady($event)">
                                 <ag-grid-column headerName="Material Damage" field="xdanomaterial" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Damage Level" field="xniveldano" [width]="518" [sortable]="true"></ag-grid-column>
@@ -734,7 +734,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="thirdpartyVehicleList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="thirdpartyVehicleRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onThirdpartiesVehiclesGridReady($event)">
                                 <ag-grid-column headerName="Brand" field="xmarca" [width]="259" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Model" field="xmodelo" [width]="259" [sortable]="true"></ag-grid-column>
@@ -763,7 +763,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="providerList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="providerRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onProvidersGridReady($event)">
                                 <ag-grid-column headerName="Proveedor" field="xnombre" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Observacion" field="xobservacion" [width]="518" [sortable]="false"></ag-grid-column>
@@ -784,7 +784,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="quoteList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="quoteRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onQuotesGridReady($event)">
                                 <ag-grid-column headerName="Proveedor" field="xnombre" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Cotización Total" field="mtotalcotizacion" [width]="518" [sortable]="false"></ag-grid-column>
@@ -811,7 +811,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container py-5">
+                        <div class="container ">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="tracingList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="tracingRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onTracingsGridReady($event)">
                                 <ag-grid-column headerName="Tipo" field="xtiposeguimiento" [width]="207" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Motivo" field="xmotivoseguimiento" [width]="207" [sortable]="true"></ag-grid-column>
