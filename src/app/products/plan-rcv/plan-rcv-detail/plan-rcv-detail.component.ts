@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PlanServiceComponent } from '@app/pop-up/plan-service/plan-service.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -15,6 +16,7 @@ import { environment } from '@environments/environment';
 })
 export class PlanRcvDetailComponent implements OnInit {
 
+  private serviceGridApi;
   sub;
   currentUser;
   detail_form: UntypedFormGroup;
@@ -37,6 +39,10 @@ export class PlanRcvDetailComponent implements OnInit {
   editStatus: boolean = false;
   data: any[] = [];
   rcvList: any[] = [];
+  serviceTypeList: any[] = [];
+  quantityServiceList: any[] = [];
+  showEditButtonService: boolean = false;
+
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -171,6 +177,23 @@ export class PlanRcvDetailComponent implements OnInit {
         this.detail_form.get('mcosto').setValue(response.data.mcosto)
         this.detail_form.get('mcosto').disable();
       }
+
+      this.serviceTypeList = [];
+      if(response.data.services){
+        for(let i =0; i < response.data.services.length; i++){
+          this.serviceTypeList.push({
+            cgrid: i,
+            create: false,
+            ctiposervicio: response.data.services[i].ctiposervicio,
+            xtiposervicio: response.data.services[i].xtiposervicio,
+          });
+        }
+      }
+      if(this.serviceTypeList){
+        this.showEditButtonService = false;
+      }else{
+        this.showEditButtonService = true;
+      }
     },
     (err) => {
       let code = err.error.data.code;
@@ -182,6 +205,40 @@ export class PlanRcvDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+  }
+
+  addService(){
+    let service = { type: 3 };
+    const modalRef = this.modalService.open(PlanServiceComponent, {size: 'xl'});
+    modalRef.componentInstance.service = service;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.serviceTypeList = []; 
+
+        for(let i = 0; i < result.acceptedservice.length; i++){
+          this.serviceTypeList.push({
+            cgrid: this.serviceTypeList.length,
+            create: true,
+            ctiposervicio: result.acceptedservice[i].ctiposervicio,
+            xtiposervicio: result.acceptedservice[i].xtiposervicio,
+          });
+        }
+
+        for(let i = 0; i < result.quantity.length; i++){
+          this.quantityServiceList.push({
+            cgrid: this.quantityServiceList.length,
+            create: true,
+            ncantidad: result.quantity[i].ncantidad,
+            cservicio: result.quantity[i].cservicio,
+            xservicio: result.quantity[i].xservicio ,
+          });
+        }
+      }
+    });
+  }
+
+  onServicesGridReady(event){
+    this.serviceGridApi = event.api;
   }
 
   editPlan(){
@@ -273,6 +330,8 @@ export class PlanRcvDetailComponent implements OnInit {
         cusuario: this.currentUser.data.cusuario,
         xdescripcion: this.detail_form.get('xplan_rc').value,
         mcosto: this.detail_form.get('mcosto').value,
+        servicesType: this.serviceTypeList,
+        quantity: this.quantityServiceList,
       }
       url = `${environment.apiUrl}/api/plan-rcv/create`;
     }
