@@ -139,6 +139,8 @@ export class ContractServiceArysDetailComponent implements OnInit {
   xpoliza_place : string;
   activaClave: boolean = false;
   townshipList: any[] = [];
+  bactivar_rcv: boolean = false;
+  planRcvList: any[] = [];
 
   
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -187,7 +189,9 @@ export class ContractServiceArysDetailComponent implements OnInit {
       fhasta_pol: [''],
       xclave_club: [''],
       ccorregimiento: [''],
-      ncobro: ['']
+      ncobro: [''],
+      brcv: [false],
+      cplan_rc: [''],
     });
     this.search_form.get('xclave_club').disable();
     this.currentUser = this.authenticationService.currentUserValue;
@@ -613,11 +617,33 @@ async getModeloData(event){
 
   activePassword(){
     let params;
+    this.activaClave = true
     this.http.post(`${environment.apiUrl}/api/contract-arys/password`, params).subscribe((response : any) => {
       if(response.data.status){
         this.search_form.get('xclave_club').setValue(response.data.xclave_club)
       }
     }, );
+  }
+
+  changeRcv(){
+    if(this.search_form.get('brcv').value == true){
+      this.bactivar_rcv = true;
+      let params;
+      this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.planRcvList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.planRcvList.push({ 
+              id: response.data.list[i].cplan_rc,
+              value: response.data.list[i].xplan_rc,
+            });
+          }
+          this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }, );
+    }else{
+      this.bactivar_rcv = false;
+    }
   }
 
   onSubmit(form){
@@ -664,6 +690,7 @@ async getModeloData(event){
         xcedula: form.xrif_cliente,
         femision: form.femision,
         xzona_postal: form.xzona_postal,
+        cplan_rc: this.search_form.get('cplan_rc').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {

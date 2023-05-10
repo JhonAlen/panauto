@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PlanServiceComponent } from '@app/pop-up/plan-service/plan-service.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -15,6 +16,7 @@ import { environment } from '@environments/environment';
 })
 export class PlanRcvDetailComponent implements OnInit {
 
+  private serviceGridApi;
   sub;
   currentUser;
   detail_form: UntypedFormGroup;
@@ -35,10 +37,12 @@ export class PlanRcvDetailComponent implements OnInit {
   showSaveButton: boolean = false;
   showEditButton: boolean = false;
   editStatus: boolean = false;
-  paymentMethodologyDeletedRowList: any[] = [];
-  insurerDeletedRowList: any[] = [];
-  serviceDeletedRowList: any[] = [];
-  ctarifa;
+  data: any[] = [];
+  rcvList: any[] = [];
+  serviceTypeList: any[] = [];
+  quantityServiceList: any[] = [];
+  showEditButtonService: boolean = false;
+
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -47,34 +51,23 @@ export class PlanRcvDetailComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private modalService : NgbModal) { 
                 if (this.router.getCurrentNavigation().extras.state) {
-                  this.ctarifa = this.router.getCurrentNavigation().extras.state; 
+                  
                 }
               }
 
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
-      cplan_rc: [''],
       xplan_rc: [''],
-      ctarifa: [''],
-      xclase: [''],
-      xtipo: [''],
-      xgrupo: [''],
-      msuma_cosas_rc: [''],
-      msuma_personas_rc: [''],
-      mprima_rc: [''],
-      msuma_defensa_per: [''],
-      mprima_defensa_per: [''],
-      msuma_limite_ind: [''],
-      mprima_limite_ind: [''],
-      msuma_apov_mu: [''],
-      mapov_mu: [''],
-      msuma_apov_in: [''],
-      mapov_in: [''],
-      msuma_apov_ga: [''],
-      mapov_ga: [''],
-      msuma_apov_fu: [''],
-      mapov_fu: [''],
-      bactivo: [true]
+      mcosto: [''],
+      mlesioncor: [''],
+      mlesioncor_per: [''],
+      mdanosp_ajena: [''],
+      mgastos_medicos: [''],
+      mmuerte: [''],
+      mservicios_fune: [''],
+      mprima_sin_rep: [''],
+      mimpuesto: [''],
+      mprima: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -133,51 +126,73 @@ export class PlanRcvDetailComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cplan_rc: this.code,
-      ctarifa: this.ctarifa
+      cplan_rc: this.code
     };
     this.http.post(`${environment.apiUrl}/api/plan-rcv/detail`, params, options).subscribe((response : any) => {
-      if(response.data.status){
-        this.detail_form.get('xplan_rc').setValue(response.data.xplan_rc);
+      if(response.data.list){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.rcvList.push({
+            xcobertura: response.data.list[i].xcobertura,
+            xsoat: response.data.list[i].xsoat
+          })
+        }
+        
+        if(this.rcvList[0].xcobertura == 'LESIONES CORPORALES'){
+          this.detail_form.get('mlesioncor').setValue(this.rcvList[0].xsoat)
+          this.detail_form.get('mlesioncor').disable();
+        }
+
+        if(this.rcvList[1].xcobertura == 'LESIONES CORPORALES POR PERSONAS'){
+          this.detail_form.get('mlesioncor_per').setValue(this.rcvList[1].xsoat)
+          this.detail_form.get('mlesioncor_per').disable();
+        }
+
+        if(this.rcvList[2].xcobertura == 'DAÑOS A LA PROPIEDAD AJENA'){
+          this.detail_form.get('mdanosp_ajena').setValue(this.rcvList[2].xsoat)
+          this.detail_form.get('mdanosp_ajena').disable();
+        }
+
+        if(this.rcvList[3].xcobertura == 'GASTOS MEDICOS'){
+          this.detail_form.get('mgastos_medicos').setValue(this.rcvList[3].xsoat)
+          this.detail_form.get('mgastos_medicos').disable();
+        }
+
+        if(this.rcvList[4].xcobertura == 'MUERTE CONDUCTOR / PASAJEROS'){
+          this.detail_form.get('mmuerte').setValue(this.rcvList[4].xsoat)
+          this.detail_form.get('mmuerte').disable();
+        }
+
+        if(this.rcvList[5].xcobertura == 'SERVICIOS FUNERARIOS'){
+          this.detail_form.get('mservicios_fune').setValue(this.rcvList[5].xsoat)
+          this.detail_form.get('mservicios_fune').disable();
+        }
+
+        if(this.rcvList[6].xcobertura == 'PRIMA'){
+          this.detail_form.get('mprima').setValue(this.rcvList[6].xsoat)
+          this.detail_form.get('mprima').disable();
+        }
+
+        this.detail_form.get('xplan_rc').setValue(response.data.xplan_rc)
         this.detail_form.get('xplan_rc').disable();
-        this.detail_form.get('ctarifa').setValue(response.data.ctarifa);
-        this.detail_form.get('ctarifa').disable();
-        this.detail_form.get('xclase').setValue(response.data.xclase);
-        this.detail_form.get('xclase').disable();
-        this.detail_form.get('xtipo').setValue(response.data.xtipo);
-        this.detail_form.get('xtipo').disable();
-        this.detail_form.get('xgrupo').setValue(response.data.xgrupo);
-        this.detail_form.get('xgrupo').disable();
-        this.detail_form.get('msuma_cosas_rc').setValue(response.data.msuma_cosas_rc);
-        this.detail_form.get('msuma_cosas_rc').disable();
-        this.detail_form.get('msuma_personas_rc').setValue(response.data.msuma_personas_rc);
-        this.detail_form.get('msuma_personas_rc').disable();
-        this.detail_form.get('mprima_rc').setValue(response.data.mprima_rc);
-        this.detail_form.get('mprima_rc').disable();
-        this.detail_form.get('msuma_defensa_per').setValue(response.data.msuma_defensa_per);
-        this.detail_form.get('msuma_defensa_per').disable();
-        this.detail_form.get('mprima_defensa_per').setValue(response.data.mprima_defensa_per);
-        this.detail_form.get('mprima_defensa_per').disable();
-        this.detail_form.get('msuma_limite_ind').setValue(response.data.msuma_limite_ind);
-        this.detail_form.get('msuma_limite_ind').disable();
-        this.detail_form.get('mprima_limite_ind').setValue(response.data.mprima_limite_ind);
-        this.detail_form.get('mprima_limite_ind').disable();
-        this.detail_form.get('msuma_apov_mu').setValue(response.data.msuma_apov_mu);
-        this.detail_form.get('msuma_apov_mu').disable();
-        this.detail_form.get('mapov_mu').setValue(response.data.mapov_mu);
-        this.detail_form.get('mapov_mu').disable();
-        this.detail_form.get('msuma_apov_in').setValue(response.data.msuma_apov_in);
-        this.detail_form.get('msuma_apov_in').disable();
-        this.detail_form.get('mapov_in').setValue(response.data.mapov_in);
-        this.detail_form.get('mapov_in').disable();
-        this.detail_form.get('msuma_apov_ga').setValue(response.data.msuma_apov_ga);
-        this.detail_form.get('msuma_apov_ga').disable();
-        this.detail_form.get('mapov_ga').setValue(response.data.mapov_ga);
-        this.detail_form.get('mapov_ga').disable();
-        this.detail_form.get('msuma_apov_fu').setValue(response.data.msuma_apov_fu);
-        this.detail_form.get('msuma_apov_fu').disable();
-        this.detail_form.get('mapov_fu').setValue(response.data.mapov_fu);
-        this.detail_form.get('mapov_fu').disable();
+        this.detail_form.get('mcosto').setValue(response.data.mcosto)
+        this.detail_form.get('mcosto').disable();
+      }
+
+      this.serviceTypeList = [];
+      if(response.data.services){
+        for(let i =0; i < response.data.services.length; i++){
+          this.serviceTypeList.push({
+            cgrid: i,
+            create: false,
+            ctiposervicio: response.data.services[i].ctiposervicio,
+            xtiposervicio: response.data.services[i].xtiposervicio,
+          });
+        }
+      }
+      if(this.serviceTypeList){
+        this.showEditButtonService = false;
+      }else{
+        this.showEditButtonService = true;
       }
     },
     (err) => {
@@ -192,29 +207,60 @@ export class PlanRcvDetailComponent implements OnInit {
     });
   }
 
+  addService(){
+    let service = { type: 3 };
+    const modalRef = this.modalService.open(PlanServiceComponent, {size: 'xl'});
+    modalRef.componentInstance.service = service;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.serviceTypeList = []; 
+
+        for(let i = 0; i < result.acceptedservice.length; i++){
+          this.serviceTypeList.push({
+            cgrid: this.serviceTypeList.length,
+            create: true,
+            ctiposervicio: result.acceptedservice[i].ctiposervicio,
+            xtiposervicio: result.acceptedservice[i].xtiposervicio,
+          });
+        }
+
+        for(let i = 0; i < result.quantity.length; i++){
+          this.quantityServiceList.push({
+            cgrid: this.quantityServiceList.length,
+            create: true,
+            ncantidad: result.quantity[i].ncantidad,
+            cservicio: result.quantity[i].cservicio,
+            xservicio: result.quantity[i].xservicio ,
+          });
+        }
+      }
+    });
+  }
+
+  onServicesGridReady(event){
+    this.serviceGridApi = event.api;
+  }
+
   editPlan(){
     this.detail_form.get('xplan_rc').enable();
-    this.detail_form.get('xclase').enable();
-    this.detail_form.get('xtipo').enable();
-    this.detail_form.get('xgrupo').enable();
-    this.detail_form.get('msuma_cosas_rc').enable();
-    this.detail_form.get('msuma_personas_rc').enable();
-    this.detail_form.get('mprima_rc').enable();
-    this.detail_form.get('msuma_defensa_per').enable();
-    this.detail_form.get('mprima_defensa_per').enable();
-    this.detail_form.get('msuma_limite_ind').enable();
-    this.detail_form.get('mprima_limite_ind').enable();
-    this.detail_form.get('msuma_apov_ga').enable();
-    this.detail_form.get('msuma_apov_mu').enable();
-    this.detail_form.get('mapov_mu').enable();
-    this.detail_form.get('msuma_apov_in').enable();
-    this.detail_form.get('mapov_in').enable();
-    this.detail_form.get('mapov_ga').enable();
-    this.detail_form.get('msuma_apov_fu').enable();
-    this.detail_form.get('mapov_fu').enable();
+    this.detail_form.get('mcosto').enable();
+    this.detail_form.get('mlesioncor').enable();
+    this.detail_form.get('mlesioncor_per').enable();
+    this.detail_form.get('mdanosp_ajena').enable();
+    this.detail_form.get('mgastos_medicos').enable();
+    this.detail_form.get('mmuerte').enable();
+    this.detail_form.get('mservicios_fune').enable();
+    this.detail_form.get('mprima').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
+  }
+
+  amount(){
+    if(!this.detail_form.get('mcosto').value){
+      this.detail_form.get('mcosto').setValue(this.detail_form.get('mprima').value);
+      this.detail_form.get('mcosto').disable();
+    }
   }
 
   cancelSave(){
@@ -229,13 +275,41 @@ export class PlanRcvDetailComponent implements OnInit {
     }
   }
 
-  onSubmit(form){
+  convertCamp() {
+    const coberturas = [
+      {xcobertura: 'LESIONES CORPORALES', xsoat: this.detail_form.get('mlesioncor').value},
+      {xcobertura: 'LESIONES CORPORALES POR PERSONAS', xsoat: this.detail_form.get('mlesioncor_per').value},
+      {xcobertura: 'DAÑOS A LA PROPIEDAD AJENA', xsoat: this.detail_form.get('mdanosp_ajena').value},
+      {xcobertura: 'GASTOS MEDICOS', xsoat: this.detail_form.get('mgastos_medicos').value},
+      {xcobertura: 'MUERTE CONDUCTOR / PASAJEROS', xsoat: this.detail_form.get('mmuerte').value},
+      {xcobertura: 'SERVICIOS FUNERARIOS', xsoat: this.detail_form.get('mservicios_fune').value},
+      // {xcobertura: 'PRIMA SIN IMPUESTO', xsoat: this.detail_form.get('mprima_sin_rep').value},
+      // {xcobertura: 'IMPUESTO', xsoat: this.detail_form.get('mimpuesto').value},
+      {xcobertura: 'PRIMA', xsoat: this.detail_form.get('mprima').value}
+    ];
+  
+    const data = [];
+  
+    for (const cobertura of coberturas) {
+      const valor = cobertura.xsoat ? cobertura.xsoat : 0;
+      data.push({
+        xcobertura: cobertura.xcobertura,
+        xsoat: valor
+      });
+    }
+  
+    this.data.push(...data);
+
+    if(this.data){
+      this.onSubmit();
+    }
+
+  }
+
+  onSubmit(){
     this.submitted = true;
     this.loading = true;
-    if(this.detail_form.invalid){
-      this.loading = false;
-      return;
-    }
+
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params;
@@ -243,37 +317,30 @@ export class PlanRcvDetailComponent implements OnInit {
 
     if(this.code){
       params = {
-        cusuario: this.currentUser.data.cusuario,
         cplan_rc: this.code,
-        xplan_rc: form.xplan_rc,
-        ctarifa: this.ctarifa,
-        xclase: form.xclase,
-        xtipo: form.xtipo,
-        xgrupo: form.xgrupo,
-        msuma_cosas_rc: form.msuma_cosas_rc,
-        msuma_personas_rc: form.msuma_personas_rc,
-        mprima_rc: form.mprima_rc,
-        msuma_defensa_per: form.msuma_defensa_per,
-        mprima_defensa_per: form.mprima_defensa_per,
-        msuma_limite_ind: form.msuma_limite_ind,
-        mprima_limite_ind: form.mprima_limite_ind,
-        msuma_apov_ga: form.msuma_apov_ga,
-        msuma_apov_mu: form.msuma_apov_mu,
-        mapov_mu: form.mapov_mu,
-        msuma_apov_in: form.msuma_apov_in,
-        mapov_in: form.mapov_in,
-        mapov_ga: form.mapov_ga,
-        msuma_apov_fu: form.msuma_apov_fu,
-        mapov_fu: form.mapov_fu
+        datos: this.data,
+        cusuario: this.currentUser.data.cusuario,
+        xdescripcion: this.detail_form.get('xplan_rc').value,
+        mcosto: this.detail_form.get('mcosto').value,
       };
       url = `${environment.apiUrl}/api/plan-rcv/update`;
+    }else{
+      params = {
+        datos: this.data,
+        cusuario: this.currentUser.data.cusuario,
+        xdescripcion: this.detail_form.get('xplan_rc').value,
+        mcosto: this.detail_form.get('mcosto').value,
+        servicesType: this.serviceTypeList,
+        quantity: this.quantityServiceList,
+      }
+      url = `${environment.apiUrl}/api/plan-rcv/create`;
     }
     this.http.post(url, params, options).subscribe((response: any) => {
       if(response.data.status){
         if(this.code){
           location.reload();
         }else{
-          this.router.navigate([`/plan-rcv/plan-rcv-detail/${response.data.cplan_rc}`]);
+          this.router.navigate([`/products/plan-rcv-detail/${response.data.cplan_rc}`]);
         }
       }else{
         let condition = response.data.condition;

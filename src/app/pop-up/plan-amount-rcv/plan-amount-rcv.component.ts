@@ -31,14 +31,14 @@ export class PlanAmountRcvComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      msuma_dc: [''],
-      msuma_personas: [''],
-      msuma_exceso: [''],
-      msuma_dp: [''],
-      msuma_muerte: [''],
-      msuma_invalidez: [''],
-      msuma_gm: [''],
-      msuma_gf: ['']
+      mlesioncor: [''],
+      mlesioncor_per: [''],
+      mdanosp_ajena: [''],
+      mgastos_medicos: [''],
+      mmuerte: [''],
+      mservicios_fune: [''],
+      mprima_sin_rep: [''],
+      mimpuesto: ['']
     });
     this.canSave = true;
   }
@@ -47,52 +47,52 @@ export class PlanAmountRcvComponent implements OnInit {
     this.submitted = true;
     this.loading = true;
 
-    if(form.msuma_dc){
-      this.rcv.msuma_dc = form.msuma_dc
+    if(this.popup_form.get('mlesioncor').value){
+      this.rcv.mlesioncor = this.popup_form.get('mlesioncor').value;
     }else{
-      this.rcv.msuma_dc = 0
+      this.rcv.mlesioncor = 0;
     }
 
-    if(form.msuma_personas){
-      this.rcv.msuma_personas = form.msuma_personas
+    if(this.popup_form.get('mlesioncor_per').value){
+      this.rcv.mlesioncor_per = this.popup_form.get('mlesioncor_per').value;
     }else{
-      this.rcv.msuma_personas = 0
+      this.rcv.mlesioncor_per = 0;
     }
 
-    if(form.msuma_exceso){
-      this.rcv.msuma_exceso = form.msuma_exceso
+    if(this.popup_form.get('mdanosp_ajena').value){
+      this.rcv.mdanosp_ajena = this.popup_form.get('mdanosp_ajena').value;
     }else{
-      this.rcv.msuma_exceso = 0
+      this.rcv.mdanosp_ajena = 0;
     }
 
-    if(form.msuma_dp){
-      this.rcv.msuma_dp = form.msuma_dp
+    if(this.popup_form.get('mgastos_medicos').value){
+      this.rcv.mgastos_medicos = this.popup_form.get('mgastos_medicos').value;
     }else{
-      this.rcv.msuma_dp = 0
+      this.rcv.mgastos_medicos = 0;
     }
 
-    if(form.msuma_muerte){
-      this.rcv.msuma_muerte = form.msuma_muerte
+    if(this.popup_form.get('mmuerte').value){
+      this.rcv.mmuerte = this.popup_form.get('mmuerte').value;
     }else{
-      this.rcv.msuma_muerte = 0
+      this.rcv.mmuerte = 0;
     }
 
-    if(form.msuma_invalidez){
-      this.rcv.msuma_invalidez = form.msuma_invalidez
+    if(this.popup_form.get('mservicios_fune').value){
+      this.rcv.mservicios_fune = this.popup_form.get('mservicios_fune').value;
     }else{
-      this.rcv.msuma_invalidez = 0
+      this.rcv.mservicios_fune = 0;
     }
 
-    if(form.msuma_gm){
-      this.rcv.msuma_gm = form.msuma_gm
+    if(this.popup_form.get('mprima_sin_rep').value){
+      this.rcv.mprima_sin_rep = this.popup_form.get('mprima_sin_rep').value;
     }else{
-      this.rcv.msuma_gm = 0
+      this.rcv.mprima_sin_rep = 0;
     }
 
-    if(form.msuma_gf){
-      this.rcv.msuma_gf = form.msuma_gf
+    if(this.popup_form.get('mimpuesto').value){
+      this.rcv.mimpuesto = this.popup_form.get('mimpuesto').value;
     }else{
-      this.rcv.msuma_msuma_gfgm = 0
+      this.rcv.mimpuesto = 0;
     }
     
     this.activeModal.close(this.rcv);

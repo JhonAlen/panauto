@@ -531,14 +531,14 @@ export class PlanDetailComponent implements OnInit {
       modalRef.result.then((result: any) => { 
         if(result){
           this.rcvAmout = {
-            msuma_dc: result.msuma_dc,
-            msuma_personas: result.msuma_personas,
-            msuma_exceso: result.msuma_exceso,
-            msuma_dp: result.msuma_dp,
-            msuma_muerte: result.msuma_muerte,
-            msuma_invalidez: result.msuma_invalidez,
-            msuma_gm: result.msuma_gm,
-            msuma_gf: result.msuma_gf,
+            mlesioncor: result.mlesioncor,
+            mlesioncor_per: result.mlesioncor_per,
+            mdanosp_ajena: result.mdanosp_ajena,
+            mgastos_medicos: result.mgastos_medicos,
+            mmuerte: result.mmuerte,
+            mservicios_fune: result.mservicios_fune,
+            mprima_sin_rep: result.mprima_sin_rep,
+            mimpuesto: result.mimpuesto
           };
         }
       });
@@ -602,7 +602,8 @@ export class PlanDetailComponent implements OnInit {
         ccompania: this.currentUser.data.ccompania,
         cusuariocreacion: this.currentUser.data.cusuario,
         servicesType: this.serviceTypeList,
-        quantity: this.quantityServiceList
+        quantity: this.quantityServiceList,
+        rcv: this.rcvAmout
       };
       url = `${environment.apiUrl}/api/plan/create`;
     }
