@@ -1,6 +1,6 @@
 <div class="main-content" >
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" style="text-align-last: center; place-content: center;">
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="card card-stats">
                     <div class="card-header card-header-warning card-header-icon">
@@ -10,47 +10,47 @@
                         <p class="card-category">Ninguno Actualmente</p>
                         <h4 class="card-title">Incidentes en Curso</h4>
                     </div>
-                    <div class="card-footer">
+                    <!-- <div class="card-footer">
                         <div class="stats">
                             <i class="material-icons text-danger">warning</i>
                             <a href="javascript:void(0)">Conduzca con Cuidado</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6" (click)="openDocument(contentDocument)">
                 <div class="card card-stats">
                     <div class="card-header card-header-success card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">store</i>
+                            <i class="material-icons">library_books</i>
                         </div>
-                        <p class="card-category">Ingreso de Actividades</p>
-                        <h4 class="card-title">Técnico de Mécanica</h4>
+                        <p class="card-category">carga de documentos</p>
+                        <h4 class="card-title">Gestión Documental</h4>
                     </div>
-                    <div class="card-footer">
+                    <!-- <div class="card-footer">
                         <div class="stats">
                             <i class="material-icons">date_range</i> Actualiza 24 Hours
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="col-lg-3 col-md-6 col-sm-6" (click)="openDocument(contentMantenimiento)">
                 <div class="card card-stats">
                     <div class="card-header card-header-danger card-header-icon">
                         <div class="card-icon">
                             <i class="material-icons">info_outline</i>
                         </div>
-                        <p class="card-category">Gastos de Actividades</p>
-                        <h4 class="card-title">No hay información</h4>
+                        <p class="card-category">Preventivos/Correctivos</p>
+                        <h4 class="card-title"> Mantenimientos</h4>
                     </div>
-                    <div class="card-footer">
+                    <!-- <div class="card-footer">
                         <div class="stats">
                             <i class="material-icons">local_offer</i> Añadir Actividad
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
+            <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="card card-stats">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -59,13 +59,13 @@
                         <p class="card-category">Gestiones Administrativas</p>
                         <h4 class="card-title">Activar Cobertura de vidrios:</h4>
                     </div>
-                    <div class="card-footer">
+                     <div class="card-footer">
                         <div class="stats">
                             <i class="material-icons">image</i>Adjuntar Imagenes                         
                         </div>
-                    </div>
+                    </div> 
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row" style="margin-top: 20px;">
             <div class="container">
@@ -160,4 +160,85 @@
         <a *ngIf="message">{{datamessage}}</a>
     </div>
   </ng-template>
+
+
+  <ng-template #documents let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Carga de Documentos</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="container">
+      <form [formGroup]="DataUserDocuments" (ngSubmit)="onSubmit(DataUserDocuments.value)">
+        <div class="form-group">
+          <div class="form-outline">
+            <label class="form-label required" for="form3Examplev2">Tipo de Documentos</label>
+            <select formControlName="itipodocumento" class="form-control form-control-lg" >
+              <option value="DNI">DNI</option>
+              <option value="P">P</option>
+              <option value="RUC">RUC</option>
+              <option value="RCV">RCV</option>
+              <option value="OTROS">OTROS</option>
+            </select>                      
+          </div>
+          <div class="form-outline">
+            <label class="form-label required" for="form3Examplev2">Fecha de vencimiento</label>
+            <input type="date" formControlName="fvencimiento" class="form-control form-control-lg" >
+          </div>
+          <div class="form-outline">
+            <label class="form-label required" for="form3Examplev2">Adjuntar documento</label>
+            <input type="file" name="xarchivo" class="form-control" (change)="onFileSelect($event)" #Xarchivo>
+          </div>
+        </div>
+        {{message}}
+        <button *ngIf="submitted" type="submit" class="btn success-toast align-rigth">Guardar</button>
+      </form>
+    </div>
+  </ng-template>
   
+
+  <ng-template #mantenimiento let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Gestión de Mantenimiento</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="container">
+      <form [formGroup]="DataUserMantenimiento" (ngSubmit)="onSubmitMantenimiento(DataUserMantenimiento.value)">
+        <div class="form-group">
+            <div class="form-outline">
+                <label class="form-label required" for="form3Examplev2">Fecha de mantenimiento</label>
+                <input type="date" formControlName="fdesde" class="form-control form-control-lg" >
+            </div>
+            <div class="form-outline">
+                <label class="form-label required" for="form3Examplev2">Preventivo</label>
+                <select formControlName="xmantenimientoPrevent" class="form-control form-control-lg" >
+                <option value="Cambio de Aceite">Cambio de Aceite</option>
+                <option value="Mantenimiento A/A">Mantenimiento A/A</option>
+                <option value="Filtro de Aire">Filtro de Aire</option>
+                <option value="Rotación de cauchos">Rotación de cauchos</option>
+                <option value="Otros">Otros</option>
+                </select>                      
+            </div>
+            <div class="form-outline">
+                <label class="form-label required" for="form3Examplev2">Correctivo</label>
+                <select formControlName="xmantenimientoCorrect" class="form-control form-control-lg" >
+                <option value="Pila y/o Bomba de Gasolina">Pila y/o Bomba de Gasolina</option>
+                <option value="Cambio de Bujía">Cambio de Bujía</option>
+                <option value="Cable Distribución">Cable Distribución</option>
+                <option value="Otros">Otros</option>
+                </select>                      
+            </div>
+            <div class="col-md-12 mb-4 pb-2">
+                <div class="form-outline">
+                  <label class="form-label required" for="form3Examplev3">Hora</label>
+                  <input formControlName="hora" type="time" class="form-control form-control-lg"  >
+                </div>
+            </div>
+        </div>
+        <button  type="submit" class="btn success-toast align-rigth">Guardar</button>
+      </form>
+    </div>
+  </ng-template>
