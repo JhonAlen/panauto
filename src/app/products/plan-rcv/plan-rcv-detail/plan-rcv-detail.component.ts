@@ -189,11 +189,11 @@ export class PlanRcvDetailComponent implements OnInit {
           });
         }
       }
-      if(this.serviceTypeList){
-        this.showEditButtonService = false;
-      }else{
-        this.showEditButtonService = true;
-      }
+      // if(this.serviceTypeList){
+      //   this.showEditButtonService = false;
+      // }else{
+      //   this.showEditButtonService = true;
+      // }
     },
     (err) => {
       let code = err.error.data.code;
