@@ -89,6 +89,9 @@ export class NotificationDetailComponent implements OnInit {
   fcreacion;
   settlementList: any[] = [];
   settlement: {};
+  quoteListProviders: any[] = [];
+  bactiva_cotizacion: boolean = false; 
+  bactiva_etiqueta: boolean = false; 
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -641,6 +644,13 @@ export class NotificationDetailComponent implements OnInit {
               bactivo: response.data.serviceOrder[i].bactivo
             });
           }
+        }
+        if(this.quoteList[0]){
+          this.bactiva_etiqueta = true;
+          this.bactiva_cotizacion = false;
+        }else{
+          this.bactiva_etiqueta = false;
+          this.bactiva_cotizacion = true;
         }
       
       this.loading_cancel = false;
@@ -1653,6 +1663,7 @@ export class NotificationDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
+        quotesProviders: this.quoteListProviders,
         notes: {
           create: createNoteList,
           update: updateNoteList,
@@ -1683,7 +1694,7 @@ export class NotificationDetailComponent implements OnInit {
         },
         settlement: {
           create: this.settlement
-        }
+        },
       };
       url = `${environment.apiUrl}/api/notification/update`;
       this.sendFormData(params, url);
@@ -1873,21 +1884,26 @@ export class NotificationDetailComponent implements OnInit {
       modalRef.componentInstance.quote = quote;
       modalRef.result.then((result: any) => {
 
-        let quoteList = [];
+        this.quoteListProviders = [];
         if(result){
           for(let i = 0; i < result.repuestos.cproveedor.length; i++){
               for(let j = 0; j < result.repuestos.repuestos.length; j++){
-                quoteList.push({
+                this.quoteListProviders.push({
                   cproveedor: result.repuestos.cproveedor[i].cproveedor,
+                  ccotizacion: result.repuestos.cproveedor[i].ccotizacion,
                   crepuesto: result.repuestos.repuestos[j].crepuesto,
                   mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+                  crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+                  bdisponible: result.repuestos.repuestos[j].bdisponible,
+                  bdescuento: result.repuestos.repuestos[j].bdescuento,
+                  munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+                  bcerrada: result.repuestos.bcerrada,
+                  cmoneda: result.repuestos.repuestos[j].cmoneda,
                   mtotalcotizacion: result.repuestos.mtotalcotizacion,
                 })
               }
           }
         }
-        console.log(result)
-        console.log(quoteList)
       });
     }
   }
