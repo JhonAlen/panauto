@@ -197,6 +197,7 @@ export class NotificationDetailComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania
     };
+    console.log(params)
     this.notificationTypeList = [];
     this.http.post(`${environment.apiUrl}/api/valrep/notification-type`, params, options).subscribe((response: any) => {
       if(response.data.status){
@@ -1886,24 +1887,23 @@ export class NotificationDetailComponent implements OnInit {
 
         this.quoteListProviders = [];
         if(result){
-          for(let i = 0; i < result.repuestos.cproveedor.length; i++){
-              for(let j = 0; j < result.repuestos.repuestos.length; j++){
-                this.quoteListProviders.push({
-                  cproveedor: result.repuestos.cproveedor[i].cproveedor,
-                  ccotizacion: result.repuestos.cproveedor[i].ccotizacion,
-                  crepuesto: result.repuestos.repuestos[j].crepuesto,
-                  mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
-                  crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
-                  bdisponible: result.repuestos.repuestos[j].bdisponible,
-                  bdescuento: result.repuestos.repuestos[j].bdescuento,
-                  munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
-                  bcerrada: result.repuestos.bcerrada,
-                  cmoneda: result.repuestos.repuestos[j].cmoneda,
-                  mtotalcotizacion: result.repuestos.mtotalcotizacion,
-                })
-              }
+          for(let j = 0; j < result.repuestos.repuestos.length; j++){
+            this.quoteListProviders.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+            })
           }
         }
+        console.log(this.quoteListProviders)
       });
     }
   }

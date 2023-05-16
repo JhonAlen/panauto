@@ -662,13 +662,13 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
             ]
           }
         },
-        {
-          style: 'data',
-          table: {
-            widths: [170, 170, '*'],
-            body: this.buildServiceBody()
-          }
-        },
+        // {
+        //   style: 'data',
+        //   table: {
+        //     widths: [170, 170, '*'],
+        //     body: this.buildServiceBody()
+        //   }
+        // },
         {
           style: 'data',
           table: {
