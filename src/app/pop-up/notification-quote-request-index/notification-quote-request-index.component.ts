@@ -88,6 +88,7 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
           }
           this.quoteRequestList.push({ 
             ccotizacion: response.data.list[i].ccotizacion,
+            cproveedor: response.data.list[i].cproveedor,
             fcreacion: date,
             xobservacion: response.data.list[i].xobservacion,
             xcerrada: response.data.list[i].bcerrada
@@ -110,7 +111,7 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
   }
 
   rowClicked(event: any){
-    let quote2 = { ccotizacion: event.data.ccotizacion, xobservacion: event.data.xobservacion, cproveedor: this.quote.cproveedor}
+    let quote2 = { ccotizacion: event.data.ccotizacion, xobservacion: event.data.xobservacion, cproveedor: event.data.cproveedor}
     const modalRef = this.modalService.open(NotificationQuoteRequestDetailComponent, { size: 'xl' });
     modalRef.componentInstance.quote2 = quote2;
     modalRef.result.then((result: any) => {

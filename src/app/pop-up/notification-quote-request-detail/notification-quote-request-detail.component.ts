@@ -97,6 +97,7 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
       ccotizacion: this.quote2.ccotizacion,
       cproveedor: this.quote2.cproveedor
     };
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/notification/detail-quote-request`, params, options).subscribe((response: any) => {
       if(response.data.status){
         this.popup_form.get('xobservacion').setValue(response.data.xobservacion);
