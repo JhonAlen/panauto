@@ -204,6 +204,8 @@ import { CorporativeIssuanceComponent } from './subscription/corporative-issuanc
 import { ReportsComponent } from './administration/reports/reports.component';
 import { ContractServiceArysAdministrationComponent } from './subscription/contract-service-arys-administration/contract-service-arys-administration.component';
 import { InclusionContractComponent } from './subscription/inclusion-contract/inclusion-contract.component';
+import { RenovationContractIndividualsComponent } from './subscription/renovation-contract-individuals/renovation-contract-individuals.component';
+// import { RenewalIndividualContractsComponent } from './subscription/renewal-individual-contracts/renewal-individual-contracts.component';
 
 
 const routes: Routes = [
@@ -220,7 +222,7 @@ const routes: Routes = [
 
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
-
+  // { path: 'subscription/renewal-individual-contracts', component: RenewalIndividualContractsComponent, canActivate: [AuthGuard] },
   { path: 'change-password/:id', component: ChangePasswordComponent, canActivate: [SessionGuard]  },
   { path: 'permission-error', component: PermissionErrorComponent, canActivate: [AuthGuard]  },
   { path: 'security/user-index', component: UserIndexComponent, canActivate: [AuthGuard] },
@@ -497,9 +499,11 @@ const routes: Routes = [
   { path: 'subscription/contract-service-arys-detail', component: ContractServiceArysDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-detail/:id', component: ContractServiceArysDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/corporative-issuance', component: CorporativeIssuanceComponent, canActivate: [AuthGuard] },
+  
   { path: 'administration/reports', component: ReportsComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-administration', component: ContractServiceArysAdministrationComponent, canActivate: [AuthGuard] },
   { path: 'subscription/inclusion-contract', component: InclusionContractComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/renovation-contract-individuals', component: RenovationContractIndividualsComponent, canActivate: [AuthGuard] },
 
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
   { path: 'sign-in', component: SignInComponent },

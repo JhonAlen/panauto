@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <h4 class="modal-tittle">Renovación</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
+    <form [formGroup]="popup_form">
+        <div class="row mt-2">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header company-card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                Renovación
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="popup_form">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Plan</label>
+                                        <select formControlName="cplan" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cplan').errors }">
+                                            <option></option>
+                                            <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
+                                        </select>
+                                        <div *ngIf="submitted && popup_form.get('cplan').errors"  class="invalid-feedback">
+                                            <div *ngIf="popup_form.get('cplan').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Plan Rcv</label>
+                                        <select formControlName="cplan_rc" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cplan_rc').errors }"> 
+                                            <option></option>
+                                            <option *ngFor="let planRcv of planRcvList" value="{{ planRcv.id }}">{{ planRcv.value }}</option>
+                                        </select>
+                                        <div *ngIf="submitted && popup_form.get('cplan_rc').errors"  class="invalid-feedback">
+                                            <div *ngIf="popup_form.get('cplan_rc').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12 mt-2" style="margin-left: 16px;">
+                                        <button [disabled]="loading" class="btn company-detail-button btn-lg btn-block" type="button" (click)="onSubmit()">
+                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                            {{ "ADMINISTRATION.COLLECTION.SAVE" | translate }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
