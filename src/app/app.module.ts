@@ -334,6 +334,9 @@ import { ContractServiceArysAdministrationComponent } from './subscription/contr
 import { InclusionContractComponent } from './subscription/inclusion-contract/inclusion-contract.component';
 import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-quote-request-index/notification-quote-request-index.component';
 import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
+import { RenovationContractIndividualsComponent } from './subscription/renovation-contract-individuals/renovation-contract-individuals.component';
+import { RenovationIndividualComponent } from './pop-up/renovation-individual/renovation-individual.component';
+// import { RenewalIndividualContractsComponent } from './subscription/renewal-individual-contracts/renewal-individual-contracts.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -649,7 +652,10 @@ export function HttpLoaderFactory(http: HttpClient){
     ContractServiceArysAdministrationComponent,
     InclusionContractComponent,
     NotificationQuoteRequestIndexComponent,
-    NotificationQuoteRequestDetailComponent
+    NotificationQuoteRequestDetailComponent,
+    RenovationContractIndividualsComponent,
+    RenovationIndividualComponent,
+    // RenewalIndividualContractsComponent
   ],
   imports: [
     BrowserModule,

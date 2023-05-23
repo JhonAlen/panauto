@@ -1,0 +1,109 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+  <div data-aos="fade-in-down" data-aos-delay="200" *ngIf="alert.show" class="alert-container">
+    <ngb-alert *ngIf="alert.show" [type]="alert.type" [ngClass]="{'alert-success': alert.type === 'success', 'alert-danger': alert.type === 'danger'}">{{ alert.message | translate }}</ngb-alert>
+  </div>
+  <div css="row mt-5 mb-5" style="margin-top: 30px;">
+      <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <!-- <div class="row">
+                        <div class="col-6">
+                            <p>Renovación de Contratos Individuales</p>
+                        </div>
+                    </div> -->
+                    <div style="display: grid;place-items: center;">
+                        <p><b>Renovación de Contratos Individuales</b></p>
+                    </div>
+                    
+                </div>
+                <div class="card-body">
+                     <form [formGroup]="search_form">
+                         <div class="row" style="padding: 10px;">
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                             <div class="col-sm-12 col-md-3">
+                                 <div class="form-group">
+                                     <label>Seleccionar Mes</label>
+                                     <select formControlName="xmes" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xmes').errors }">
+                                         <option></option>
+                                         <option *ngFor="let month of months" value="{{ month }}">{{ month }}</option>
+                                     </select>
+                                     <div *ngIf="submitted && search_form.get('xmes').errors"  class="invalid-feedback">
+                                         <div *ngIf="search_form.get('xmes').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="col-sm-12 col-md-3">
+                                 <div class="form-group">
+                                     <label>Seleccionar Año</label>
+                                     <select formControlName="xano" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xano').errors }" (change)="transformationDate()">
+                                         <option></option>
+                                         <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+                                     </select>
+                                     <div *ngIf="submitted && search_form.get('xano').errors"  class="invalid-feedback">
+                                         <div *ngIf="search_form.get('xano').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                     </div>
+                                 </div>
+                             </div>
+                            </div>
+                         </div>
+                     </form>
+                </div>
+            </div>
+      </div>
+  </div>
+  <div css="row mt-5 mb-5" style="margin-top: 30px;" *ngIf="bactiva">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header company-card-header">
+            <form [formGroup]="search_form">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Lista de Contratos Próximos a Renovar</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+              <div>
+                <div style="display: grid;place-items: center;margin-top: 19px;">
+                  <div class="col-sm-12 col-md-4">
+                      <input type="text" class="form-control" placeholder="Buscar..." (input)="filterData($event.target.value)">
+                  </div>
+                </div>
+                <br>
+                <table class="table table-hover">
+                  <thead class="table-borderless">
+                    <tr>
+                      <th class="border-bottom">Contrato</th>
+                      <th class="border-bottom">Nombre Propietario</th>
+                      <th class="border-bottom">Vehículo</th>
+                      <th class="border-bottom">Placa</th>
+                      <th class="border-bottom">Año</th>
+                      <th class="border-bottom">Fecha vencimiento</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of filteredData | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
+                      <td style="white-space: nowrap">{{ item.ccarga }}</td>
+                      <td style="white-space: nowrap">{{ item.xnombre }}</td>
+                      <td style="white-space: nowrap">{{ item.xvehiculo }}</td>
+                      <td style="white-space: nowrap">{{ item.xplaca }}</td>
+                      <td style="white-space: nowrap">{{ item.fano }}</td>
+                      <td style="white-space: nowrap">{{ item.fhasta_pol }}</td>
+                      <td style="white-space: nowrap"><button class="btn btn-success" (click)="renovation(item.xplaca, item.ccarga)" data-name="{{item.xnombre}}">Renovar</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div style="display: grid;place-items: center;">
+                <ngb-pagination [collectionSize]="filteredData.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div style="margin-top: 33px"></div>
+
+<app-footer></app-footer>

@@ -56,58 +56,6 @@
           </div>
       </div>
   </div>
-<!-- <div class="container"> 
-  <div class="row mt-5 mb-5">
-      <div class="col-sm-12">
-          <div class="card">
-              <div class="card-header company-card-header">
-              <form [formGroup]="search_form">
-                      <div class="row">
-                          <div class="col-6">
-                              <p>Contratos</p>
-                          </div>
-                          <div class="col-6">
-                              <div class="row">
-                                  <div class="col-sm-12 col-md-8 offset-md-4">
-                                      <input type="text" class="form-control" placeholder="Buscar..." (input)="filterData($event.target.value)">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </form>
-              </div>
-              <div class="card-body">
-                <div class="container">
-                  <table class="table table-hover">
-                    <thead class="table-borderless">
-                      <tr>
-                        <th class="border-bottom">Código</th>
-                        <th class="border-bottom">Nombre y Apellido</th>
-                        <th class="border-bottom">Identificación</th>
-                        <th class="border-bottom">Vehículo</th>
-                        <th class="border-bottom">Placa</th>
-                        <th class="border-bottom">Año</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let item of filteredData | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
-                        <td style="white-space: nowrap">{{ item.ccontratoflota }}</td>
-                        <td style="white-space: nowrap">{{ item.xnombres }}</td>
-                        <td style="white-space: nowrap">{{ item.identificacion }}</td>
-                        <td style="white-space: nowrap">{{ item.xvehiculo }}</td>
-                        <td style="white-space: nowrap">{{ item.xplaca }}</td>
-                        <td style="white-space: nowrap">{{ item.fano }}</td>
-                        <td style="white-space: nowrap"><button class="btn btn-success" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Descargar Certificado</button></td>
-                        <td style="white-space: nowrap"><button class="btn btn-danger" (click)="getContractArysFromCertificate(item.ccontratoflota)" data-name="{{item.xnombres}}">Anular</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div style="display: grid;place-items: center;">
-                  <ngb-pagination [collectionSize]="filteredData.length" [(page)]="page" [pageSize]="pageSize"></ngb-pagination>
-                  </div>
-                </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> -->
+  <div style="margin-top: 33px"></div>
+
+  <app-footer></app-footer>
