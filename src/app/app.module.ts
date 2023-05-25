@@ -336,6 +336,7 @@ import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-qu
 import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
 import { RenovationContractIndividualsComponent } from './subscription/renovation-contract-individuals/renovation-contract-individuals.component';
 import { RenovationIndividualComponent } from './pop-up/renovation-individual/renovation-individual.component';
+import { ProvidersDocumentsComponent } from './pop-up/providers-documents/providers-documents.component';
 // import { RenewalIndividualContractsComponent } from './subscription/renewal-individual-contracts/renewal-individual-contracts.component';
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -655,6 +656,7 @@ export function HttpLoaderFactory(http: HttpClient){
     NotificationQuoteRequestDetailComponent,
     RenovationContractIndividualsComponent,
     RenovationIndividualComponent,
+    ProvidersDocumentsComponent,
     // RenewalIndividualContractsComponent
   ],
   imports: [
