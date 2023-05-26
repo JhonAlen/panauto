@@ -33,6 +33,8 @@ export class PlanServiceComponent implements OnInit {
   acceptedserviceTypeList;
   quantityList: any[] = [];
   List: any[] = [];
+  bcrear: boolean = false;
+  bconsultar: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -83,6 +85,7 @@ export class PlanServiceComponent implements OnInit {
         arrayPerform = arrayPerform.filter((obj) => !obj.ctiposervicio);
         for(let i = 0; i < arrayPerform.length; i ++){
           arrayPerform[i].cgrid = i; 
+          arrayPerform[i].baceptado = 0; 
         }
         
         arrayPerform = this.serviceTypeList;
@@ -91,26 +94,29 @@ export class PlanServiceComponent implements OnInit {
       if(this.service){
         if(this.service.type == 3){
           this.canSave = false;
+          this.bcrear = true;
         }else if(this.service.type == 2){
           this.popup_form.get('ctiposervicio').setValue(this.service.ctiposervicio);
           this.popup_form.get('ctiposervicio').disable();
           // this.serviceDropdownDataRequest();
-          this.popup_form.get('cservicio').setValue(this.service.cservicio);
-          this.popup_form.get('cservicio').disable();
-          this.popup_form.get('ctipoagotamientoservicio').setValue(this.service.ctipoagotamientoservicio);
-          this.popup_form.get('ctipoagotamientoservicio').disable();
-          this.popup_form.get('ncantidad').setValue(this.service.ncantidad);
-          this.popup_form.get('ncantidad').disable();
-          this.popup_form.get('pservicio').setValue(this.service.pservicio);
-          this.popup_form.get('pservicio').disable();
-          this.popup_form.get('mmaximocobertura').setValue(this.service.mmaximocobertura);
-          this.popup_form.get('mmaximocobertura').disable();
-          this.popup_form.get('mdeducible').setValue(this.service.mdeducible);
-          this.popup_form.get('mdeducible').disable();
-          this.popup_form.get('bserviciopadre').setValue(this.service.bserviciopadre);
-          this.popup_form.get('bserviciopadre').disable();
+          // this.popup_form.get('cservicio').setValue(this.service.cservicio);
+          // this.popup_form.get('cservicio').disable();
+          // this.popup_form.get('ctipoagotamientoservicio').setValue(this.service.ctipoagotamientoservicio);
+          // this.popup_form.get('ctipoagotamientoservicio').disable();
+          // this.popup_form.get('ncantidad').setValue(this.service.ncantidad);
+          // this.popup_form.get('ncantidad').disable();
+          // this.popup_form.get('pservicio').setValue(this.service.pservicio);
+          // this.popup_form.get('pservicio').disable();
+          // this.popup_form.get('mmaximocobertura').setValue(this.service.mmaximocobertura);
+          // this.popup_form.get('mmaximocobertura').disable();
+          // this.popup_form.get('mdeducible').setValue(this.service.mdeducible);
+          // this.popup_form.get('mdeducible').disable();
+          // this.popup_form.get('bserviciopadre').setValue(this.service.bserviciopadre);
+          // this.popup_form.get('bserviciopadre').disable();
+          this.searchPlanTypeSelected();
           this.coverageList = this.service.coverages
           this.canSave = false;
+          this.bconsultar = true;
         }else if(this.service.type == 1){
           this.popup_form.get('ctiposervicio').setValue(this.service.ctiposervicio);
           // this.serviceDropdownDataRequest();
@@ -170,6 +176,7 @@ export class PlanServiceComponent implements OnInit {
       this.acceptedserviceTypeList[i].cgrid = i;
       this.acceptedserviceTypeList[i].ctiposervicio;
       this.acceptedserviceTypeList[i].xtiposervicio;
+      this.acceptedserviceTypeList[i].baceptado = 1;
     }
     if(this.acceptedserviceTypeList[0]){
       this.canSave = true;
@@ -189,6 +196,7 @@ numberServiceRowClicked(event: any){
           ncantidad: result[i].ncantidad,
           cservicio: result[i].cservicio,
           xservicio: result[i].xservicio,
+          baceptado: result[i].baceptado
         })
       } 
       this.quantityList = []
@@ -197,9 +205,63 @@ numberServiceRowClicked(event: any){
           ncantidad: this.List[i].ncantidad,
           cservicio: this.List[i].cservicio,
           xservicio: this.List[i].xservicio,
+          baceptado: this.List[i].baceptado,
         })
       } 
     }
+  });
+}
+
+searchPlanTypeSelected(){
+  let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  let options = { headers: headers };
+  let params = {
+    cplan: this.service.cplan,
+    baceptado: 1
+  };
+  this.http.post(`${environment.apiUrl}/api/plan/search-type-service-selected`, params, options).subscribe((response : any) => {
+    if(response.data.status){
+      this.acceptedserviceTypeList = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.acceptedserviceTypeList.push({ 
+          ctiposervicio: response.data.list[i].ctiposervicio, 
+          xtiposervicio: response.data.list[i].xtiposervicio });
+      }
+      this.acceptedserviceTypeList.sort((a,b) => a.xtiposervicio > b.xtiposervicio ? 1 : -1);
+    }
+  },
+  (err) => {
+    let code = err.error.data.code;
+    let message;
+    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    this.alert.message = message;
+    this.alert.type = 'danger';
+    this.alert.show = true;
+  });
+  this.http.post(`${environment.apiUrl}/api/plan/search-service-selected`, params, options).subscribe((response : any) => {
+    if(response.data.status){
+      this.quantityList = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.quantityList.push({ 
+          cservicio: response.data.list[i].cservicio, 
+          xservicio: response.data.list[i].xservicio,
+          ncantidad: response.data.list[i].ncantidad
+        });
+      }
+      this.quantityList.sort((a,b) => a.xservicio > b.xservicio ? 1 : -1);
+    }
+  },
+  (err) => {
+    let code = err.error.data.code;
+    let message;
+    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    this.alert.message = message;
+    this.alert.type = 'danger';
+    this.alert.show = true;
   });
 }
 
