@@ -408,8 +408,8 @@ export class PlanDetailComponent implements OnInit {
   editPlan(){
     this.detail_form.get('ctipoplan').enable();
     this.detail_form.get('xplan').enable();
-    this.detail_form.get('parys').enable();
-    this.detail_form.get('paseguradora').enable();
+    this.detail_form.get('mcosto').enable();
+    this.detail_form.get('cmoneda').enable();
     this.detail_form.get('bactivo').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
@@ -458,6 +458,7 @@ export class PlanDetailComponent implements OnInit {
             create: true,
             ctiposervicio: result.acceptedservice[i].ctiposervicio,
             xtiposervicio: result.acceptedservice[i].xtiposervicio,
+            baceptado: result.acceptedservice[i].baceptado
           });
         }
 
@@ -467,7 +468,8 @@ export class PlanDetailComponent implements OnInit {
             create: true,
             ncantidad: result.quantity[i].ncantidad,
             cservicio: result.quantity[i].cservicio,
-            xservicio: result.quantity[i].xservicio ,
+            xservicio: result.quantity[i].xservicio,
+            baceptado: result.quantity[i].baceptado
           });
         }
       }
@@ -482,6 +484,7 @@ export class PlanDetailComponent implements OnInit {
         create: event.data.create, 
         cgrid: event.data.cgrid,
         ctiposervicio: event.data.ctiposervicio,
+        cplan: this.code,
         delete: false
       };
     }else{ 
@@ -490,6 +493,7 @@ export class PlanDetailComponent implements OnInit {
         create: event.data.create,
         cgrid: event.data.cgrid,
         ctiposervicio: event.data.ctiposervicio,
+        cplan: this.code,
         delete: false
       }; 
     }

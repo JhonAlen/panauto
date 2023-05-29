@@ -40,17 +40,11 @@ export class NumberOfServiceComponent implements OnInit {
     this.submitted = true;
     this.loading = true;
 
-    // this.quantity.cservicio = this.quantity.cservicio;
-    // if(form.ncantidad){
-    //   this.quantity.ncantidad = form.ncantidad
-    // }else{
-    //   this.quantity.ncantidad = 0
-    // }
-
     let cantidad = []
     cantidad.push({
       cservicio: this.quantity.cservicio,
       xservicio: this.quantity.xservicio,
+      baceptado: 1,
       ncantidad: form.ncantidad
     })
 
