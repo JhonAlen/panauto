@@ -469,9 +469,13 @@ export class PlanDetailComponent implements OnInit {
             ncantidad: result.quantity[i].ncantidad,
             cservicio: result.quantity[i].cservicio,
             xservicio: result.quantity[i].xservicio,
+            pservicio: result.quantity[i].pservicio,
+            mmaximocobertura: result.quantity[i].mmaximocobertura,
+            mdeducible: result.quantity[i].mdeducible,
             baceptado: result.quantity[i].baceptado
           });
         }
+        console.log()
       }
     });
   }
@@ -502,10 +506,14 @@ export class PlanDetailComponent implements OnInit {
     modalRef.result.then((result: any) => {
       if(result){
         if(result.type == 1){
-          for(let i = 0; i < this.serviceTypeList.length; i++){
-            if(this.serviceTypeList[i].cgrid == result.cgrid){
-              this.serviceTypeList[i].ctiposervicio = result.ctiposervicio;
-              this.serviceTypeList[i].xtiposervicio = result.xtiposervicio;
+          for(let i = 0; i < this.quantityServiceList.length; i++){
+            if(this.quantityServiceList[i].cgrid == result.cgrid){
+              this.quantityServiceList[i].ncantidad = result[i].ncantidad,
+              this.quantityServiceList[i].cservicio = result[i].cservicio,
+              this.quantityServiceList[i].xservicio = result[i].xservicio,
+              this.quantityServiceList[i].pservicio = result[i].pservicio,
+              this.quantityServiceList[i].mmaximocobertura = result[i].mmaximocobertura,
+              this.quantityServiceList[i].mdeducible = result[i].mdeducible,
               this.serviceGridApi.refreshCells();
               return;
             }

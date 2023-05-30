@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NumberOfServiceComponent } from '@app/pop-up/number-of-service/number-of-service.component';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -35,6 +36,7 @@ export class PlanServiceComponent implements OnInit {
   List: any[] = [];
   bcrear: boolean = false;
   bconsultar: boolean = false;
+  beditar: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -96,48 +98,14 @@ export class PlanServiceComponent implements OnInit {
           this.canSave = false;
           this.bcrear = true;
         }else if(this.service.type == 2){
-          this.popup_form.get('ctiposervicio').setValue(this.service.ctiposervicio);
-          this.popup_form.get('ctiposervicio').disable();
-          // this.serviceDropdownDataRequest();
-          // this.popup_form.get('cservicio').setValue(this.service.cservicio);
-          // this.popup_form.get('cservicio').disable();
-          // this.popup_form.get('ctipoagotamientoservicio').setValue(this.service.ctipoagotamientoservicio);
-          // this.popup_form.get('ctipoagotamientoservicio').disable();
-          // this.popup_form.get('ncantidad').setValue(this.service.ncantidad);
-          // this.popup_form.get('ncantidad').disable();
-          // this.popup_form.get('pservicio').setValue(this.service.pservicio);
-          // this.popup_form.get('pservicio').disable();
-          // this.popup_form.get('mmaximocobertura').setValue(this.service.mmaximocobertura);
-          // this.popup_form.get('mmaximocobertura').disable();
-          // this.popup_form.get('mdeducible').setValue(this.service.mdeducible);
-          // this.popup_form.get('mdeducible').disable();
-          // this.popup_form.get('bserviciopadre').setValue(this.service.bserviciopadre);
-          // this.popup_form.get('bserviciopadre').disable();
           this.searchPlanTypeSelected();
           this.coverageList = this.service.coverages
           this.canSave = false;
           this.bconsultar = true;
         }else if(this.service.type == 1){
-          this.popup_form.get('ctiposervicio').setValue(this.service.ctiposervicio);
-          // this.serviceDropdownDataRequest();
-          this.popup_form.get('cservicio').setValue(this.service.cservicio);
-          this.popup_form.get('ctipoagotamientoservicio').setValue(this.service.ctipoagotamientoservicio);
-          this.popup_form.get('ncantidad').setValue(this.service.ncantidad);
-          this.popup_form.get('pservicio').setValue(this.service.pservicio);
-          this.popup_form.get('mmaximocobertura').setValue(this.service.mmaximocobertura);
-          this.popup_form.get('mdeducible').setValue(this.service.mdeducible);
-          this.popup_form.get('bserviciopadre').setValue(this.service.bserviciopadre);
-          for(let i =0; i < this.service.coverages.length; i++){
-            this.coverageList.push({
-              cgrid: i,
-              create: this.service.coverages[i].create,
-              ccobertura: this.service.coverages[i].ccobertura,
-              xcobertura: this.service.coverages[i].xcobertura,
-              cconceptocobertura: this.service.coverages[i].cconceptocobertura,
-              xconceptocobertura: this.service.coverages[i].xconceptocobertura
-            });
-          }
+          this.searchPlanTypeSelected();
           this.isEdit = true;
+          this.beditar = true;
         }
       }
     }
@@ -186,7 +154,7 @@ export class PlanServiceComponent implements OnInit {
 }
 
 numberServiceRowClicked(event: any){
-  let quantity = { cservicio: event.data.cservicio, xservicio: event.data.xservicio };
+  let quantity = { type: 2, cservicio: event.data.cservicio, xservicio: event.data.xservicio };
   const modalRef = this.modalService.open(NumberOfServiceComponent);
   modalRef.componentInstance.quantity = quantity;
   modalRef.result.then((result: any) => { 
@@ -196,6 +164,9 @@ numberServiceRowClicked(event: any){
           ncantidad: result[i].ncantidad,
           cservicio: result[i].cservicio,
           xservicio: result[i].xservicio,
+          pservicio: result[i].pservicio,
+          mmaximocobertura: result[i].mmaximocobertura,
+          mdeducible: result[i].mdeducible,
           baceptado: result[i].baceptado
         })
       } 
@@ -205,6 +176,9 @@ numberServiceRowClicked(event: any){
           ncantidad: this.List[i].ncantidad,
           cservicio: this.List[i].cservicio,
           xservicio: this.List[i].xservicio,
+          pservicio: this.List[i].pservicio,
+          mmaximocobertura: this.List[i].mmaximocobertura,
+          mdeducible: this.List[i].mdeducible,
           baceptado: this.List[i].baceptado,
         })
       } 
@@ -265,120 +239,54 @@ searchPlanTypeSelected(){
   });
 }
 
+  editarRenderer = (params: any) => {
+    const button = document.createElement('button');
+    button.className = 'btn btn-success';
+    button.textContent = 'Editar';
+    button.addEventListener('click', () => this.editService(params.data.cservicio));
 
-onServiceTypeGridReady(event){
-  this.serviceTypeGridApi = event.api;
-}
+    const container = document.createElement('div');
+    container.appendChild(button);
 
-onAcceptedServiceTypeGridReady(event){
-  this.acceptedServiceTypeGridApi = event.api;
-}
+    return container;
+  }
 
-  // serviceDropdownDataRequest(){
-  //   if(this.popup_form.get('ctiposervicio').value){
-  //     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //     let options = { headers: headers };
-  //     let params = {
-  //       cpais: this.currentUser.data.cpais,
-  //       ccompania: this.currentUser.data.ccompania,
-  //       ctiposervicio: this.popup_form.get('ctiposervicio').value
-  //     }
-  //     this.http.post(`${environment.apiUrl}/api/valrep/service`, params, options).subscribe((response : any) => {
-  //       if(response.data.status){
-  //         this.serviceList = [];
-  //         for(let i = 0; i < response.data.list.length; i++){
-  //           this.serviceList.push({ id: response.data.list[i].cservicio, value: response.data.list[i].xservicio });
-  //         }
-  //         this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
-  //       }
-  //     },
-  //     (err) => {
-  //       let code = err.error.data.code;
-  //       let message;
-  //       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-  //       else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICENOTFOUND"; }
-  //       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-  //       this.alert.message = message;
-  //       this.alert.type = 'danger';
-  //       this.alert.show = true;
-  //     });
-  //   }
-  // }
+  editService(cservicio: number) {
+    let quantity = {};
+    if(this.service.type == 1){ 
+      quantity = { 
+        type: 1,
+        cservicio: cservicio,
+        cplan: this.service.cplan,
+        delete: false
+      };
+    }
+    const modalRef = this.modalService.open(NumberOfServiceComponent);
+    modalRef.componentInstance.quantity = quantity;
+    modalRef.result.then((result: any) => {
+      if(result){
+        for(let i = 0; i < result.length; i++){
+          this.quantityList.push({
+            ncantidad: result[i].ncantidad,
+            cservicio: result[i].cservicio,
+            xservicio: result[i].xservicio,
+            pservicio: result[i].pservicio,
+            mmaximocobertura: result[i].mmaximocobertura,
+            mdeducible: result[i].mdeducible,
+            baceptado: result[i].baceptado
+          })
+        }
+      }
+    });
+  }
 
-  // addCoverage(){
-  //   let coverage = { type: 3 };
-  //   const modalRef = this.modalService.open(PlanServiceCoverageComponent);
-  //   modalRef.componentInstance.coverage = coverage;
-  //   modalRef.result.then((result: any) => {
-  //     if(result){
-  //       if(result.type == 3){
-  //         this.coverageList.push({
-  //           cgrid: this.coverageList.length,
-  //           create: true,
-  //           ccobertura: result.ccobertura,
-  //           xcobertura: result.xcobertura,
-  //           cconceptocobertura: result.cconceptocobertura,
-  //           xconceptocobertura: result.xconceptocobertura
-  //         });
-  //         this.coverageGridApi.setRowData(this.coverageList);
-  //       }
-  //     }
-  //   });
-  // }
+  onServiceTypeGridReady(event){
+    this.serviceTypeGridApi = event.api;
+  }
 
-  // coverageRowClicked(event: any){
-  //   let coverage = {};
-  //   if(this.isEdit){ 
-  //     coverage = { 
-  //       type: 1,
-  //       create: event.data.create, 
-  //       cgrid: event.data.cgrid,
-  //       ccobertura: event.data.ccobertura,
-  //       cconceptocobertura: event.data.cconceptocobertura,
-  //       delete: false
-  //     };
-  //   }else{ 
-  //     coverage = { 
-  //       type: 2,
-  //       create: event.data.create,
-  //       cgrid: event.data.cgrid,
-  //       ccobertura: event.data.ccobertura,
-  //       cconceptocobertura: event.data.cconceptocobertura,
-  //       delete: false
-  //     }; 
-  //   }
-  //   const modalRef = this.modalService.open(PlanServiceCoverageComponent);
-  //   modalRef.componentInstance.coverage = coverage;
-  //   modalRef.result.then((result: any) => {
-  //     if(result){
-  //       if(result.type == 1){
-  //         for(let i = 0; i <  this.coverageList.length; i++){
-  //           if( this.coverageList[i].cgrid == result.cgrid){
-  //             this.coverageList[i].ccobertura = result.ccobertura;
-  //             this.coverageList[i].xcobertura = result.xcobertura;
-  //             this.coverageList[i].cconceptocobertura = result.cconceptocobertura;
-  //             this.coverageList[i].xconceptocobertura = result.xconceptocobertura;
-  //             this.coverageGridApi.refreshCells();
-  //             return;
-  //           }
-  //         }
-  //       }else if(result.type == 4){
-  //         if(result.delete){
-  //           this.coverageDeletedRowList.push({ ccobertura: result.ccobertura });
-  //         }
-  //         this.coverageList = this.coverageList.filter((row) => { return row.cgrid != result.cgrid });
-  //         for(let i = 0; i < this.coverageList.length; i++){
-  //           this.coverageList[i].cgrid = i;
-  //         }
-  //         this.coverageGridApi.setRowData(this.coverageList);
-  //       }
-  //     }
-  //   });
-  // }
-
-  // onCoveragesGridReady(event){
-  //   this.coverageGridApi = event.api;
-  // }
+  onAcceptedServiceTypeGridReady(event){
+    this.acceptedServiceTypeGridApi = event.api;
+  }
 
   onSubmit(form){
     this.submitted = true;
