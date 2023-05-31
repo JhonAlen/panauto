@@ -37,6 +37,7 @@ export class PlanServiceComponent implements OnInit {
   bcrear: boolean = false;
   bconsultar: boolean = false;
   beditar: boolean = false;
+  quantityUpdateList: any[] = [];
 
   constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -105,6 +106,7 @@ export class PlanServiceComponent implements OnInit {
         }else if(this.service.type == 1){
           this.searchPlanTypeSelected();
           this.isEdit = true;
+          this.canSave = false;
           this.beditar = true;
         }
       }
@@ -265,17 +267,28 @@ searchPlanTypeSelected(){
     modalRef.componentInstance.quantity = quantity;
     modalRef.result.then((result: any) => {
       if(result){
+        this.canSave = true;
         for(let i = 0; i < result.length; i++){
-          this.quantityList.push({
+          this.List.push({
             ncantidad: result[i].ncantidad,
             cservicio: result[i].cservicio,
-            xservicio: result[i].xservicio,
             pservicio: result[i].pservicio,
             mmaximocobertura: result[i].mmaximocobertura,
             mdeducible: result[i].mdeducible,
             baceptado: result[i].baceptado
           })
-        }
+        } 
+        this.quantityUpdateList = []
+        for(let i = 0; i < this.List.length; i++){
+          this.quantityUpdateList.push({
+            ncantidad: this.List[i].ncantidad,
+            cservicio: this.List[i].cservicio,
+            pservicio: this.List[i].pservicio,
+            mmaximocobertura: this.List[i].mmaximocobertura,
+            mdeducible: this.List[i].mdeducible,
+            baceptado: this.List[i].baceptado,
+          })
+        } 
       }
     });
   }
@@ -294,9 +307,16 @@ searchPlanTypeSelected(){
 
     let servicios = {};
 
-    servicios = {
-      acceptedservice: this.acceptedserviceTypeList,
-      quantity: this.quantityList
+    if(this.service.type == 3){
+      servicios = {
+        acceptedservice: this.acceptedserviceTypeList,
+        quantity: this.quantityList
+      }
+    }else if(this.service.type == 1){
+      servicios = {
+        acceptedservice: this.acceptedserviceTypeList,
+        quantity: this.quantityUpdateList
+      }
     }
 
     this.service = servicios;

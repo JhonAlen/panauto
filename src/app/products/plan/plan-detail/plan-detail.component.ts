@@ -57,6 +57,7 @@ export class PlanDetailComponent implements OnInit {
   ActivaPlan: boolean = true;
   bactiva_exceso: boolean = false;
   excesoList: any[] = [];
+  crear: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -169,6 +170,7 @@ export class PlanDetailComponent implements OnInit {
         }
         this.getPlanData();
         if(this.canEdit){ this.showEditButton = true; }
+        this.crear = false;
       }else{
         if(!this.canCreate){
           this.router.navigate([`/permission-error`]);
@@ -176,6 +178,7 @@ export class PlanDetailComponent implements OnInit {
         }
         this.editStatus = true;
         this.showSaveButton = true;
+        this.crear = true;
       }
     });
   }
@@ -505,19 +508,18 @@ export class PlanDetailComponent implements OnInit {
     modalRef.componentInstance.service = service;
     modalRef.result.then((result: any) => {
       if(result){
-        if(result.type == 1){
-          for(let i = 0; i < this.quantityServiceList.length; i++){
-            if(this.quantityServiceList[i].cgrid == result.cgrid){
-              this.quantityServiceList[i].ncantidad = result[i].ncantidad,
-              this.quantityServiceList[i].cservicio = result[i].cservicio,
-              this.quantityServiceList[i].xservicio = result[i].xservicio,
-              this.quantityServiceList[i].pservicio = result[i].pservicio,
-              this.quantityServiceList[i].mmaximocobertura = result[i].mmaximocobertura,
-              this.quantityServiceList[i].mdeducible = result[i].mdeducible,
-              this.serviceGridApi.refreshCells();
-              return;
-            }
-          }
+        for(let i = 0; i < result.quantity.length; i++){
+          this.quantityServiceList.push({
+            cgrid: this.quantityServiceList.length,
+            create: true,
+            ncantidad: result.quantity[i].ncantidad,
+            cservicio: result.quantity[i].cservicio,
+            xservicio: result.quantity[i].xservicio,
+            pservicio: result.quantity[i].pservicio,
+            mmaximocobertura: result.quantity[i].mmaximocobertura,
+            mdeducible: result.quantity[i].mdeducible,
+            baceptado: result.quantity[i].baceptado
+          });
         }
       }
     });
@@ -581,13 +583,8 @@ export class PlanDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
-        ptasa_casco: this.detail_form.get('ptasa_casco').value,
-        ptasa_catastrofico: this.detail_form.get('ptasa_catastrofico').value,
-        msuma_recuperacion: this.detail_form.get('msuma_recuperacion').value,
-        mprima_recuperacion: this.detail_form.get('mprima_recuperacion').value,
-        mdeducible: this.detail_form.get('mdeducible').value,
-        apov: this.apovList,
-        exceso: this.excesoList,
+        cmoneda: this.detail_form.get('cmoneda').value,
+        quantity: this.quantityServiceList, 
         services: {
           create: createServiceList,
           update: updateServiceList
