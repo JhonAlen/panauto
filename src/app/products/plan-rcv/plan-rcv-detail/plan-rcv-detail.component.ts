@@ -42,6 +42,7 @@ export class PlanRcvDetailComponent implements OnInit {
   serviceTypeList: any[] = [];
   quantityServiceList: any[] = [];
   showEditButtonService: boolean = false;
+  crear: boolean = false;
 
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -111,6 +112,7 @@ export class PlanRcvDetailComponent implements OnInit {
         }
         this.getPlanData();
         if(this.canEdit){ this.showEditButton = true; }
+        this.crear = false;
       }else{
         if(!this.canCreate){
           this.router.navigate([`/permission-error`]);
@@ -118,6 +120,7 @@ export class PlanRcvDetailComponent implements OnInit {
         }
         this.editStatus = true;
         this.showSaveButton = true;
+        this.crear = true;
       }
     });
   }  
@@ -221,6 +224,7 @@ export class PlanRcvDetailComponent implements OnInit {
             create: true,
             ctiposervicio: result.acceptedservice[i].ctiposervicio,
             xtiposervicio: result.acceptedservice[i].xtiposervicio,
+            baceptado: result.acceptedservice[i].baceptado
           });
         }
 
@@ -230,9 +234,56 @@ export class PlanRcvDetailComponent implements OnInit {
             create: true,
             ncantidad: result.quantity[i].ncantidad,
             cservicio: result.quantity[i].cservicio,
-            xservicio: result.quantity[i].xservicio ,
+            xservicio: result.quantity[i].xservicio,
+            pservicio: result.quantity[i].pservicio,
+            mmaximocobertura: result.quantity[i].mmaximocobertura,
+            mdeducible: result.quantity[i].mdeducible,
+            baceptado: result.quantity[i].baceptado
           });
         }
+      }
+    });
+  }
+
+  serviceRowClicked(event: any){
+    let service = {};
+    if(this.editStatus){ 
+      service = { 
+        type: 1,
+        create: event.data.create, 
+        cgrid: event.data.cgrid,
+        ctiposervicio: event.data.ctiposervicio,
+        cplan_rc: this.code,
+        delete: false
+      };
+    }else{ 
+      service = { 
+        type: 2,
+        create: event.data.create,
+        cgrid: event.data.cgrid,
+        ctiposervicio: event.data.ctiposervicio,
+        cplan_rc: this.code,
+        delete: false
+      }; 
+    }
+    const modalRef = this.modalService.open(PlanServiceComponent, {size: 'xl'});
+    modalRef.componentInstance.service = service;
+    modalRef.result.then((result: any) => {
+      if(result){
+        for(let i = 0; i < result.quantity.length; i++){
+          this.quantityServiceList.push({
+            cgrid: this.quantityServiceList.length,
+            create: true,
+            ncantidad: result.quantity[i].ncantidad,
+            cservicio: result.quantity[i].cservicio,
+            xservicio: result.quantity[i].xservicio,
+            pservicio: result.quantity[i].pservicio,
+            mmaximocobertura: result.quantity[i].mmaximocobertura,
+            mdeducible: result.quantity[i].mdeducible,
+            baceptado: result.quantity[i].baceptado
+          });
+        }
+        console.log(this.quantityServiceList)
       }
     });
   }
@@ -322,6 +373,7 @@ export class PlanRcvDetailComponent implements OnInit {
         cusuario: this.currentUser.data.cusuario,
         xdescripcion: this.detail_form.get('xplan_rc').value,
         mcosto: this.detail_form.get('mcosto').value,
+        quantity: this.quantityServiceList
       };
       url = `${environment.apiUrl}/api/plan-rcv/update`;
     }else{

@@ -42,8 +42,14 @@ export class NumberOfServiceComponent implements OnInit {
       if(this.quantity.type == 2){
         this.canSave = true;
       }else{
-        this.searchQuantity();
-        this.canSave = true;
+        if(this.quantity.cplan){
+          this.searchQuantity();
+          this.canSave = true;
+        }else{
+          this.searchQuantityRcv();
+          this.canSave = true;
+        }
+
       }
     }
   }
@@ -56,6 +62,33 @@ export class NumberOfServiceComponent implements OnInit {
       cservicio: this.quantity.cservicio
     };
     this.http.post(`${environment.apiUrl}/api/plan/search-quantity`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.popup_form.get('ncantidad').setValue(response.data.ncantidad);
+        this.popup_form.get('pservicio').setValue(response.data.pservicio);
+        this.popup_form.get('mmaximocobertura').setValue(response.data.mmaximocobertura);
+        this.popup_form.get('mdeducible').setValue(response.data.mdeducible);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  searchQuantityRcv(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cplan_rc: this.quantity.cplan_rc,
+      cservicio: this.quantity.cservicio
+    };
+    this.http.post(`${environment.apiUrl}/api/plan/search-quantity-rcv`, params, options).subscribe((response : any) => {
       if(response.data.status){
         this.popup_form.get('ncantidad').setValue(response.data.ncantidad);
         this.popup_form.get('pservicio').setValue(response.data.pservicio);

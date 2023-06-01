@@ -99,15 +99,29 @@ export class PlanServiceComponent implements OnInit {
           this.canSave = false;
           this.bcrear = true;
         }else if(this.service.type == 2){
-          this.searchPlanTypeSelected();
-          this.coverageList = this.service.coverages
-          this.canSave = false;
-          this.bconsultar = true;
+          if(this.service.cplan){
+            this.searchPlanTypeSelected();
+            this.coverageList = this.service.coverages
+            this.canSave = false;
+            this.bconsultar = true;
+          }else{
+            this.searchPlanRcvTypeSelected();
+            this.coverageList = this.service.coverages
+            this.canSave = false;
+            this.bconsultar = true;
+          }
         }else if(this.service.type == 1){
-          this.searchPlanTypeSelected();
-          this.isEdit = true;
-          this.canSave = false;
-          this.beditar = true;
+          if(this.service.cplan){
+            this.searchPlanTypeSelected();
+            this.coverageList = this.service.coverages
+            this.canSave = false;
+            this.beditar = true;
+          }else{
+            this.searchPlanRcvTypeSelected();
+            this.coverageList = this.service.coverages
+            this.canSave = false;
+            this.beditar = true;
+          }
         }
       }
     }
@@ -241,6 +255,59 @@ searchPlanTypeSelected(){
   });
 }
 
+searchPlanRcvTypeSelected(){
+  let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  let options = { headers: headers };
+  let params = {
+    cplan_rc: this.service.cplan_rc,
+    baceptado: 1
+  };
+  this.http.post(`${environment.apiUrl}/api/plan/search-type-service-selected-rcv`, params, options).subscribe((response : any) => {
+    if(response.data.status){
+      this.acceptedserviceTypeList = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.acceptedserviceTypeList.push({ 
+          ctiposervicio: response.data.list[i].ctiposervicio, 
+          xtiposervicio: response.data.list[i].xtiposervicio });
+      }
+      this.acceptedserviceTypeList.sort((a,b) => a.xtiposervicio > b.xtiposervicio ? 1 : -1);
+    }
+  },
+  (err) => {
+    let code = err.error.data.code;
+    let message;
+    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    this.alert.message = message;
+    this.alert.type = 'danger';
+    this.alert.show = true;
+  });
+  this.http.post(`${environment.apiUrl}/api/plan/search-service-selected-rcv`, params, options).subscribe((response : any) => {
+    if(response.data.status){
+      this.quantityList = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.quantityList.push({ 
+          cservicio: response.data.list[i].cservicio, 
+          xservicio: response.data.list[i].xservicio,
+          ncantidad: response.data.list[i].ncantidad
+        });
+      }
+      this.quantityList.sort((a,b) => a.xservicio > b.xservicio ? 1 : -1);
+    }
+  },
+  (err) => {
+    let code = err.error.data.code;
+    let message;
+    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    this.alert.message = message;
+    this.alert.type = 'danger';
+    this.alert.show = true;
+  });
+}
+
   editarRenderer = (params: any) => {
     const button = document.createElement('button');
     button.className = 'btn btn-success';
@@ -256,12 +323,21 @@ searchPlanTypeSelected(){
   editService(cservicio: number) {
     let quantity = {};
     if(this.service.type == 1){ 
-      quantity = { 
-        type: 1,
-        cservicio: cservicio,
-        cplan: this.service.cplan,
-        delete: false
-      };
+      if(this.service.cplan){
+        quantity = { 
+          type: 1,
+          cservicio: cservicio,
+          cplan: this.service.cplan,
+          delete: false
+        };
+      }else{
+        quantity = { 
+          type: 1,
+          cservicio: cservicio,
+          cplan_rc: this.service.cplan_rc,
+          delete: false
+        };
+      }
     }
     const modalRef = this.modalService.open(NumberOfServiceComponent);
     modalRef.componentInstance.quantity = quantity;
