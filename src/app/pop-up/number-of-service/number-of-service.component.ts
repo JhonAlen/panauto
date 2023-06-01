@@ -33,6 +33,78 @@ export class NumberOfServiceComponent implements OnInit {
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
       ncantidad: [''],
+      pservicio: [''],
+      mmaximocobertura: [''],
+      mdeducible: [''],
+    });
+
+    if(this.quantity){
+      if(this.quantity.type == 2){
+        this.canSave = true;
+      }else{
+        if(this.quantity.cplan){
+          this.searchQuantity();
+          this.canSave = true;
+        }else{
+          this.searchQuantityRcv();
+          this.canSave = true;
+        }
+
+      }
+    }
+  }
+
+  searchQuantity(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cplan: this.quantity.cplan,
+      cservicio: this.quantity.cservicio
+    };
+    this.http.post(`${environment.apiUrl}/api/plan/search-quantity`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.popup_form.get('ncantidad').setValue(response.data.ncantidad);
+        this.popup_form.get('pservicio').setValue(response.data.pservicio);
+        this.popup_form.get('mmaximocobertura').setValue(response.data.mmaximocobertura);
+        this.popup_form.get('mdeducible').setValue(response.data.mdeducible);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  searchQuantityRcv(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cplan_rc: this.quantity.cplan_rc,
+      cservicio: this.quantity.cservicio
+    };
+    this.http.post(`${environment.apiUrl}/api/plan/search-quantity-rcv`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.popup_form.get('ncantidad').setValue(response.data.ncantidad);
+        this.popup_form.get('pservicio').setValue(response.data.pservicio);
+        this.popup_form.get('mmaximocobertura').setValue(response.data.mmaximocobertura);
+        this.popup_form.get('mdeducible').setValue(response.data.mdeducible);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
     });
   }
 
@@ -41,11 +113,15 @@ export class NumberOfServiceComponent implements OnInit {
     this.loading = true;
 
     let cantidad = []
+    
     cantidad.push({
       cservicio: this.quantity.cservicio,
       xservicio: this.quantity.xservicio,
       baceptado: 1,
-      ncantidad: form.ncantidad
+      ncantidad: form.ncantidad,
+      pservicio: form.pservicio,
+      mmaximocobertura: form.mmaximocobertura,
+      mdeducible: form.mdeducible,
     })
 
     this.quantity = cantidad;

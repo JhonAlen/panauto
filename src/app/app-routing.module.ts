@@ -210,7 +210,8 @@ import { RenovationContractIndividualsComponent } from './subscription/renovatio
 
 const routes: Routes = [
  
-  { path: '', redirectTo: '/inicio', pathMatch: 'full'}, 
+  { path: '', redirectTo: '/sign-in', pathMatch: 'full'}, 
+  { path: 'sign-in', component: SignInComponent },
   { path: 'inicio', component: InicioComponent},
   { path: 'contact', component: ContactComponent},
   { path: 'qsomos', component: QsomosComponent},
@@ -218,8 +219,6 @@ const routes: Routes = [
   { path: 'service', component: ServicesComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'dasboard', component: DashboardComponent },
-  { path: 'sign-in', component: SignInComponent },
-
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
   // { path: 'subscription/renewal-individual-contracts', component: RenewalIndividualContractsComponent, canActivate: [AuthGuard] },

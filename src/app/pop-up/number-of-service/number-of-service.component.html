@@ -19,10 +19,45 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Cantidad de Servicio</label>
-                                    <input type="number" formControlName="ncantidad" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ncantidad').errors }" (change)="onSubmit(popup_form.value)">
+                                    <input type="number" formControlName="ncantidad" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ncantidad').errors }">
                                     <div *ngIf="submitted && popup_form.get('ncantidad').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('ncantidad').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Porcentaje</label>
+                                    <input type="number" formControlName="pservicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('pservicio').errors }">
+                                    <div *ngIf="submitted && popup_form.get('pservicio').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('pservicio').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Monto Máximo de Cobertura</label>
+                                    <input type="number" formControlName="mmaximocobertura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mmaximocobertura').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mmaximocobertura').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('mmaximocobertura').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Deducible</label>
+                                    <input type="number" formControlName="mdeducible" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mdeducible').errors }">
+                                    <div *ngIf="submitted && popup_form.get('mdeducible').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('mdeducible').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left: 1px;">
+                                <div class="col-sm-12 mt-2">
+                                    <button [disabled]="loading" class="btn company-detail-button btn-lg btn-block" type="submit" *ngIf="canSave">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        {{ "EVENTS.NOTIFICATIONS.SAVE" | translate }}
+                                    </button>
                                 </div>
                             </div>
                         </div>

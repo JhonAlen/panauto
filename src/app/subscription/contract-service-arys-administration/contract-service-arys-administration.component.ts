@@ -433,13 +433,14 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           this.xciudad = this.xciudadcliente;
         }
 
-        if(response.data.services){
-          for(let i = 0; i < response.data.services.length; i++){
-            this.serviceList.push({
-              cservicio: response.data.services[i].cservicio,
-              xservicio: response.data.services[i].xservicio,
-            })
+        if (response.data.services) {
+          for(let i = 0; i < response.data.services.length; i++) {
+              this.serviceList.push({
+                cservicio: response.data.services[i].cservicio,
+                xservicio: response.data.services[i].xservicio,
+              });
           }
+          console.log(this.serviceList)
         }
 
         this.createPDF();
@@ -512,21 +513,31 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   buildServiceBody() {
     let body = [];
     let dataRow = [];
+  
     for (let i = 0; i < this.serviceList.length; i++) {
-      if (dataRow.length === 3) {
+      const service = this.serviceList[i];
+      const cell = { text: service.xservicio, border: [true, false, true, false] };
+  
+      if (dataRow.length < 2) {
+        dataRow.push(cell);
+      } else {
+        dataRow.push(cell);
         body.push(dataRow);
-        dataRow = []
+        dataRow = [];
       }
-      if (dataRow.length === 2) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[false, false, true, false]})
-      }
+    }
+  
+    if (dataRow.length > 0) {
       if (dataRow.length === 1) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[true, false, true, false]});
+        dataRow.push({ text: '', border: [true, false, true, false] });
       }
-      if (dataRow.length === 0) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[true, false, false, false]});
+      while (dataRow.length < 3) {
+        dataRow.push({ text: '', border: [true, false, false, false] });
       }
-    };
+      body.push(dataRow);
+    } else if (this.serviceList.length % 3 === 1) {
+      body[body.length - 1][2].border[2] = true;
+    }
   
     return body;
   }
@@ -550,7 +561,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           table: {
             widths: [165, 216, 55, '*'],
             body: [
-              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\n${this.xtituloreporte}`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control\n\nEstatus', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccontratoflota}\n\n${this.estatus}`, border:[false, true, true, false]}]
+              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\nPANAUTO CLUB`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control\n\nEstatus', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccontratoflota}\n\n${this.estatus}`, border:[false, true, true, false]}]
             ]
           }
         },
@@ -613,7 +624,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           table: {
             widths: [24, 90, 40, 50, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Provincia:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Distrito:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -638,7 +649,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [20, 45, 80, 75, 70, 70, 50, '*'],
+            widths: [20, 45, 80, 75, 70, 70, 40, '*'],
             body: [
               [{text: 'Año:', bold: true, border: [true, false, false, true]}, {text: this.fano, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'Color:', bold: true, border: [false, false, false, true]}, {text: this.xcolor, border: [false, false, true, true]}]
             ]
