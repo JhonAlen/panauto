@@ -94,7 +94,7 @@ export class TaxDetailComponent implements OnInit {
       cpais: this.currentUser.data.cpais
     };
     //  this.http.post(`${environment.apiUrl}/api/tax/detail`, params, options).subscribe((response: any) => {
-    let request = await this.webService.detailVehicleType(params);
+    let request = await this.webService.detailTax(params);
     if (request.error) {
       this.alert.message = request.message;
       this.alert.type = 'danger';
