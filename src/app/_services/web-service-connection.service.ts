@@ -3559,7 +3559,7 @@ export class WebServiceConnectionService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/v2/payment-methodology/production/update`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/payment-type/update`, params, options).toPromise();
       return response;
     }
     catch (err) {
