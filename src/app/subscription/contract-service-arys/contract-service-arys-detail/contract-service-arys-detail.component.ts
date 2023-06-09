@@ -191,6 +191,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
       ccorregimiento: [''],
       ncobro: [''],
       brcv: [false],
+      xpais_proveniente: [''],
       cplan_rc: [''],
     });
     this.search_form.get('xclave_club').disable();
@@ -694,6 +695,7 @@ async getModeloData(event){
         femision: form.femision,
         xzona_postal: form.xzona_postal,
         cplan_rc: this.search_form.get('cplan_rc').value,
+        xpais_proveniente: this.search_form.get('xpais_proveniente').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {

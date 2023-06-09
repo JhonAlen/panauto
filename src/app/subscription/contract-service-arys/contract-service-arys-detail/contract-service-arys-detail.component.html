@@ -268,6 +268,15 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-md-4 mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label required">País Proveniente</label>
+                      <input type="text" formControlName="xpais_proveniente" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xpais_proveniente').errors }" />
+                      <div *ngIf="submitted && search_form.get('xpais_proveniente').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('xpais_proveniente').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Color</label>

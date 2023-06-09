@@ -148,6 +148,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   cancellationData: {};
   banular: boolean = false;
   estatus;
+  serviceTypeList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder,
               private authenticationService : AuthenticationService,
@@ -366,6 +367,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.xtipomodelovehiculo = response.data.xtipomodelovehiculo;
         this.ncapacidadcargavehiculo = response.data.ncapacidadcargavehiculo;
         this.ncapacidadpasajerosvehiculo = response.data.ncapacidadpasajerosvehiculo;
+        this.ncapacidadpasajeros = response.data.ncapacidadpasajeros;
         this.xplancoberturas = response.data.xplancoberturas;
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
@@ -438,9 +440,19 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
               this.serviceList.push({
                 cservicio: response.data.services[i].cservicio,
                 xservicio: response.data.services[i].xservicio,
+                ctiposervicio: response.data.services[i].ctiposervicio,
+                xtiposervicio: response.data.services[i].xtiposervicio,
               });
           }
-          console.log(this.serviceList)
+        }
+
+        if (response.data.servicesType) {
+          for(let i = 0; i < response.data.servicesType.length; i++) {
+              this.serviceTypeList.push({
+                ctiposervicio: response.data.servicesType[i].ctiposervicio,
+                xtiposervicio: response.data.servicesType[i].xtiposervicio,
+              });
+          }
         }
 
         this.createPDF();
@@ -511,40 +523,33 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   }
 
   buildServiceBody() {
+    let uniqueTiposervicio = [...new Set(this.serviceList.map((service) => service.xtiposervicio))];
     let body = [];
-    let dataRow = [];
   
-    for (let i = 0; i < this.serviceList.length; i++) {
-      const service = this.serviceList[i];
-      const cell = { text: service.xservicio, border: [true, false, true, false] };
+    uniqueTiposervicio.forEach((tiposervicio, index) => {
+      const servicios = this.serviceList.filter((service) => service.xtiposervicio === tiposervicio);
   
-      if (dataRow.length < 2) {
-        dataRow.push(cell);
-      } else {
-        dataRow.push(cell);
-        body.push(dataRow);
-        dataRow = [];
-      }
-    }
-  
-    if (dataRow.length > 0) {
-      if (dataRow.length === 1) {
-        dataRow.push({ text: '', border: [true, false, true, false] });
-      }
-      while (dataRow.length < 3) {
-        dataRow.push({ text: '', border: [true, false, false, false] });
-      }
-      body.push(dataRow);
-    } else if (this.serviceList.length % 3 === 1) {
-      body[body.length - 1][2].border[2] = true;
-    }
+      servicios.forEach((service, serviceIndex) => {
+        // Agregar fila para el tipo de servicio
+        if (serviceIndex === 0) {
+          body.push([{ text: tiposervicio, border: [true, false, true, false], bold: true, margin: [100, 0, 0, 0] }, { text: service.xservicio, border: [false, false, true, false] }]);
+        } else {
+          body.push([{ text: '', border: [true, false, true, false] }, { text: service.xservicio, border: [false, false, true, false], margin: [-1, 0, 0, 0] }]);
+        }
+      });
+    });
   
     return body;
   }
 
+
   createPDF(){
     try{
     const pdfDefinition: any = {
+      info: {
+        title: `Certificado - ${this.xnombrepropietario} ${this.xapellidopropietario} N° ${this.ccontratoflota}`,
+        subject: `Certificado - ${this.xnombrepropietario} ${this.xapellidopropietario} N° ${this.ccontratoflota}`
+      },
       footer: function(currentPage, pageCount) { 
         return {
           table: {
@@ -649,7 +654,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [20, 45, 80, 75, 70, 70, 40, '*'],
+            widths: [20, 45, 80, 75, 70, 70, 20, '*'],
             body: [
               [{text: 'Año:', bold: true, border: [true, false, false, true]}, {text: this.fano, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'Color:', bold: true, border: [false, false, false, true]}, {text: this.xcolor, border: [false, false, true, true]}]
             ]
@@ -676,14 +681,23 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [170, 170, '*'],
+            widths: ['*', '*'],
+            body: [
+              [{text: 'TIPOS DE SERVICIOS', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'SERVICIOS', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*', '*'],
             body: this.buildServiceBody()
           }
         },
         {
           style: 'data',
           table: {
-            widths: [171, 100, 60, '*'],
+            widths: [230, 100, 60, '*'],
             body: [
               [{text: 'Costo Total de Plan', colSpan: 3, alignment: 'right', fillColor: '#ababab', bold: true, border: [true, true, true, true]}, {}, {}, {text: `USD ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mmonto_plan)}`, alignment: 'right', bold: true, fillColor: '#ababab', border: [false, true, true, true]}],
             ]
@@ -710,7 +724,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     pdf.open();
     this.search_form.disable()
     
-    location.reload();
+    // location.reload();
   }
     catch(err){console.log(err.message)}
   }
