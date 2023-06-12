@@ -141,6 +141,8 @@ export class ContractServiceArysDetailComponent implements OnInit {
   townshipList: any[] = [];
   bactivar_rcv: boolean = false;
   planRcvList: any[] = [];
+  documentTypeList: any[] = [];
+  bactivar_casco: boolean = false;
 
   
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -193,6 +195,9 @@ export class ContractServiceArysDetailComponent implements OnInit {
       brcv: [false],
       xpais_proveniente: [''],
       cplan_rc: [''],
+      xcobertura: [''],
+      msuma_casco: [''],
+      mprima_casco: ['']
     });
     this.search_form.get('xclave_club').disable();
     this.currentUser = this.authenticationService.currentUserValue;
@@ -246,6 +251,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.ClaseData();
     this.getTypeVehicle();
     this.getCorredorData();
+    this.getDocumentType();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -451,6 +457,24 @@ async getModeloData(event){
       },);
   }
 
+  getDocumentType(){
+    let params =  {
+      cpais: this.currentUser.data.cpais 
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/document-type`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.documentTypeList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.documentTypeList.push({ 
+            id: response.data.list[i].ctipodocidentidad,
+            value: response.data.list[i].xtipodocidentidad,
+          });
+        }
+        this.documentTypeList.sort((a, b) => a.value > b.value ? 1 : -1)
+      }
+      },);
+  }
+
   searchVersion(event){
     this.search_form.get('cversion').setValue(event.control)
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
@@ -627,7 +651,7 @@ async getModeloData(event){
   }
 
   changeRcv(){
-    if(this.search_form.get('brcv').value == true){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
       this.bactivar_rcv = true;
       let params;
       this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
@@ -642,7 +666,24 @@ async getModeloData(event){
           this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
       }, );
+    }else if(this.search_form.get('xcobertura').value == 'AMPLIA'){
+      this.bactivar_rcv = true;
+      this.bactivar_casco = true;
+      let params;
+      this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.planRcvList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.planRcvList.push({ 
+              id: response.data.list[i].cplan_rc,
+              value: response.data.list[i].xplan_rc,
+            });
+          }
+          this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }, );
     }else{
+      this.bactivar_casco = false;
       this.bactivar_rcv = false;
     }
   }
@@ -686,7 +727,6 @@ async getModeloData(event){
         xserialmotor: form.xserialmotor,  
         cuso: form.cuso,
         ctipovehiculo: form.ctipovehiculo,
-        cclase: form.cclase,
         fdesde_pol: form.fdesde_pol,
         fhasta_pol: form.fhasta_pol,
         ccorredor: form.ccorredor,
@@ -696,6 +736,9 @@ async getModeloData(event){
         xzona_postal: form.xzona_postal,
         cplan_rc: this.search_form.get('cplan_rc').value,
         xpais_proveniente: this.search_form.get('xpais_proveniente').value,
+        xcobertura: this.search_form.get('xcobertura').value,
+        msuma_casco: this.search_form.get('msuma_casco').value,
+        mprima_casco: this.search_form.get('mprima_casco').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {

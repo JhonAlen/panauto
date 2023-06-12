@@ -23,15 +23,13 @@
              <div class="card-header company-card-header"><h5 class="card-title">Datos Personales</h5></div>
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 mb-4 pb-2">
+                  <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev2">Tipo Doc. Ide</label>
-                      <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors } " >
-                        <option value="DNI">DNI</option>
-                        <option value="P">P</option>
-                        <option value="RUC">RUC</option>
-
-                      </select>                      
+                      <label class="form-label required" for="form3Examplev3">Tipo Doc. Ide</label>
+                      <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors }">
+                        <option></option>
+                        <option *ngFor="let document of documentTypeList" value="{{ document.value }}">{{ document.value }}</option>
+                      </select>                     
                       <div *ngIf="submitted && search_form.get('icedula').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('icedula').errors.required">Se requiere completar el campo</div>
                       </div>
@@ -156,7 +154,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-3 mb-4 pb-2">
+                  <!-- <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline ">
                       <label class="form-label required" for="form3Examplea2"> Zona Postal</label>
                       <input type="text" formControlName="xzona_postal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xzona_postal').errors }" />
@@ -164,7 +162,7 @@
                         <div *ngIf="search_form.get('xzona_postal').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline ">
                       <label class="form-label required" for="form3Examplea2">Dirección Fiscal</label>
@@ -332,7 +330,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 mb-4 pb-2">
+                  <!-- <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">                        
                       <label class="form-label required" for="form3Examplev4">Clase</label>
                       <select formControlName="cclase" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cclase').errors } ">
@@ -343,7 +341,7 @@
                         <div *ngIf="search_form.get('cclase').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -394,7 +392,38 @@
                         </div>
                     </div>
                 </div>
-                  <div class="col-sm-12 col-md-4">
+                <div class="col-md-3 mb-4 pb-2">
+                  <div class="form-outline">                        
+                    <label class="form-label required" for="form3Examplev4">Cobertura</label>
+                    <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } " (change)="changeRcv()">
+                      <option value="RCV">RCV</option>
+                      <option value="AMPLIA">AMPLIA</option>
+                      <!-- <option value="PERDIDA">PERDIDA TOTAL</option> -->
+                    </select>                         
+                    <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
+                      <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2 mb-4 pb-2" *ngIf="bactivar_casco">
+                  <div class="form-outline ">
+                    <label class="form-label required" for="form3Examplea8">Suma Asegurada de Casco</label>
+                    <input type="text" formControlName="msuma_casco" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('msuma_casco').errors }" />
+                    <div *ngIf="submitted && search_form.get('msuma_casco').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('msuma_casco').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2 mb-4 pb-2" *ngIf="bactivar_casco">
+                  <div class="form-outline ">
+                    <label class="form-label required" for="form3Examplea8">Prima de Casco</label>
+                    <input type="text" formControlName="mprima_casco" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('mprima_casco').errors }" />
+                    <div *ngIf="submitted && search_form.get('mprima_casco').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('mprima_casco').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-12 col-md-4">
                     <div class="form-check form-switch">
                         <label style="margin-left: 78px;margin-top: 13px;">¿Posee RCV?</label>
                         <div class="row">
@@ -406,8 +435,8 @@
                             <div *ngIf="search_form.get('brcv').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4 pb-2" *ngIf="bactivar_rcv">
+                </div> -->
+                <div class="col-md-3 mb-4 pb-2" *ngIf="bactivar_rcv">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev4">Planes RCV</label>
                     <select formControlName="cplan_rc" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan_rc').errors }">
