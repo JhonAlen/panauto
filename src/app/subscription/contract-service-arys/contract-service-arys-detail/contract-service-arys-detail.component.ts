@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -27,7 +27,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
   search_form : UntypedFormGroup;
   loading: boolean = false;
   submitted: boolean = false;
-  clear: boolean = true;
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
@@ -90,7 +89,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
   bpago: boolean = false;
   pagos: boolean = false;
   bpagarubii: boolean = false;
-  bemitir: boolean = false;
   bpagomanual: boolean = false;
   fnacimientopropietario: string
   fnacimientopropietario2: string;
@@ -143,6 +141,10 @@ export class ContractServiceArysDetailComponent implements OnInit {
   planRcvList: any[] = [];
   documentTypeList: any[] = [];
   bactivar_casco: boolean = false;
+  months: string[] = [];
+  showSuccess: boolean = false;
+  showError: boolean = false;
+  alertMessage: string = '';
 
   
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -151,7 +153,8 @@ export class ContractServiceArysDetailComponent implements OnInit {
               private router: Router,
               private http: HttpClient,
               private modalService : NgbModal,
-              private webService: WebServiceConnectionService) { }
+              private webService: WebServiceConnectionService,
+              ) { }
 
   async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
@@ -197,7 +200,8 @@ export class ContractServiceArysDetailComponent implements OnInit {
       cplan_rc: [''],
       xcobertura: [''],
       msuma_casco: [''],
-      mprima_casco: ['']
+      mprima_casco: [''],
+      xmes: ['']
     });
     this.search_form.get('xclave_club').disable();
     this.currentUser = this.authenticationService.currentUserValue;
@@ -229,17 +233,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-  
-      if(this.currentUser.data.crol == 18){
-        this.bemitir = true;
-      }
-      else if(this.currentUser.data.crol == 17){
-        this.bemitir = true;
-      }else if(this.currentUser.data.crol == 3){
-        this.bemitir = true;
-      }else{
-        this.bemitir = false;
-      }
     }
   }
 
@@ -252,6 +245,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.getTypeVehicle();
     this.getCorredorData();
     this.getDocumentType();
+    this.getMonths();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -475,6 +469,23 @@ async getModeloData(event){
       },);
   }
 
+  getMonths(){
+    this.months = [
+      'ENERO',
+      'FEBRERO',
+      'MARZO',
+      'ABRIL',
+      'MAYO',
+      'JUNIO',
+      'JULIO',
+      'AGOSTO',
+      'SEPTIEMBRE',
+      'OCTUBRE',
+      'NOVIEMBRE',
+      'DICIEMBRE'
+    ];
+  }
+
   searchVersion(event){
     this.search_form.get('cversion').setValue(event.control)
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
@@ -689,16 +700,27 @@ async getModeloData(event){
   }
 
   onSubmit(form){
-    this.clear = false;
     this.submitted = true;
   
     this.submitted = true;
     this.loading = true;
     this.search_form.disable();
+    
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+
+    if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
+      this.alert.show = true;
+      this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+      this.showError = true;
+      setTimeout(() => {
+        this.showError = false;
+      }, 3000);
+      this.loading = false;
+    }
+
     let params = {
         icedula: this.search_form.get('icedula').value,
         xrif_cliente: form.xrif_cliente,
@@ -739,22 +761,32 @@ async getModeloData(event){
         xcobertura: this.search_form.get('xcobertura').value,
         msuma_casco: this.search_form.get('msuma_casco').value,
         mprima_casco: this.search_form.get('mprima_casco').value,
+        xmes: this.search_form.get('xmes').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
-          window.alert(`Se ha generado un contrato Arys, por el beneficiario ${form.xnombre + ' ' + form.xapellido}`)
-          location.reload()
+          this.alert.show = true;
+          this.alertMessage = `Se ha generado el contrato exitosamente, por el beneficiario ${form.xnombre.toUpperCase()} ${form.xapellido.toUpperCase()}`;
+          this.showSuccess = true;
+          setTimeout(() => {
+            this.showSuccess = false;
+            location.reload();
+          }, 3000);
         }
       },
       (err) => {
         let code = err.error.data.code;
+        console.log(code)
         let message;
         if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
         else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
         this.alert.show = true;
+        this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 3000);
         this.loading = false;
       })
     this.loading = false;
