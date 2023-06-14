@@ -77,3 +77,8 @@ padding-top: 3rem !important;
   .alert-fixed-top.show {
     transform: translateY(0);
   }
+
+.mat-drawer-container {
+    color: #000000de;
+    background-color: transparent;
+}
