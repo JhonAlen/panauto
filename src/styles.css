@@ -65,3 +65,7 @@ padding-top: 3rem !important;
 .modal-content {
     width: 102%;
 }  
+
+.mat-drawer-container {
+    color: #000000de;
+}
