@@ -762,6 +762,7 @@ async getModeloData(event){
         msuma_casco: this.search_form.get('msuma_casco').value,
         mprima_casco: this.search_form.get('mprima_casco').value,
         xmes: this.search_form.get('xmes').value,
+        xclave_club: this.search_form.get('xclave_club').value,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {

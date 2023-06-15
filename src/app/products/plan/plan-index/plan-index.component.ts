@@ -148,8 +148,11 @@ export class PlanIndexComponent implements OnInit {
   email(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
-    let params;
-    this.http.post(`${environment.apiUrl}/api/emailer`, params, options).subscribe((response : any) => {
+    let params = {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+    this.http.post(`${environment.apiUrl}/api/emailer/emailService`, params, options).subscribe((response : any) => {
 
     },
     (err) => {
