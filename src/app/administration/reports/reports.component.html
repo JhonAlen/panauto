@@ -50,7 +50,7 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group">
                                     <label>Hasta</label>
-                                    <input type="date" formControlName="fhasta" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta').errors }" (change)="onChangeDateFrom()">
+                                    <input type="date" formControlName="fhasta" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta').errors }" (change)="onChangeDateUntil()">
                                     <div *ngIf="submitted && search_form.get('fhasta').errors" class="invalid-feedback">
                                     </div>
                                 </div>

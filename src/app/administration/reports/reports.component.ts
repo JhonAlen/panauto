@@ -184,7 +184,6 @@ export class ReportsComponent implements OnInit {
           }
           let monto = 0
           // this.mtotal = response.data.receipts.reduce((acc, curr) => acc + curr.mprima, 0);
-
         }
         if (this.receiptList) {
           this.generarReporte = true;
@@ -266,6 +265,8 @@ export class ReportsComponent implements OnInit {
   }
 
   createPDF() {
+    this.mtotalB = this.mtotalB ? this.mtotalB : 0
+    this.mtotalUSD = this.mtotalUSD ? this.mtotalUSD : 0
     const tipoPrimas = this.search_form.get('xprima').value;
     const pdfDefinition: any = {
       content: [
@@ -518,7 +519,7 @@ export class ReportsComponent implements OnInit {
           width: 600,
           height: 20,
           margin: [0, 19, 0, 0],
-          image: footerLinePDF
+          image: footerLinePDF,
         };
       },
     }
