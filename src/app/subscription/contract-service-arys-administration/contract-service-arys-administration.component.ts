@@ -126,6 +126,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   ctiporecibo: number;
   mpreciovehiculo: number;
   ctipovehiculo: number;
+  xdocidentidadcorredor: number;
+  xtelefonocorredor: number;
   xtipomodelovehiculo: string;
   ncapacidadcargavehiculo: number;
   ncapacidadpasajerosvehiculo: number;
@@ -369,13 +371,15 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.ncapacidadpasajerosvehiculo = response.data.ncapacidadpasajerosvehiculo;
         this.ncapacidadpasajeros = response.data.ncapacidadpasajeros;
         this.xplancoberturas = response.data.xplancoberturas;
-        this.xplanservicios = response.data.xplanservicios;
+        this.xplanservicios = response.data.xplan;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
         this.xzona_postal_propietario = response.data.xzona_postal_propietario;
         this.estatus = response.data.xestadocontrato;
         this.mmonto_plan = response.data.mtotal_plan
         this.femision = response.data.femision;
+        this.xdocidentidadcorredor = response.data.xdocidentidadcorredor;
+        this.xtelefonocorredor = response.data.xtelefonocorredor;
         let fechaInicio = this.femision;
         this.fdesde = response.data.femision;
         const fecha = new Date(fechaInicio); // Convertimos la cadena a objeto Date
@@ -591,18 +595,18 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [130, '*'],
+            widths: [130, 240, '*'],
             body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', border: [false, false, true, false]}]
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', border: [false, false, true, false]}, {text: 'Datos del Plan', alignment: 'center', fillColor: '#ababab', bold: true, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [70, 51, 80, 50, 80, '*'],
+            widths: [70, 51, 50, 40, 80, 30],
             body: [
-              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Monto Total del Plan', bold: true, border: [false, false, false, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
+              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Monto', bold: true, border: [false, false, false, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
             ]
           }
         },
@@ -638,6 +642,24 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
+              [{text: 'DATOS DEL AGENTE AUTORIZADO', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [70, 100, 100, 100, 35, '*'],
+            body: [
+              [{text: 'Agente Autorizado:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecorredor, border: [false, false, false, false]}, {text: 'Documento de Identidad:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcorredor, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocorredor, border: [false, false, true, false]} ]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
               [{text: 'DATOS DEL VEHÍCULO', alignment: 'center', fillColor: '#ababab', bold: true}]
             ]
           }
@@ -663,9 +685,27 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [55, 100, 30, 120, 35, '*'],
+            widths: [55, 60, 30, 105, 35, 60, 50, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, false]}, {text: this.ncapacidadpasajeros, border: [false, false, false, false]}, {text: 'TIPO:', bold: true, border: [false, false, false, false]}, {text: this.xtipovehiculo, border: [false, false, false, false]}, {text: 'PLACA:', bold: true, border: [false, false, false, false]}, {text: this.xplaca, border: [false, false, true, false]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, false]}, {text: this.ncapacidadpasajeros, border: [false, false, false, false]}, {text: 'TIPO:', bold: true, border: [false, false, false, false]}, {text: this.xtipovehiculo, border: [false, false, false, false]}, {text: 'PLACA:', bold: true, border: [false, false, false, false]}, {text: this.xplaca, border: [false, false, false, false]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, false]}, {text: this.nkilometraje, border: [false, false, true, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'DESCRIPCIÓN DEL PLAN', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [200, 80, 40, '*'],
+            body: [
+              [{text: ' ', bold: true, border: [true, false, false, false]}, {text: 'PLAN:', bold: true, border: [false, false, false, false]}, {text: this.xplanservicios, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, true, false]}]
             ]
           }
         },
