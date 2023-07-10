@@ -22,6 +22,7 @@ export class TracingIndexComponent implements OnInit {
   fleetNotificationTracingList: any[] = [];
   fleetNotificationThirdpartyTracingList: any[] = [];
   clubServiceRequestTracingList: any[] = [];
+  fleetNotificationTracingList2: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -31,7 +32,7 @@ export class TracingIndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.search_form = this.formBuilder.group({
-      btodos: [true]
+      xvencimiento: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -63,7 +64,71 @@ export class TracingIndexComponent implements OnInit {
     }
   }
 
-  onSubmit(form){
+  searchTracing(){
+    if(this.search_form.get('xvencimiento').value){
+      this.onSubmit();
+    }
+  }
+
+  editarRenderer = () => {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    
+    const formattedDate = year + '-' + month.toString().padStart(2, '0') + '-' + day.toString().padStart(2, '0');
+  
+    const container = document.createElement('div');
+    let button;
+    let color;
+    let text;
+  
+    if (this.search_form.get('xvencimiento').value == 'DIA') {
+      button = document.createElement('button');
+      button.className = 'btn btn-warning';
+      color = 'btn btn-warning';
+      text = '';
+    } else if (this.search_form.get('xvencimiento').value == 'ATRASADO') {
+      button = document.createElement('button');
+      button.className = 'btn btn-danger';
+      color = 'btn btn-danger';
+      text = '';
+    } else if (this.search_form.get('xvencimiento').value == 'VENCER') {
+      button = document.createElement('button');
+      button.className = 'btn btn-success';
+      color = 'btn btn-success';
+      text = '';
+    } else if (this.search_form.get('xvencimiento').value == 'TODOS') {
+      if (this.fleetNotificationTracingList) {
+        for (let i = 0; i < this.fleetNotificationTracingList.length; i++) {
+          if (this.fleetNotificationTracingList[i].fseguimiento == formattedDate) {
+            button = document.createElement('button');
+            color = 'btn btn-warning';
+            text = '';
+            break;
+          } else if (this.fleetNotificationTracingList[i].fseguimiento < formattedDate) {
+            button = document.createElement('button');
+            color = 'btn btn-danger';
+            text = '';
+            break;
+          } else if (this.fleetNotificationTracingList[i].fseguimiento > formattedDate) {
+            button = document.createElement('button');
+            color = 'btn btn-success';
+            text = '';
+            break;
+          }
+        }
+      }
+    }
+  
+    button.textContent = text;
+    button.className = color;
+    container.appendChild(button);
+  
+    return container;
+  }
+
+  onSubmit(){
     this.submitted = true;
     this.loading = true;
     if (this.search_form.invalid) {
@@ -73,88 +138,30 @@ export class TracingIndexComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      permissionData: {
-        cusuario: this.currentUser.data.cusuario,
-        cmodulo: 91
-      },
-      //cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
       cusuario: this.currentUser.data.cusuario,
-      btodos: form.btodos ? form.btodos : undefined,
+      xvencimiento: this.search_form.get('xvencimiento').value,
     }
-    console.log(params);
-    console.log('hola');
-    this.http.post(`${environment.apiUrl}/api/v2/tracing/production/search`, params, options).subscribe((response : any) => {
-      console.log('si paso');
-      if(response.data.status){
-        console.log(response.data);
-        this.fleetNotificationTracingList = [];
-        for(let i = 0; i < response.data.fleetNotificationTracings.length; i++){
-          let dateFormat = new Date(response.data.fleetNotificationTracings[i].fseguimientonotificacion);
-          let dayFormat = `${dateFormat.getFullYear()}-${("0" + (dateFormat.getMonth() + 1)).slice(-2)}-${("0" + dateFormat.getDate()).slice(-2)}`;
-          let timeFormat = `${("0" + dateFormat.getHours()).slice(-2)}:${("0" + dateFormat.getMinutes()).slice(-2)}`;
+    this.fleetNotificationTracingList = [];
+    this.http.post(`${environment.apiUrl}/api/tracing/search`, params, options).subscribe((response : any) => {
+      if (response.data.status) {
+        for (let i = 0; i < response.data.list.length; i++) {
           this.fleetNotificationTracingList.push({
-            cgrid: i,
-            create: false,
-            cnotificacion: response.data.fleetNotificationTracings[i].cnotificacion,
-            cseguimientonotificacion: response.data.fleetNotificationTracings[i].cseguimientonotificacion,
-            ctiposeguimiento: response.data.fleetNotificationTracings[i].ctiposeguimiento,
-            xtiposeguimiento: response.data.fleetNotificationTracings[i].xtiposeguimiento,
-            cmotivoseguimiento: response.data.fleetNotificationTracings[i].cmotivoseguimiento,
-            xmotivoseguimiento: response.data.fleetNotificationTracings[i].xmotivoseguimiento,
-            fdia: dayFormat,
-            fhora: timeFormat,
-            fseguimientonotificacion: dateFormat,
-            bcerrado: response.data.fleetNotificationTracings[i].bcerrado ? response.data.fleetNotificationTracings[i].bcerrado : false,
-            xcerrado: response.data.fleetNotificationTracings[i].bcerrado ? this.translate.instant("DROPDOWN.CLOSE") : this.translate.instant("DROPDOWN.OPEN"),
-            xobservacion: response.data.fleetNotificationTracings[i].xobservacion
+            cnotificacion: response.data.list[i].cnotificacion,
+            xtiposeguimiento: response.data.list[i].xtiposeguimiento,
+            xmotivoseguimiento: response.data.list[i].xmotivoseguimiento,
+            bcerrado: response.data.list[i].bcerrado,
+            xobservacion: response.data.list[i].xobservacion,
+            fseguimiento: response.data.list[i].fseguimiento,
           });
-        }
-        this.fleetNotificationThirdpartyTracingList = [];
-        for(let i = 0; i < response.data.fleetNotificationThirdpartyTracings.length; i++){
-          let dateFormat = new Date(response.data.fleetNotificationThirdpartyTracings[i].fseguimientotercero);
-          let dayFormat = `${dateFormat.getFullYear()}-${("0" + (dateFormat.getMonth() + 1)).slice(-2)}-${("0" + dateFormat.getDate()).slice(-2)}`;
-          let timeFormat = `${("0" + dateFormat.getHours()).slice(-2)}:${("0" + dateFormat.getMinutes()).slice(-2)}`;
-          this.fleetNotificationThirdpartyTracingList.push({
-            cgrid: i,
-            create: false,
-            cnotificacion: response.data.fleetNotificationThirdpartyTracings[i].cnotificacion,
-            cseguimientotercero: response.data.fleetNotificationThirdpartyTracings[i].cseguimientotercero,
-            xnombre: response.data.fleetNotificationThirdpartyTracings[i].xnombre,
-            xapellido: response.data.fleetNotificationThirdpartyTracings[i].xapellido,
-            ctiposeguimiento: response.data.fleetNotificationThirdpartyTracings[i].ctiposeguimiento,
-            xtiposeguimiento: response.data.fleetNotificationThirdpartyTracings[i].xtiposeguimiento,
-            cmotivoseguimiento: response.data.fleetNotificationThirdpartyTracings[i].cmotivoseguimiento,
-            xmotivoseguimiento: response.data.fleetNotificationThirdpartyTracings[i].xmotivoseguimiento,
-            fdia: dayFormat,
-            fhora: timeFormat,
-            fseguimientotercero: dateFormat,
-            bcerrado: response.data.fleetNotificationThirdpartyTracings[i].bcerrado ? response.data.fleetNotificationThirdpartyTracings[i].bcerrado : false,
-            xcerrado: response.data.fleetNotificationThirdpartyTracings[i].bcerrado ? this.translate.instant("DROPDOWN.CLOSE") : this.translate.instant("DROPDOWN.OPEN"),
-            xobservacion: response.data.fleetNotificationThirdpartyTracings[i].xobservacion
-          });
-        }
-        this.clubServiceRequestTracingList = [];
-        for(let i = 0; i < response.data.clubServiceRequestTracings.length; i++){
-          let dateFormat = new Date(response.data.clubServiceRequestTracings[i].fseguimientosolicitudservicio);
-          let dayFormat = `${dateFormat.getFullYear()}-${("0" + (dateFormat.getMonth() + 1)).slice(-2)}-${("0" + dateFormat.getDate()).slice(-2)}`;
-          let timeFormat = `${("0" + dateFormat.getHours()).slice(-2)}:${("0" + dateFormat.getMinutes()).slice(-2)}`;
-          this.clubServiceRequestTracingList.push({
-            cgrid: i,
-            create: false,
-            csolicitudservicio: response.data.clubServiceRequestTracings[i].csolicitudservicio,
-            cseguimientosolicitudservicio: response.data.clubServiceRequestTracings[i].cseguimientosolicitudservicio,
-            ctiposeguimiento: response.data.clubServiceRequestTracings[i].ctiposeguimiento,
-            xtiposeguimiento: response.data.clubServiceRequestTracings[i].xtiposeguimiento,
-            cmotivoseguimiento: response.data.clubServiceRequestTracings[i].cmotivoseguimiento,
-            xmotivoseguimiento: response.data.clubServiceRequestTracings[i].xmotivoseguimiento,
-            fdia: dayFormat,
-            fhora: timeFormat,
-            fseguimientosolicitudservicio: dateFormat,
-            bcerrado: response.data.clubServiceRequestTracings[i].bcerrado ? response.data.clubServiceRequestTracings[i].bcerrado : false,
-            xcerrado: response.data.clubServiceRequestTracings[i].bcerrado ? this.translate.instant("DROPDOWN.CLOSE") : this.translate.instant("DROPDOWN.OPEN"),
-            xobservacion: response.data.clubServiceRequestTracings[i].xobservacion
-          });
+          if (this.fleetNotificationTracingList[i].fseguimiento) {
+            const element = this.editarRenderer(); // Llama a la función editarRenderer()
+
+            // Agrega el elemento al DOM o haz lo que necesites con él
+            // Por ejemplo, puedes agregarlo a un contenedor existente en tu HTML
+            const container = document.getElementById('container');
+            container.appendChild(element);
+          }
         }
       }
       this.loading = false;

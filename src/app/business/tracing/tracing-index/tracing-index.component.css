@@ -7,3 +7,42 @@ footer{
 h3,h6{
     color: white;
 }
+.legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Alinear a la derecha */
+    margin-top: 10px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio entre los elementos */
+  }
+  
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    align-self: flex-start; /* Alinear en la parte superior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .red {
+    background-color: #dc3545;
+  }
+  
+  .yellow {
+    background-color: #ffc107;
+  }
+  
+  .green {
+    background-color: #28a745;
+  }
+  
+  .color-label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
