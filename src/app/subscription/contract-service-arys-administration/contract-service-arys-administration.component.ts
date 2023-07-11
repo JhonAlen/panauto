@@ -595,7 +595,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [130, 240, '*'],
+            widths: [130, 190, '*'],
             body: [
               [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', border: [false, false, true, false]}, {text: 'Datos del Plan', alignment: 'center', fillColor: '#ababab', bold: true, border: [false, false, true, false]}]
             ]
@@ -604,9 +604,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [70, 51, 50, 40, 80, 30],
+            widths: [70, 51, 50, 40, 82, 77, '*'],
             body: [
-              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Monto', bold: true, border: [false, false, false, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
+              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xplanservicios, border: [true, false, true, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
             ]
           }
         },
@@ -696,24 +696,6 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'DESCRIPCIÓN DEL PLAN', alignment: 'center', fillColor: '#ababab', bold: true}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: [200, 80, 40, '*'],
-            body: [
-              [{text: ' ', bold: true, border: [true, false, false, false]}, {text: 'PLAN:', bold: true, border: [false, false, false, false]}, {text: this.xplanservicios, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, true, false]}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
               [{text: 'DESCRIPCIÓN DE LOS SERVICIOS', alignment: 'center', fillColor: '#ababab', bold: true}]
             ]
           }
@@ -764,7 +746,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     pdf.open();
     this.search_form.disable()
     
-    // location.reload();
+    location.reload();
   }
     catch(err){console.log(err.message)}
   }
