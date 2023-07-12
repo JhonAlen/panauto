@@ -82,7 +82,8 @@ export class CollectionIndexComponent implements OnInit {
     let params = {
       ccompania: this.currentUser.data.ccompania,
       xplaca: form.xplaca,
-      ccorredor: this.currentUser.data.ccorredor
+      ccorredor: this.currentUser.data.ccorredor,
+      ccanal: this.currentUser.data.ccanal
     }
     this.http.post(`${environment.apiUrl}/api/administration-collection/search`, params, options).subscribe((response : any) => {
       if(response.data.list){
@@ -91,8 +92,8 @@ export class CollectionIndexComponent implements OnInit {
           this.collectionList.push({ 
             crecibo: response.data.list[i].crecibo,
             clote: response.data.list[i].clote,
-            fdesde_pol: new Date(response.data.list[i].fdesde_pol).toISOString().substring(0, 10),
-            fhasta_pol: new Date(response.data.list[i].fhasta_pol).toISOString().substring(0, 10),
+            fdesde_pol: response.data.list[i].fdesde_pol,
+            fhasta_pol: response.data.list[i].fhasta_pol,
             xnombrepropietario: response.data.list[i].xnombrepropietario,
             cestatusgeneral: response.data.list[i].cestatusgeneral,
             xestatusgeneral: response.data.list[i].xestatusgeneral,

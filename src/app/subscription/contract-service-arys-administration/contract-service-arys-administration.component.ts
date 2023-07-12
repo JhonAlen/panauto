@@ -198,6 +198,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     });
     
     this.currentUser = this.authenticationService.currentUserValue;
+
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -232,7 +233,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   initializeDropdownDataRequest(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
-    let params;
+    let params = {
+      ccanal: this.currentUser.data.ccanal
+    };
     this.http.post(`${environment.apiUrl}/api/contract-arys/search-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
       if(response.data.status){

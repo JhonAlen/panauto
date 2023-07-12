@@ -143,6 +143,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
   documentTypeList: any[] = [];
   bactivar_casco: boolean = false;
   months: string[] = [];
+  pipelineList: any[] = [];
   showSuccess: boolean = false;
   showError: boolean = false;
   showAlert: boolean = false;
@@ -234,10 +235,12 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xmes: [''],
       c_numero: [''], 
       xtelefono: [''],
+      ccanal: ['']
     });
     this.search_form.get('xclave_club').disable();
     this.search_form.get('xtelefono').disable();
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser.data)
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -279,6 +282,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.getCorredorData();
     this.getDocumentType();
     this.getMonths();
+    this.valrepPipeline();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -324,6 +328,29 @@ export class ContractServiceArysDetailComponent implements OnInit {
       this.showAlert = false;
     }, 5000);
     this.loading = false;
+  }
+
+  valrepPipeline(){
+    let params;
+
+    this.http.post(`${environment.apiUrl}/api/valrep/sales-pipeline`, params).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.pipelineList.push({ id: response.data.list[i].ccanal, value: response.data.list[i].xcanal });
+        }
+        this.pipelineList.sort((a,b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.DEPARTMENTNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   async getPlanData(){
@@ -822,6 +849,7 @@ async getModeloData(event){
         xmes: this.search_form.get('xmes').value,
         xclave_club: this.search_form.get('xclave_club').value,
         nkilometraje: this.search_form.get('nkilometraje').value,
+        ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
