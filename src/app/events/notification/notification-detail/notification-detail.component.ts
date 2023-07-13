@@ -1681,6 +1681,7 @@ export class NotificationDetailComponent implements OnInit {
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
         quotesProviders: this.quoteListProviders,
+        ccanal: this.currentUser.data.ccanal,
         notes: {
           create: createNoteList,
           update: updateNoteList,
@@ -1770,7 +1771,8 @@ export class NotificationDetailComponent implements OnInit {
               thirdparties: this.thirdpartyList,
               materialDamages: this.materialDamageList,
               thirdpartyVehicles: this.thirdpartyVehicleList,
-              serviceOrder: this.serviceOrderList
+              serviceOrder: this.serviceOrderList,
+              ccanal: this.currentUser.data.ccanal,
             };
             url = `${environment.apiUrl}/api/notification/create`;
             this.sendFormData(params, url);

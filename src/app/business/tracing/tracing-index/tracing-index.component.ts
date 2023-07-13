@@ -155,12 +155,7 @@ export class TracingIndexComponent implements OnInit {
             fseguimiento: response.data.list[i].fseguimiento,
           });
           if (this.fleetNotificationTracingList[i].fseguimiento) {
-            const element = this.editarRenderer(); // Llama a la función editarRenderer()
-
-            // Agrega el elemento al DOM o haz lo que necesites con él
-            // Por ejemplo, puedes agregarlo a un contenedor existente en tu HTML
-            const container = document.getElementById('container');
-            container.appendChild(element);
+            this.editarRenderer();
           }
         }
       }
