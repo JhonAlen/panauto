@@ -331,7 +331,9 @@ export class ContractServiceArysDetailComponent implements OnInit {
   }
 
   valrepPipeline(){
-    let params;
+    let params ={
+      ccanal: this.currentUser.data.ccanal
+    };
 
     this.http.post(`${environment.apiUrl}/api/valrep/sales-pipeline`, params).subscribe((response : any) => {
       if(response.data.status){
@@ -357,7 +359,8 @@ export class ContractServiceArysDetailComponent implements OnInit {
     let params =  {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      ctipoplan: 1
+      ctipoplan: 1,
+      ccanal: this.currentUser.data.ccanal
    
     };
   

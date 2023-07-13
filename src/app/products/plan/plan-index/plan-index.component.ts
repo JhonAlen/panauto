@@ -109,7 +109,8 @@ export class PlanIndexComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
       ctipoplan: form.ctipoplan ? form.ctipoplan : undefined,
-      xplan: form.xplan ? form.xplan : undefined
+      xplan: form.xplan ? form.xplan : undefined,
+      ccanal: this.currentUser.data.ccanal,
     }
     this.http.post(`${environment.apiUrl}/api/plan/search`, params, options).subscribe((response: any) => {
       if(response.data.status){

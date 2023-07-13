@@ -583,6 +583,7 @@ export class PlanDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
+        ccanal: this.currentUser.data.ccanal,
         cmoneda: this.detail_form.get('cmoneda').value,
         quantity: this.quantityServiceList, 
         services: {
@@ -612,7 +613,8 @@ export class PlanDetailComponent implements OnInit {
         cusuariocreacion: this.currentUser.data.cusuario,
         servicesType: this.serviceTypeList,
         quantity: this.quantityServiceList,
-        rcv: this.rcvAmout
+        rcv: this.rcvAmout,
+        ccanal: this.currentUser.data.ccanal,
       };
       url = `${environment.apiUrl}/api/plan/create`;
     }
