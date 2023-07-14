@@ -24,7 +24,7 @@
                                   <select formControlName="xvencimiento" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xvencimiento').errors } " (change)="searchTracing()">
                                     <option value="TODOS">Todos</option>
                                     <option value="DIA">Del día</option>
-                                    <option value="ATRASADO">Atrasados</option>
+                                    <option value="ATRASADOS">Atrasados</option>
                                     <option value="VENCER">Por vencer</option>
                                   </select>                         
                                   <div *ngIf="submitted && search_form.get('xvencimiento').errors"  class="invalid-feedback">
@@ -72,13 +72,14 @@
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="fleetNotificationTracingList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="fleetNotificationTracingRowClicked($event)">
+                        <ag-grid-angular  style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="fleetNotificationTracingListFilter" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="fleetNotificationTracingRowClicked($event)">
                             <ag-grid-column headerName="Notificacion" field="cnotificacion" [width]="110" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Tipo de Seguimiento" field="xtiposeguimiento" [width]="230" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Motivo" field="xmotivoseguimiento" [width]="230" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Observación" field="xobservacion" [width]="230" [sortable]="false"></ag-grid-column>
                             <ag-grid-column headerName="Cerrado" field="bcerrado" [width]="130" [sortable]="false"></ag-grid-column>
-                            <ag-grid-column headerName="Editar" [width]="100" [sortable]="false" [cellRenderer]="editarRenderer"></ag-grid-column>
+                            
+                            <ag-grid-column headerName="Editar"  [width]="100" [sortable]="false" [cellClassRules]="getVencimientoCellClass"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
