@@ -10,6 +10,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ColDef } from 'ag-grid-community';
+import { TDocumentDefinitions, ContentSvg } from 'pdfmake/interfaces';
 import { footerLinePDF, headerLogoPDF } from './images.const';
 
 @Component({
@@ -92,49 +93,49 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  onChangeDateFrom() {
-    let fdesde = this.search_form.get('fdesde').value;
-    let fhasta = this.search_form.get('fhasta').value;
-    if (fdesde) {
-      if (fhasta) {
-        if (fdesde > fhasta) {
-          alert('La fecha desde debe de ser menor que la fecha hasta');
-          this.searchStatus = false;
-        }
-        else {
-          this.searchStatus = true;
-        }
-      }
-      else {
-        this.searchStatus = false;
-      }
-    }
-    else {
-      this.searchStatus = false;
-    }
-  }
+  // onChangeDateFrom() {
+  //   let fdesde = this.search_form.get('fdesde').value;
+  //   let fhasta = this.search_form.get('fhasta').value;
+  //   if (fdesde) {
+  //     if (fhasta) {
+  //       if (fdesde > fhasta) {
+  //         alert('La fecha desde debe de ser menor que la fecha hasta');
+  //         this.searchStatus = false;
+  //       }
+  //       else {
+  //         this.searchStatus = true;
+  //       }
+  //     }
+  //     else {
+  //       this.searchStatus = false;
+  //     }
+  //   }
+  //   else {
+  //     this.searchStatus = false;
+  //   }
+  // }
 
-  onChangeDateUntil() {
-    let fhasta = this.search_form.get('fhasta').value;
-    let fdesde = this.search_form.get('fdesde').value;
-    if (fhasta) {
-      if (fdesde) {
-        if (fhasta < fdesde) {
-          alert('La fecha hasta debe de ser mayor que la fecha desde');
-          this.searchStatus = false;
-        }
-        else {
-          this.searchStatus = true;
-        }
-      }
-      else {
-        this.searchStatus = false;
-      }
-    }
-    else {
-      this.searchStatus = false;
-    }
-  }
+  // onChangeDateUntil() {
+  //   let fhasta = this.search_form.get('fhasta').value;
+  //   let fdesde = this.search_form.get('fdesde').value;
+  //   if (fhasta) {
+  //     if (fdesde) {
+  //       if (fhasta < fdesde) {
+  //         alert('La fecha hasta debe de ser mayor que la fecha desde');
+  //         this.searchStatus = false;
+  //       }
+  //       else {
+  //         this.searchStatus = true;
+  //       }
+  //     }
+  //     else {
+  //       this.searchStatus = false;
+  //     }
+  //   }
+  //   else {
+  //     this.searchStatus = false;
+  //   }
+  // }
 
   getTitulo() {
     if (this.search_form.get('xprima').value == 'PENDIENTES') {
@@ -251,25 +252,75 @@ export class ReportsComponent implements OnInit {
     return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0];
   }
 
-  buildReceiptBody() {
+  buildReceiptBody(startIndex: number, endIndex: number) {
     let body = [];
-    this.receiptList.forEach(function (row) {
+
+    for (let i = startIndex; i < endIndex; i++) {
+      const row = this.receiptList[i];
+
       let dataRow = [];
       dataRow.push({ text: row.xpoliza, border: [false, false, false, false] });
       dataRow.push({ text: row.xnombrepropietario, border: [false, false, false, false] });
       dataRow.push({ text: row.ccontratoflota, border: [false, false, false, false] });
-      dataRow.push({ text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mprima)} ${row.xmoneda} `, border: [false, false, false, false] });
+      dataRow.push({
+        text: `${new Intl.NumberFormat('de-DE', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(row.mprima)} ${row.xmoneda} `,
+        border: [false, false, false, false],
+      });
       body.push(dataRow);
-    });
+    }
+
     return body;
   }
 
   createPDF() {
-    this.mtotalB = this.mtotalB ? this.mtotalB : 0
-    this.mtotalUSD = this.mtotalUSD ? this.mtotalUSD : 0
+    this.mtotalB = this.mtotalB ? this.mtotalB : 0;
+    this.mtotalUSD = this.mtotalUSD ? this.mtotalUSD : 0;
     const tipoPrimas = this.search_form.get('xprima').value;
+  
+    const itemsPerPage = 15; // Registros por página
+    const totalPages = Math.ceil(this.receiptList.length / itemsPerPage); // Calcular el número total de páginas
+  
     const pdfDefinition: any = {
-      content: [
+      content: [],
+      styles: {
+        title: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        tableHeader: {
+          fontSize: 12,
+          bold: true,
+          fillColor: '#b9d4ff',
+          margin: [0, 5, 0, 5]
+        },
+        data: {
+          fontSize: 10,
+          margin: [0, 5, 0, 5]
+        }
+      },
+      footer: function (currentPage, pageCount) {
+        return {
+          text: `Página ${currentPage} de ${pageCount}`,
+          alignment: 'center',
+          fontSize: 8,
+          margin: [0, 10, 0, 10]
+        };
+      },
+    };
+  
+    let totalContratos = 0; // Variable para almacenar el monto total de los contratos
+  
+    for (let currentPage = 0; currentPage < totalPages; currentPage++) {
+      const startIndex = currentPage * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, this.receiptList.length);
+  
+      let montoPrimaPorPagina = 0; // Variable para almacenar el monto total de Monto Prima en la página actual
+  
+      const pageContent = [
         {
           alignment: 'center',
           width: 300,
@@ -282,8 +333,8 @@ export class ReportsComponent implements OnInit {
               alignment: 'center',
               style: 'title',
               text: [
-                { text: `\nPRIMAS ${tipoPrimas} `, bold: true }
-              ]
+                { text: `\nPRIMAS ${tipoPrimas} `, bold: true },
+              ],
             },
           ],
         },
@@ -291,70 +342,12 @@ export class ReportsComponent implements OnInit {
           columns: [
             {
               text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          table: {
-            widths: ['*'],
-            body: [
-              [{ text: ' ', border: [false, true, false, false] }]
-            ]
-          }
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          margin: [350, 0, 0, 0],
-          table: {
-            alignment: 'right',
-            widths: [200, -49, 5],
-            body: [
-              [{ text: [{ text: `Caracas, ${new Date().getDate()} de ${this.getMonthAsString(new Date().getMonth())} de ${new Date().getFullYear()}` }], border: [false, false, false, false] }]
-            ]
-          },
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          style: 'data',
-          columns: [
-            {
-              alignment: 'center',
-              text: [
-                { text: ' ' }
-              ]
+                { text: ' ' },
+              ],
             },
-
-          ]
+          ],
         },
         {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          style: 'tableExample',
           table: {
             headerRows: 1,
             widths: [120, 115, 120, 110],
@@ -363,10 +356,10 @@ export class ReportsComponent implements OnInit {
               [{ text: 'Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },
               { text: 'Nombre', style: 'tableHeader', fillColor: '#b9d4ff' },
               { text: 'N° de Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },
-              { text: 'Monto Prima', style: 'tableHeader', fillColor: '#b9d4ff' },]
+              { text: 'Monto Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },]
             ],
           },
-          layout: 'headerLineOnly'
+          layout: 'headerLineOnly',
         },
         {
           style: 'data',
@@ -374,169 +367,226 @@ export class ReportsComponent implements OnInit {
             dontBreakRows: true,
             widths: [120, 150, 120, 120],
             heights: 20,
-            body: this.buildReceiptBody(),
+            body: this.buildReceiptBody(startIndex, endIndex),
           },
         },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              margin: [0, 20, 0, 20],
-              alignment: 'center',
-              style: 'title',
-              text: [
-                { text: `Montos Totales`}
-              ]
-            },
-          ],
-        },
-        {
-          style: 'tableExample',
-          // alignment: 'right',
-          table: {
-            headerRows: 1,
-            widths: ['*', '*'],
-            body: [
-              [
-                // { text: 'Monto Total USD:', style: 'tableHeader', fillColor: '#b9d4ff', border: [false, false, false, false] },
-                { text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mtotalUSD)} USD`, style: 'tableHeader', fillColor: '#b9d4ff', border: [false, false, false, false], alignment: 'left' },
-                { text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mtotalB)} B/ .`, style: 'tableHeader', fillColor: '#b9d4ff', border: [false, false, false, false], alignment: 'right' }
-              ],
-              // [
-              //   { text: 'Monto Total B/. :', style: 'tableHeader', fillColor: '#b9d4ff', border: [false, false, false, false] },
-              //   { text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mtotalB)} B/ .`, style: 'tableHeader', fillColor: '#b9d4ff', border: [false, false, false, false], alignment: 'right' }
-              // ],
+      ];
+  
+      // Calcular el monto total de Monto Prima en la página actual
+      for (let i = startIndex; i < endIndex; i++) {
+        montoPrimaPorPagina += this.receiptList[i].mprima;
+      }
+  
+      // Agregar el monto total de Monto Prima en la página actual
+      pageContent.push({
+        columns: [
+          {
+            text: [
+              { text: `Monto Total Contrato en esta página: `, bold: true, background: '#b9d4ff' },
+              ...montoPrimaPorPagina.toFixed(2).split('').map((char) => ({ text: char, bold: true, background: '#b9d4ff' })),
             ],
+            margin: [20, 20, 0, 0],
+            alignment: 'right',
+            style: 'tableHeader', // Agrega la propiedad 'style' aquí
           },
-          // layout: 'headerLineOnly'
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                { text: ' ' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              style: 'data',
-              text: [
-                { text: 'Sin más a que hacer referencia, me despido' }
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              style: 'data',
-              text: [
-                // {text: 'NOMBRE APELLIDO:      '}, {text: this.search_form.get('xnombres').value}
-              ]
-            }
-          ]
-        }
-
-      ],
-      styles: {
-        data: {
-          fontSize: 10
-        },
-        color1: {
-          color: '#1D4C01'
-        },
-        color2: {
-          color: '#7F0303'
-        },
-        header: {
-          fontSize: 7.5,
-          color: 'gray'
-        },
-      },
-      footer: function (currentPage, pageCount) {
-        return {
-          width: 600,
-          height: 20,
-          margin: [0, 19, 0, 0],
-          image: footerLinePDF,
-        };
-      },
+        ],
+      });
+  
+      pdfDefinition.content.push(...pageContent);
+  
+      totalContratos += montoPrimaPorPagina; // Sumar el monto total de Monto Prima en la página actual al monto total de contratos
+  
+      if (currentPage !== totalPages - 1) {
+        // Agregar un salto de página entre páginas, excepto en la última página
+        pdfDefinition.content.push({ text: '', pageBreak: 'after' });
+      }
     }
-    pdfMake.createPdf(pdfDefinition).open();
-    //pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.search_form.get('corden').value}, PARA ${this.search_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
+  
+    // Agregar el monto total de todos los contratos en la última página
+    pdfDefinition.content.push({
+      columns: [
+        {
+          text: [
+            { text: `Monto Total de todos los contratos: ` },
+            { text: `${totalContratos.toFixed(2)} `, bold: true },
+          ],
+          margin: [0, 10, 0, 0],
+          alignment: 'center',
+        },
+      ],
+    });
+  
+    pdfMake.createPdf(pdfDefinition).open(); // Abrir el PDF
   }
+
+  // createPDF() {
+  //   this.mtotalB = this.mtotalB ? this.mtotalB : 0;
+  //   this.mtotalUSD = this.mtotalUSD ? this.mtotalUSD : 0;
+  //   const tipoPrimas = this.search_form.get('xprima').value;
+  
+  //   const itemsPerPage = 15; // Registros por página
+  //   const totalPages = Math.ceil(this.receiptList.length / itemsPerPage); // Calcular el número total de páginas
+  
+  //   const pdfDefinition: any = {
+  //     content: [],
+  //     styles: {
+  //       title: {
+  //         fontSize: 16,
+  //         bold: true,
+  //         margin: [0, 0, 0, 10]
+  //       },
+  //       tableHeader: {
+  //         fontSize: 12,
+  //         bold: true,
+  //         fillColor: '#b9d4ff',
+  //         margin: [0, 5, 0, 5]
+  //       },
+  //       data: {
+  //         fontSize: 10,
+  //         margin: [0, 5, 0, 5]
+  //       },
+  //       montoTotal: {
+  //         fontSize: 14,
+  //         bold: true,
+  //         fillColor: '#f2f2f2',
+  //         alignment: 'center',
+  //         margin: [0, 10, 0, 0]
+  //       }
+  //     },
+  //     footer: function (currentPage, pageCount) {
+  //       return {
+  //         text: `Página ${currentPage} de ${pageCount}`,
+  //         alignment: 'center',
+  //         fontSize: 8,
+  //         margin: [0, 10, 0, 10]
+  //       };
+  //     },
+  //   };
+  
+  //   let totalContratos = 0; // Variable para almacenar el monto total de los contratos
+  
+  //   for (let currentPage = 0; currentPage < totalPages; currentPage++) {
+  //     const startIndex = currentPage * itemsPerPage;
+  //     const endIndex = Math.min(startIndex + itemsPerPage, this.receiptList.length);
+  
+  //     let montoPrimaPorPagina = 0; // Variable para almacenar el monto total de Monto Prima en la página actual
+  
+  //     const pageContent = [
+  //       {
+  //         alignment: 'center',
+  //         width: 300,
+  //         image: headerLogoPDF,
+  //       },
+  //       {
+  //         columns: [
+  //           {
+  //             margin: [0, 20, 0, 0],
+  //             alignment: 'center',
+  //             style: 'title',
+  //             text: [
+  //               { text: `\nPRIMAS ${tipoPrimas} `, bold: true },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         columns: [
+  //           {
+  //             text: [
+  //               { text: ' ' },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         table: {
+  //           headerRows: 1,
+  //           widths: [120, 115, 120, 110],
+  //           dontBreakRows: true,
+  //           body: [
+  //             [{ text: 'Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },
+  //             { text: 'Nombre', style: 'tableHeader', fillColor: '#b9d4ff' },
+  //             { text: 'N° de Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },
+  //             { text: 'Monto Contrato', style: 'tableHeader', fillColor: '#b9d4ff' },]
+  //           ],
+  //         },
+  //         layout: 'headerLineOnly',
+  //       },
+  //       {
+  //         style: 'data',
+  //         table: {
+  //           dontBreakRows: true,
+  //           widths: [120, 150, 120, 120],
+  //           heights: 20,
+  //           body: this.buildReceiptBody(startIndex, endIndex),
+  //         },
+  //       },
+  //       {
+  //         table: {
+  //           widths: ['*'],
+  //           body: [
+  //             [{text: ' ', border: [false, true, false, false]}]
+  //           ]
+  //         }
+  //       },
+  //     ];
+  
+  //     // Calcular el monto total de Monto Prima en la página actual
+  //     for (let i = startIndex; i < endIndex; i++) {
+  //       montoPrimaPorPagina += this.receiptList[i].mprima;
+  //     }
+  
+  //     // Agregar el monto total de Monto Prima en la página actual
+  //     pageContent.push({
+  //       table: {
+  //         widths: ['*'],
+  //         body: [
+  //           [
+  //             {
+  //               text: 'Monto Total Contrato en esta página:',
+  //               style: 'montoTotal',
+  //               alignment: 'center',
+  //               fillColor: '#b9d4ff',
+  //               margin: [0, 10, 0, 0],
+  //             },
+  //           ],
+  //           [
+  //             {
+  //               text: montoPrimaPorPagina.toFixed(2),
+  //               border: [false, false, false, false],
+  //               alignment: 'center',
+  //               margin: [0, 5, 0, 5],
+  //             },
+  //           ],
+  //         ],
+  //       },
+  //     });
+      
+  //     pdfDefinition.content.push(...pageContent);
+  
+  //     totalContratos += montoPrimaPorPagina; // Sumar el monto total de Monto Prima en la página actual al monto total de contratos
+  
+  //     if (currentPage !== totalPages - 1) {
+  //       // Agregar un salto de página entre páginas, excepto en la última página
+  //       pdfDefinition.content.push({ text: '', pageBreak: 'after' });
+  //     }
+  //   }
+  
+  //   // Agregar el monto total de todos los contratos en la última página
+  //   pdfDefinition.content.push({
+  //     columns: [
+  //       {
+  //         text: [
+  //           { text: `Monto Total de todos los contratos: ` },
+  //           { text: `${totalContratos.toFixed(2)} `, bold: true },
+  //         ],
+  //         margin: [0, 10, 0, 0],
+  //         alignment: 'center',
+  //       },
+  //     ],
+  //   });
+  
+  //   pdfMake.createPdf(pdfDefinition).open(); // Abrir el PDF
+  // }
+
 }
