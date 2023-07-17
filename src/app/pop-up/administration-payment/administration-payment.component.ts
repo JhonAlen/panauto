@@ -34,6 +34,7 @@ export class AdministrationPaymentComponent implements OnInit {
   mtasacambio: number;
   ftasacambio: Date;
   destinationBankList: any[] = [];
+  xmoneda: String = "";
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -147,6 +148,7 @@ export class AdministrationPaymentComponent implements OnInit {
     }else{
       this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
         if(response.data.status){
+          this.xmoneda = response.data.xmoneda;
           //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
           this.popup_form.get('mprima').setValue(response.data.mprima_pagada);
           this.popup_form.get('mprima').disable();

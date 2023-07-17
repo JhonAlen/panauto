@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-
+import { Observable, OperatorFunction } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contract-service-arys-detail',
@@ -142,11 +143,41 @@ export class ContractServiceArysDetailComponent implements OnInit {
   documentTypeList: any[] = [];
   bactivar_casco: boolean = false;
   months: string[] = [];
+  pipelineList: any[] = [];
   showSuccess: boolean = false;
   showError: boolean = false;
+  showAlert: boolean = false;
+  activaCampo: boolean = true;
   alertMessage: string = '';
+  public model: any;
+  public selectedFlagUrl: string;
+  public countries: { name: string; flag: string; code: string }[] = [
+    { name: 'Venezuela', flag: '0/06/Flag_of_Venezuela.svg', code: '58' },
+    { name: 'Colombia', flag: '2/21/Flag_of_Colombia.svg', code: '57' },
+    { name: 'Panama', flag: 'a/ab/Flag_of_Panama.svg', code: '507' }
+  ];
 
-  
+  search: OperatorFunction<string, readonly { name; flag; code }[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map((term) =>
+        term === ''
+          ? []
+          : this.countries.filter((v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
+      )
+    );
+
+    formatter = (x: { name: string; flag: string; code: string }) => {
+      if (x.flag) {
+        return 'https://upload.wikimedia.org/wikipedia/commons/' + x.flag;
+      } else {
+        return '';
+      }
+    };
+
+    public showFlag: boolean = false;
+    public showReminder: boolean = false;
+
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
@@ -201,10 +232,15 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xcobertura: [''],
       msuma_casco: [''],
       mprima_casco: [''],
-      xmes: ['']
+      xmes: [''],
+      c_numero: [''], 
+      xtelefono: [''],
+      ccanal: ['']
     });
     this.search_form.get('xclave_club').disable();
+    this.search_form.get('xtelefono').disable();
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser.data)
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -246,6 +282,7 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.getCorredorData();
     this.getDocumentType();
     this.getMonths();
+    this.valrepPipeline();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -270,13 +307,60 @@ export class ContractServiceArysDetailComponent implements OnInit {
       }
   }
 
+  prueba(event) {
+    this.selectedFlagUrl = 'https://upload.wikimedia.org/wikipedia/commons/' + event.item.flag;
+    this.showFlag = true;
+    if(this.selectedFlagUrl){
+      this.activaCampo = false;
+    }else{
+      this.activaCampo = true;
+    }
+    this.search_form.get('c_numero').setValue(event.item.code)
+    this.search_form.get('xtelefono').enable();
+  }
 
+  checkPhoneNumber(){
+    let code = this.search_form.get('c_numero').value;
+    this.alert.show = true;
+    this.alertMessage = `Recuerda colocar este modelo: +${code}XXXXXXXXXX. Ya el +${code} esta incluido, solo coloca el número.`;
+    this.showAlert = true;
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 5000);
+    this.loading = false;
+  }
+
+  valrepPipeline(){
+    let params ={
+      ccanal: this.currentUser.data.ccanal
+    };
+
+    this.http.post(`${environment.apiUrl}/api/valrep/sales-pipeline`, params).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.pipelineList.push({ id: response.data.list[i].ccanal, value: response.data.list[i].xcanal });
+        }
+        this.pipelineList.sort((a,b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.DEPARTMENTNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
 
   async getPlanData(){
     let params =  {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      ctipoplan: 1
+      ctipoplan: 1,
+      ccanal: this.currentUser.data.ccanal
    
     };
   
@@ -521,7 +605,7 @@ async getModeloData(event){
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
-        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono').setValue(response.data.xtelefonocasa);
         this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocelular);
         this.search_form.get('email').setValue(response.data.xemail);
         if(this.search_form.get('email').value){
@@ -699,6 +783,10 @@ async getModeloData(event){
     }
   }
 
+  getValueCellPhone(){
+    this.search_form.get('xtelefono_emp').setValue(this.search_form.get('c_numero').value + this.search_form.get('xtelefono').value);
+  }
+
   onSubmit(form){
     this.submitted = true;
   
@@ -726,7 +814,7 @@ async getModeloData(event){
         xrif_cliente: form.xrif_cliente,
         xnombre: form.xnombre,
         xapellido: form.xapellido,
-        xtelefono_emp: form.xtelefono_emp,
+        xtelefono_emp: this.search_form.get('xtelefono_emp').value,
         xtelefono_prop: form.xtelefono_prop,
         email: form.email,
         cpais: this.currentUser.data.cpais,
@@ -762,6 +850,9 @@ async getModeloData(event){
         msuma_casco: this.search_form.get('msuma_casco').value,
         mprima_casco: this.search_form.get('mprima_casco').value,
         xmes: this.search_form.get('xmes').value,
+        xclave_club: this.search_form.get('xclave_club').value,
+        nkilometraje: this.search_form.get('nkilometraje').value,
+        ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {

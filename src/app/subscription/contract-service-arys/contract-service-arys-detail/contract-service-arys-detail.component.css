@@ -143,3 +143,9 @@ hr{
   -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
   box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
 }
+.flag-icon {
+  width: 32px;
+}
+.flag-icon-result {
+    width: 62px;
+  }

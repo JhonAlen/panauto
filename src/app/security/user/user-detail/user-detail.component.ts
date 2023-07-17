@@ -30,6 +30,7 @@ export class UserDetailComponent implements OnInit {
   companyList: any[] = [];
   departmentList: any[] = [];
   roleList: any[] = [];
+  pipelineList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -79,7 +80,8 @@ export class UserDetailComponent implements OnInit {
       bactivo: [true],
       bcorredor: [false],
       ccorredor: [''],
-      xcorredor: ['']
+      xcorredor: [''],
+      ccanal: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -171,6 +173,24 @@ export class UserDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+    this.http.post(`${environment.apiUrl}/api/valrep/sales-pipeline`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.pipelineList.push({ id: response.data.list[i].ccanal, value: response.data.list[i].xcanal });
+        }
+        this.pipelineList.sort((a,b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.DEPARTMENTNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
     this.sub = this.activatedRoute.paramMap.subscribe(params => {
       this.code = params.get('id');
       if(this.code){
@@ -215,6 +235,8 @@ export class UserDetailComponent implements OnInit {
         this.detail_form.get('xtelefono').disable();
         this.detail_form.get('xdireccion').setValue(response.data.xdireccion);
         this.detail_form.get('xdireccion').disable();
+        this.detail_form.get('ccanal').setValue(response.data.ccanal);
+        this.detail_form.get('ccanal').disable();
         this.detail_form.get('bproveedor').setValue(response.data.bproveedor);
         this.detail_form.get('bproveedor').disable();
         this.detail_form.get('bcorredor').setValue(response.data.bcorredor);
@@ -292,6 +314,7 @@ export class UserDetailComponent implements OnInit {
     this.detail_form.get('xcorredor').enable();
     this.detail_form.get('bactivo').enable();
     this.detail_form.get('crol').enable();
+    this.detail_form.get('ccanal').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
@@ -415,6 +438,7 @@ export class UserDetailComponent implements OnInit {
         cusuariomodificacion: this.currentUser.data.cusuario,
         bcorredor: form.bcorredor,
         ccorredor: form.ccorredor ? form.ccorredor : undefined,
+        ccanal: form.ccanal,
       };
       url = `${environment.apiUrl}/api/user/update`;
     }else{
@@ -435,6 +459,7 @@ export class UserDetailComponent implements OnInit {
         cusuariocreacion: this.currentUser.data.cusuario,
         bcorredor: form.bcorredor,
         ccorredor: form.ccorredor ? form.ccorredor : undefined,
+        ccanal: form.ccanal,
       };
       url = `${environment.apiUrl}/api/user/create`;
     }

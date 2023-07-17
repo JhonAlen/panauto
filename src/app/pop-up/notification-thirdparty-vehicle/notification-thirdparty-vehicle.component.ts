@@ -182,7 +182,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.popup_form.get('cmodelo').disable();
           this.versionDropdownDataRequest();
-          this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
+          // this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
           this.popup_form.get('cversion').disable();
           this.popup_form.get('fano').setValue(this.thirdpartyVehicle.fano);
           this.popup_form.get('fano').disable();
@@ -229,7 +229,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.modelDropdownDataRequest();
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.versionDropdownDataRequest();
-          this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
+          // this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
           this.popup_form.get('fano').setValue(this.thirdpartyVehicle.fano);
           this.popup_form.get('ccolor').setValue(this.thirdpartyVehicle.ccolor);
           this.popup_form.get('xobservacionvehiculo').setValue(this.thirdpartyVehicle.xobservacionvehiculo);
@@ -336,9 +336,15 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
         if(response.data.status){
           this.versionList = [];
           for(let i = 0; i < response.data.list.length; i++){
-            this.versionList.push({ id: response.data.list[i].cversion, value: response.data.list[i].xversion });
+            this.versionList.push({ 
+              id: response.data.list[i].cversion, 
+              value: response.data.list[i].xversion,
+              fano: response.data.list[i].cano,
+              control: response.data.list[i].control, });
           }
           this.versionList.sort((a,b) => a.value > b.value ? 1 : -1);
+          let version = this.setDataVersion(this.versionList);
+          this.popup_form.get('cversion').setValue(version.control)
         }
       },
       (err) => {
@@ -352,6 +358,20 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
         this.alert.show = true;
       });
     }
+  }
+
+  setDataVersion(versionList: any[]) {
+    for (let version of versionList) {
+      if (version.id == this.thirdpartyVehicle.cversion && version.fano == this.thirdpartyVehicle.fano) {
+        return version;
+      }
+    }    
+  }
+
+  getDataYear(){
+    let version = this.versionList.find(element => element.control === parseInt(this.popup_form.get('cversion').value));
+    this.popup_form.get('fano').setValue(version.fano)
+    this.popup_form.get('fano').disable()
   }
 
   addReplacement(){
@@ -444,7 +464,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     }
     let brandFilter = this.brandList.filter((option) => { return option.id == form.cmarca; });
     let modelFilter = this.modelList.filter((option) => { return option.id == form.cmodelo; });
-    let versionFilter = this.versionList.filter((option) => { return option.id == form.cversion; });
+    let version = this.versionList.find(element => element.control === parseInt(this.popup_form.get('cversion').value));
     this.thirdpartyVehicle.ctipodocidentidadconductor = form.ctipodocidentidadconductor;
     this.thirdpartyVehicle.xdocidentidadconductor = form.xdocidentidadconductor;
     this.thirdpartyVehicle.xnombreconductor = form.xnombreconductor;
@@ -458,9 +478,9 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     this.thirdpartyVehicle.xmarca = brandFilter[0].value;
     this.thirdpartyVehicle.cmodelo = form.cmodelo;
     this.thirdpartyVehicle.xmodelo = modelFilter[0].value;
-    this.thirdpartyVehicle.cversion = form.cversion;
-    this.thirdpartyVehicle.xversion = versionFilter[0].value;
-    this.thirdpartyVehicle.fano = form.fano;
+    this.thirdpartyVehicle.cversion = version.id;
+    this.thirdpartyVehicle.xversion = version.value;
+    this.thirdpartyVehicle.fano = version.fano;
     this.thirdpartyVehicle.ccolor = form.ccolor;
     this.thirdpartyVehicle.xobservacionvehiculo = form.xobservacionvehiculo;
     this.thirdpartyVehicle.ctipodocidentidadpropietario = form.ctipodocidentidadpropietario;
