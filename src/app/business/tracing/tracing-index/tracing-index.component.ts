@@ -163,6 +163,7 @@ export class TracingIndexComponent implements OnInit {
     let params = {
       ccompania: this.currentUser.data.ccompania,
       cusuario: this.currentUser.data.cusuario,
+      ccanal: this.currentUser.data.ccanal
     }
     this.fleetNotificationTracingList = [];
     this.http.post(`${environment.apiUrl}/api/tracing/search`, params, options).subscribe((response : any) => {
