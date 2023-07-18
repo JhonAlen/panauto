@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
+      ccanal: this.currentUser.data.ccanal
     };
     this.http.post(`${environment.apiUrl}/api/home/contract`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -103,6 +104,7 @@ export class HomeComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
+      ccanal: this.currentUser.data.ccanal
     };
     this.http.post(`${environment.apiUrl}/api/home/notifications`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -156,7 +158,9 @@ export class HomeComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cusuario: this.currentUser.data.cusuario
+      cusuario: this.currentUser.data.cusuario,
+      ccanal: this.currentUser.data.ccanal,
+      ccompania: this.currentUser.data.ccompania,
     };
     this.http.post(`${environment.apiUrl}/api/home/amounts-paid`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -176,7 +180,9 @@ export class HomeComponent implements OnInit {
      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let options = { headers: headers };
      let params = {
-       cusuario: this.currentUser.data.cusuario
+       cusuario: this.currentUser.data.cusuario,
+       ccanal: this.currentUser.data.ccanal,
+       ccompania: this.currentUser.data.ccompania,
      };
      this.http.post(`${environment.apiUrl}/api/home/amounts-outstanding`, params, options).subscribe((response : any) => {
        if(response.data.status){
@@ -196,7 +202,9 @@ export class HomeComponent implements OnInit {
      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let options = { headers: headers };
      let params = {
-       cusuario: this.currentUser.data.cusuario
+       cusuario: this.currentUser.data.cusuario,
+       ccanal: this.currentUser.data.ccanal,
+       ccompania: this.currentUser.data.ccompania,
      };
      this.http.post(`${environment.apiUrl}/api/home/count-notifications`, params, options).subscribe((response : any) => {
        if(response.data.status){
