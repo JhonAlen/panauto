@@ -7,16 +7,13 @@
                     <div class="row">
                         <div class="container ">
                             <label>Buscar Primas</label>
-                            <!-- <button [disabled]="loading " class="btn company-detail-button float-right mr-1" type="button" (click)="onSearch(search_form.value)"> -->
-                            <!-- <button [disabled]="loading || !searchStatus || !search_form.valid" class="btn company-detail-button float-right mr-1" type="button" (click)="getTitulo()">
+                            <button [disabled]="loading" class="btn company-detail-button float-right mr-3" type="button" (click)="generateExcel()" style="width: 57px;height: 40px;">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                Buscar
-                            </button> -->
-                            <button [disabled]="loading || loading_cancel"
-                                class="btn company-detail-button float-right mr-3" type="button" (click)="createPDF()"
-                                *ngIf="generarReporte">
+                                <img src="./../../../assets/imagenes/xls.png" alt="Imagen" class="mr-1" style="width: 40px;margin-left: -7px;margin-top: -6px;">
+                            </button>
+                            <button [disabled]="loading" class="btn company-detail-button float-right mr-3" type="button" (click)="createPDF()" style="width: 57px;height: 40px;">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                Generar Reporte
+                                <img src="./../../../assets/imagenes/pdf.png" alt="Imagen" class="mr-1" style="width: 40px;margin-left: -7px;margin-top: -6px;">
                             </button>
                         </div>
                     </div>
