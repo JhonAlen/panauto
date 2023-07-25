@@ -404,21 +404,22 @@
                <h5 class="card-title">Detalles del plan</h5>
              </div>
               <div class="row" style="padding: 10px;">
-                <div class="col-md-4 mb-4 pb-2 mb-md-0 pb-md-0">
+                <div class="col-md-3 mb-4 pb-2 mb-md-0 pb-md-0">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev5">Agente Autorizado</label>
-                    <select formControlName="ccorredor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccorredor').errors } ">
-                      <option *ngFor="let corredor of corredorList" value="{{ corredor.id }}">{{ corredor.value }}</option>
+                    <select formControlName="ccanal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccanal').errors } ">
+                      <option *ngFor="let canal of pipelineList" value="{{ canal.id }}">{{ canal.value }}</option>
                     </select>
-                    <div *ngIf="submitted && search_form.get('ccorredor').errors" class="invalid-feedback">
-                      <div *ngIf="search_form.get('ccorredor').errors.required">Se requiere completar el campo</div>
+                    <div *ngIf="submitted && search_form.get('ccanal').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('ccanal').errors.required">Se requiere completar el campo</div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 mb-4 pb-2">
+                <div class="col-md-3 mb-4 pb-2">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev4">Planes</label>
                     <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="searchService()">
+                      <option></option>
                       <option *ngFor="let plan of planList" value="{{ plan.control }}">{{ plan.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cplan').errors" class="invalid-feedback">
@@ -458,7 +459,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2 mb-4 pb-2" *ngIf="bactivar_casco">
+                <div class="col-md-3 mb-4 pb-2" *ngIf="bactivar_casco">
                   <div class="form-outline ">
                     <label class="form-label required" for="form3Examplea8">Suma Asegurada de Casco</label>
                     <input type="text" formControlName="msuma_casco" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('msuma_casco').errors }" />
