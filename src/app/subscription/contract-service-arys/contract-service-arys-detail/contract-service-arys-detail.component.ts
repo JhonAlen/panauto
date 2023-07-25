@@ -353,6 +353,11 @@ export class ContractServiceArysDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.currentUser.data.ccanal){
+      this.search_form.get('ccanal').setValue(this.currentUser.data.ccanal);
+      this.search_form.get('ccanal').disable();
+    }
   }
 
   async getPlanData(){
