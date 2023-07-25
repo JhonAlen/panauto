@@ -365,7 +365,8 @@ export class CollectionDetailComponent implements OnInit {
         ccompania: this.currentUser.data.ccompania,
         cpais: this.currentUser.data.cpais,
         crecibo: this.code,
-        pago: this.paymentList
+        pago: this.paymentList,
+        ccanal: this.currentUser.data.ccanal,
       };
       url = `${environment.apiUrl}/api/administration-collection/update`;
     } 

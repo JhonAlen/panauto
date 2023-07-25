@@ -160,8 +160,6 @@ import { OwnerDocumentComponent } from './pop-up/owner-document/owner-document.c
 import { OwnerVehicleComponent } from './pop-up/owner-vehicle/owner-vehicle.component';
 import { ProficientIndexComponent } from './thirdparties/proficient/proficient-index/proficient-index.component';
 import { ProficientDetailComponent } from './thirdparties/proficient/proficient-detail/proficient-detail.component';
-import { FleetContractManagementIndexComponent } from './subscription/fleet-contract-management/fleet-contract-management-index/fleet-contract-management-index.component';
-import { FleetContractManagementDetailComponent } from './subscription/fleet-contract-management/fleet-contract-management-detail/fleet-contract-management-detail.component';
 import { ClaimCauseDetailComponent } from './tables/claim-cause/claim-cause-detail/claim-cause-detail.component';
 import { ClaimCauseIndexComponent } from './tables/claim-cause/claim-cause-index/claim-cause-index.component';
 import { DamageLevelIndexComponent } from './tables/damage-level/damage-level-index/damage-level-index.component';
@@ -217,8 +215,6 @@ import { OwnerVehicleImageComponent } from './pop-up/owner-vehicle-image/owner-v
 import { PaymentMethodologyIndexComponent } from './tables/payment-methodology/payment-methodology-index/payment-methodology-index.component';
 import { PaymentMethodologyDetailComponent } from './tables/payment-methodology/payment-methodology-detail/payment-methodology-detail.component';
 import { PlanPaymentMethodologyComponent } from './pop-up/plan-payment-methodology/plan-payment-methodology.component';
-import { ClubContractManagementIndexComponent } from './subscription/club-contract-management/club-contract-management-index/club-contract-management-index.component';
-import { ClubContractManagementDetailComponent } from './subscription/club-contract-management/club-contract-management-detail/club-contract-management-detail.component';
 import { ClubContractManagementOwnerComponent } from './pop-up/club-contract-management-owner/club-contract-management-owner.component';
 import { ClubContractManagementPaymentVoucherComponent } from './pop-up/club-contract-management-payment-voucher/club-contract-management-payment-voucher.component';
 import { ClubContractManagementVehicleComponent } from './pop-up/club-contract-management-vehicle/club-contract-management-vehicle.component';
@@ -237,16 +233,11 @@ import { EmailAlertIndexComponent } from './alerts/email-alert/email-alert-index
 import { EmailAlertDetailComponent } from './alerts/email-alert/email-alert-detail/email-alert-detail.component';
 import { EmailAlertRoleComponent } from './pop-up/email-alert-role/email-alert-role.component';
 import { TracingIndexComponent } from './business/tracing/tracing-index/tracing-index.component';
-import { CollectionOrderFleetContractIndexComponent } from './administration/collection-order-fleet-contract/collection-order-fleet-contract-index/collection-order-fleet-contract-index.component';
-import { CollectionOrderFleetContractDetailComponent } from './administration/collection-order-fleet-contract/collection-order-fleet-contract-detail/collection-order-fleet-contract-detail.component';
 import { CollectionOrderFleetContractPaymentComponent } from './pop-up/collection-order-fleet-contract-payment/collection-order-fleet-contract-payment.component';
 import { NotificationQuoteComponent } from './pop-up/notification-quote/notification-quote.component';
-import { ProviderReportIndexComponent } from './reports/provider/provider-report-index/provider-report-index.component';
 import { NotificationThirdpartyTracingComponent } from './pop-up/notification-thirdparty-tracing/notification-thirdparty-tracing.component';
 import { CoinsIndexComponent } from './tables/coins/coins-index/coins-index.component';
 import { CoinsDetailComponent } from './tables/coins/coins-detail/coins-detail.component';
-import { ServiceOrderIndexComponent } from './events/service-order/service-order-index/service-order-index.component';
-import { ServiceOrderDetailComponent } from './events/service-order/service-order-detail/service-order-detail.component';
 import { NotificationServiceOrderComponent } from './pop-up/notification-service-order/notification-service-order.component';
 import { NotificationQuoteServiceOrderComponent } from './pop-up/notification-quote-service-order/notification-quote-service-order.component';
 import { ClausesIndexComponent } from './configuration/clauses/clauses-index/clauses-index.component';
@@ -282,7 +273,6 @@ import { CollectionDetailComponent } from './administration/collection/collectio
 import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
-import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { FleetContractManagementRealcoverageComponent } from './pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
 import { NotificationRejectionLetterComponent } from './pop-up/notification-rejection-letter/notification-rejection-letter.component';
 import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
@@ -290,15 +280,12 @@ import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent
 import { BatchComponent } from './pop-up/batch/batch.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component';
 import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component';
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 import {CdkMenuModule} from '@angular/cdk/menu';
-import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
-import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.component';
 import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
 import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
@@ -308,22 +295,15 @@ import { ExchangeRateDetailComponent } from './administration/exchange-rate/exch
 import { BillLoadingSettlementComponent } from './pop-up/bill-loading-settlement/bill-loading-settlement.component';
 import { AdministrationBillLoadingComponent } from './pop-up/administration-bill-loading/administration-bill-loading.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
-import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 import { FooterComponent } from './footer/footer.component';
-import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
 import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
-import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
-import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
-import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { PlanAmountRcvComponent } from './pop-up/plan-amount-rcv/plan-amount-rcv.component';
 import { ContractServiceArysIndexComponent } from './subscription/contract-service-arys/contract-service-arys-index/contract-service-arys-index.component';
 import { ContractServiceArysDetailComponent } from './subscription/contract-service-arys/contract-service-arys-detail/contract-service-arys-detail.component';
 import { NumberOfServiceComponent } from './pop-up/number-of-service/number-of-service.component';
-import { CorporativeIssuanceComponent } from './subscription/corporative-issuance/corporative-issuance.component';
 import { PlanValuationApovComponent } from './pop-up/plan-valuation-apov/plan-valuation-apov.component';
 import { PlanValuationExcesoComponent } from './pop-up/plan-valuation-exceso/plan-valuation-exceso.component';
 import { ClientDetailV2Component } from './clients/client/client-detail-v2/client-detail-v2.component';
@@ -332,6 +312,12 @@ import { IndividualRenovationDetailComponent } from './renovation/individual-ren
 import { ReportsComponent } from './administration/reports/reports.component';
 import { ContractServiceArysAdministrationComponent } from './subscription/contract-service-arys-administration/contract-service-arys-administration.component';
 import { InclusionContractComponent } from './subscription/inclusion-contract/inclusion-contract.component';
+import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-quote-request-index/notification-quote-request-index.component';
+import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
+import { RenovationContractIndividualsComponent } from './subscription/renovation-contract-individuals/renovation-contract-individuals.component';
+import { RenovationIndividualComponent } from './pop-up/renovation-individual/renovation-individual.component';
+import { ProvidersDocumentsComponent } from './pop-up/providers-documents/providers-documents.component';
+// import { RenewalIndividualContractsComponent } from './subscription/renewal-individual-contracts/renewal-individual-contracts.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -488,8 +474,6 @@ export function HttpLoaderFactory(http: HttpClient){
     OwnerVehicleComponent,
     ProficientIndexComponent,
     ProficientDetailComponent,
-    FleetContractManagementIndexComponent,
-    FleetContractManagementDetailComponent,
     ClaimCauseDetailComponent,
     ClaimCauseIndexComponent,
     DamageLevelIndexComponent,
@@ -545,8 +529,6 @@ export function HttpLoaderFactory(http: HttpClient){
     PaymentMethodologyIndexComponent,
     PaymentMethodologyDetailComponent,
     PlanPaymentMethodologyComponent,
-    ClubContractManagementIndexComponent,
-    ClubContractManagementDetailComponent,
     ClubContractManagementOwnerComponent,
     ClubContractManagementPaymentVoucherComponent,
     ClubContractManagementVehicleComponent,
@@ -565,16 +547,11 @@ export function HttpLoaderFactory(http: HttpClient){
     EmailAlertDetailComponent,
     EmailAlertRoleComponent,
     TracingIndexComponent,
-    CollectionOrderFleetContractIndexComponent,
-    CollectionOrderFleetContractDetailComponent,
     CollectionOrderFleetContractPaymentComponent,
     NotificationQuoteComponent,
-    ProviderReportIndexComponent,
     NotificationThirdpartyTracingComponent,
     CoinsIndexComponent,
     CoinsDetailComponent,
-    ServiceOrderIndexComponent,
-    ServiceOrderDetailComponent,
     NotificationServiceOrderComponent,
     NotificationQuoteServiceOrderComponent,
     ClausesIndexComponent,
@@ -600,21 +577,16 @@ export function HttpLoaderFactory(http: HttpClient){
     AdministrationPaymentComponent,
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
-    FleetContractIndividualDetailComponent,
-    ReceiptGenerationComponent,
     FleetContractManagementRealcoverageComponent,
     NotificationRejectionLetterComponent,
     ParentPolicyIndexComponent,
     ParentPolicyDetailComponent,
     BatchComponent,
-    ReceiptGenerationComponent,
     FleetContractIndividualAccessorysComponent,
     FleetContractIndividualAccessoryAmountComponent,
     PaymentRecordIndexComponent,
     PaymentRecordDetailComponent,
     BillLoadingComponent,
-    FleetContractBrokerIndexComponent,
-    FleetContractBrokerDetailComponent,
     UserBrokersComponent,
     BillLoadingServiceOrderComponent,
     BrandModelVersionIndexComponent,
@@ -623,21 +595,14 @@ export function HttpLoaderFactory(http: HttpClient){
     ExchangeRateDetailComponent,
     BillLoadingSettlementComponent,
     AdministrationBillLoadingComponent,
-    PolicyQuotationIndexComponent,
-    PolicyQuotationDetailComponent,
     FooterComponent,
-    PolicyCancellationsComponent,
     CauseForCancellationComponent,
     TakersIndexComponent,
     TakersDetailComponent,
-    PendingPaymentsComponent,
-    FleetContractQuotesIndexComponent,
-    FleetContractQuotesDetailComponent,
     PlanAmountRcvComponent,
     ContractServiceArysIndexComponent,
     ContractServiceArysDetailComponent,
     NumberOfServiceComponent,
-    CorporativeIssuanceComponent,
     PlanValuationApovComponent,
     PlanValuationExcesoComponent,
     ClientDetailV2Component,
@@ -645,7 +610,13 @@ export function HttpLoaderFactory(http: HttpClient){
     IndividualRenovationDetailComponent,
     ReportsComponent,
     ContractServiceArysAdministrationComponent,
-    InclusionContractComponent
+    InclusionContractComponent,
+    NotificationQuoteRequestIndexComponent,
+    NotificationQuoteRequestDetailComponent,
+    RenovationContractIndividualsComponent,
+    RenovationIndividualComponent,
+    ProvidersDocumentsComponent,
+    // RenewalIndividualContractsComponent
   ],
   imports: [
     BrowserModule,

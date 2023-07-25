@@ -126,6 +126,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   ctiporecibo: number;
   mpreciovehiculo: number;
   ctipovehiculo: number;
+  xdocidentidadcorredor: number;
+  xtelefonocorredor: number;
   xtipomodelovehiculo: string;
   ncapacidadcargavehiculo: number;
   ncapacidadpasajerosvehiculo: number;
@@ -148,6 +150,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   cancellationData: {};
   banular: boolean = false;
   estatus;
+  serviceTypeList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder,
               private authenticationService : AuthenticationService,
@@ -157,29 +160,29 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
 
   async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      cano: ['', Validators.required],
-      xcolor: ['', Validators.required],
-      cmarca: ['', Validators.required],
-      cmodelo: ['', Validators.required],
-      cversion: ['', Validators.required],
-      xrif_cliente:['', Validators.required],
-      email: ['', Validators.required],
+      xnombre: [''],
+      xapellido: [''],
+      cano: [''],
+      xcolor: [''],
+      cmarca: [''],
+      cmodelo: [''],
+      cversion: [''],
+      xrif_cliente:[''],
+      email: [''],
       xtelefono_prop:[''],
-      xdireccionfiscal: ['', Validators.required],
-      xserialmotor: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      xplaca: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      cplan: ['', Validators.required],
-      ncapacidad_p: ['', Validators.required],
-      cestado:['', Validators.required],
-      cciudad:['', Validators.required],
-      icedula:['', Validators.required],
-      femision:['', Validators.required],
+      xdireccionfiscal: [''],
+      xserialmotor: [''],
+      xserialcarroceria: [''],
+      xplaca: [''],
+      xtelefono_emp: [''],
+      cplan: [''],
+      ncapacidad_p: [''],
+      cestado:[''],
+      cciudad:[''],
+      icedula:[''],
+      femision:[''],
       ivigencia:[''],
-      cpais:['', Validators.required],
+      cpais:[''],
       xreferencia:[''],
       fcobro:[''],
       cbanco: [''],
@@ -195,6 +198,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     });
     
     this.currentUser = this.authenticationService.currentUserValue;
+
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -229,7 +233,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   initializeDropdownDataRequest(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
-    let params;
+    let params = {
+      ccanal: this.currentUser.data.ccanal
+    };
     this.http.post(`${environment.apiUrl}/api/contract-arys/search-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
       if(response.data.status){
@@ -292,7 +298,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      ccontratoflota: ccontratoflota
+      ccontratoflota: ccontratoflota,
+      ccanal: this.currentUser.data.ccanal
     };
     this.http.post(`${environment.apiUrl}/api/contract-arys/detail-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
@@ -329,7 +336,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.xsucursalemision = response.data.xsucursalemision;
         this.xsucursalsuscriptora = response.data.xsucursalsuscriptora;
         this.ccorredor = response.data.ccorredor;
-        this.xnombrecorredor = response.data.xcorredor;
+        this.xnombrecorredor = response.data.xcanal;
         this.xnombrepropietario = response.data.xnombrepropietario;
         this.xapellidopropietario = response.data.xapellidopropietario;
         this.xtipodocidentidadpropietario = response.data.xtipodocidentidadpropietario ;
@@ -366,14 +373,17 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.xtipomodelovehiculo = response.data.xtipomodelovehiculo;
         this.ncapacidadcargavehiculo = response.data.ncapacidadcargavehiculo;
         this.ncapacidadpasajerosvehiculo = response.data.ncapacidadpasajerosvehiculo;
+        this.ncapacidadpasajeros = response.data.ncapacidadpasajeros;
         this.xplancoberturas = response.data.xplancoberturas;
-        this.xplanservicios = response.data.xplanservicios;
+        this.xplanservicios = response.data.xplan;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
         this.xzona_postal_propietario = response.data.xzona_postal_propietario;
         this.estatus = response.data.xestadocontrato;
         this.mmonto_plan = response.data.mtotal_plan
         this.femision = response.data.femision;
+        this.xdocidentidadcorredor = response.data.xdocidentidadcorredor;
+        this.xtelefonocorredor = response.data.xtelefonocorredor;
         let fechaInicio = this.femision;
         this.fdesde = response.data.femision;
         const fecha = new Date(fechaInicio); // Convertimos la cadena a objeto Date
@@ -433,12 +443,23 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           this.xciudad = this.xciudadcliente;
         }
 
-        if(response.data.services){
-          for(let i = 0; i < response.data.services.length; i++){
-            this.serviceList.push({
-              cservicio: response.data.services[i].cservicio,
-              xservicio: response.data.services[i].xservicio,
-            })
+        if (response.data.services) {
+          for(let i = 0; i < response.data.services.length; i++) {
+              this.serviceList.push({
+                cservicio: response.data.services[i].cservicio,
+                xservicio: response.data.services[i].xservicio,
+                ctiposervicio: response.data.services[i].ctiposervicio,
+                xtiposervicio: response.data.services[i].xtiposervicio,
+              });
+          }
+        }
+
+        if (response.data.servicesType) {
+          for(let i = 0; i < response.data.servicesType.length; i++) {
+              this.serviceTypeList.push({
+                ctiposervicio: response.data.servicesType[i].ctiposervicio,
+                xtiposervicio: response.data.servicesType[i].xtiposervicio,
+              });
           }
         }
 
@@ -510,30 +531,33 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
   }
 
   buildServiceBody() {
+    let uniqueTiposervicio = [...new Set(this.serviceList.map((service) => service.xtiposervicio))];
     let body = [];
-    let dataRow = [];
-    for (let i = 0; i < this.serviceList.length; i++) {
-      if (dataRow.length === 3) {
-        body.push(dataRow);
-        dataRow = []
-      }
-      if (dataRow.length === 2) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[false, false, true, false]})
-      }
-      if (dataRow.length === 1) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[true, false, true, false]});
-      }
-      if (dataRow.length === 0) {
-        dataRow.push({text: this.serviceList[i].xservicio, border:[true, false, false, false]});
-      }
-    };
+  
+    uniqueTiposervicio.forEach((tiposervicio, index) => {
+      const servicios = this.serviceList.filter((service) => service.xtiposervicio === tiposervicio);
+  
+      servicios.forEach((service, serviceIndex) => {
+        // Agregar fila para el tipo de servicio
+        if (serviceIndex === 0) {
+          body.push([{ text: tiposervicio, border: [true, false, true, false], bold: true, margin: [100, 0, 0, 0] }, { text: service.xservicio, border: [false, false, true, false] }]);
+        } else {
+          body.push([{ text: '', border: [true, false, true, false] }, { text: service.xservicio, border: [false, false, true, false], margin: [-1, 0, 0, 0] }]);
+        }
+      });
+    });
   
     return body;
   }
 
+
   createPDF(){
     try{
     const pdfDefinition: any = {
+      info: {
+        title: `Certificado - ${this.xnombrepropietario} ${this.xapellidopropietario} N° ${this.ccontratoflota}`,
+        subject: `Certificado - ${this.xnombrepropietario} ${this.xapellidopropietario} N° ${this.ccontratoflota}`
+      },
       footer: function(currentPage, pageCount) { 
         return {
           table: {
@@ -550,7 +574,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
           table: {
             widths: [165, 216, 55, '*'],
             body: [
-              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\n${this.xtituloreporte}`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control\n\nEstatus', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccontratoflota}\n\n${this.estatus}`, border:[false, true, true, false]}]
+              [ {image: this.xlogo, width: 160, height: 50, border:[true, true, false, false]}, {text: `\n\nPANAUTO CLUB`, fontSize: 8.5, alignment: 'center', bold: true, border: [false, true, false, false]}, {text: '\nN° de Control\n\nEstatus', bold: true, border: [true, true, false, false]}, {text: `\n${this.ccontratoflota}\n\n${this.estatus}`, border:[false, true, true, false]}]
             ]
           }
         },
@@ -575,18 +599,18 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [130, '*'],
+            widths: [130, 190, '*'],
             body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', border: [false, false, true, false]}]
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', border: [false, false, true, false]}, {text: 'Datos del Plan', alignment: 'center', fillColor: '#ababab', bold: true, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [70, 51, 80, 50, 80, '*'],
+            widths: [70, 51, 50, 40, 82, 77, '*'],
             body: [
-              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Monto Total del Plan', bold: true, border: [false, false, false, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
+              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xplanservicios, border: [true, false, true, true]}, {text: this.mmonto_plan, border: [false, false, true, true]} ]
             ]
           }
         },
@@ -611,9 +635,27 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [24, 90, 40, 50, 30, 50, 24, '*'],
+            widths: [35, 90, 30, 50, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Provincia:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Distrito:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'DATOS DEL AGENTE AUTORIZADO', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [100, '*'],
+            body: [
+              [{text: 'Agente Autorizado:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecorredor, border: [false, false, true, false]}]
             ]
           }
         },
@@ -638,7 +680,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [20, 45, 80, 75, 70, 70, 50, '*'],
+            widths: [20, 45, 80, 75, 70, 70, 20, '*'],
             body: [
               [{text: 'Año:', bold: true, border: [true, false, false, true]}, {text: this.fano, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'Color:', bold: true, border: [false, false, false, true]}, {text: this.xcolor, border: [false, false, true, true]}]
             ]
@@ -647,9 +689,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 30, 30, 50, 30, 90, 60, '*'],
+            widths: [55, 60, 30, 105, 35, 60, 50, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, false]}, {text: this.ncapacidadpasajeros, border: [false, false, false, false]}, {text: 'CLASE:', bold: true, border: [false, false, false, false]}, {text: this.xclase, border: [false, false, false, false]}, {text: 'TIPO:', bold: true, border: [false, false, false, false]}, {text: this.xtipovehiculo, border: [false, false, false, false]}, {text: 'PLACA:', bold: true, border: [false, false, false, false]}, {text: this.xplaca, border: [false, false, true, false]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, false]}, {text: this.ncapacidadpasajeros, border: [false, false, false, false]}, {text: 'TIPO:', bold: true, border: [false, false, false, false]}, {text: this.xtipovehiculo, border: [false, false, false, false]}, {text: 'PLACA:', bold: true, border: [false, false, false, false]}, {text: this.xplaca, border: [false, false, false, false]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, false]}, {text: this.nkilometraje, border: [false, false, true, false]}]
             ]
           }
         },
@@ -665,14 +707,23 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [170, 170, '*'],
+            widths: ['*', '*'],
+            body: [
+              [{text: 'TIPOS DE SERVICIOS', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'SERVICIOS', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*', '*'],
             body: this.buildServiceBody()
           }
         },
         {
           style: 'data',
           table: {
-            widths: [171, 100, 60, '*'],
+            widths: [230, 100, 60, '*'],
             body: [
               [{text: 'Costo Total de Plan', colSpan: 3, alignment: 'right', fillColor: '#ababab', bold: true, border: [true, true, true, true]}, {}, {}, {text: `USD ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mmonto_plan)}`, alignment: 'right', bold: true, fillColor: '#ababab', border: [false, true, true, true]}],
             ]

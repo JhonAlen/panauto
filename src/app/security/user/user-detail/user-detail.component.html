@@ -154,6 +154,18 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Canal de Venta</label>
+                                    <select formControlName="ccanal" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ccanal').errors }">
+                                        <option></option>
+                                        <option *ngFor="let pipeline of pipelineList" value="{{ pipeline.id }}">{{ pipeline.value || translate }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('ccanal').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('ccanal').errors.required">{{ "SECURITY.USERS.REQUIREDDEPARTMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
                                     <input type="checkbox" formControlName="bproveedor" class="form-check-input" (change)="checkProvider($event)" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bproveedor').errors }">
                                     <label>{{ "SECURITY.USERS.PROVIDER" | translate }}</label>

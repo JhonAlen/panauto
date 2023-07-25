@@ -66,6 +66,7 @@ export class UserProfileComponent implements OnInit {
       cusuariocreacion:  [''],
 
     });
+    
     this.currentUser = this.authenticationService.currentUserValue;
     let params = {
       cpais: this.currentUser.data.cpais,

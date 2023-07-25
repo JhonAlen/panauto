@@ -1,4 +1,4 @@
- <mat-toolbar class="mat-elevation-z8">
+<mat-toolbar >
     <button
       mat-icon-button
       *ngIf="sidenav.mode === 'over'"
@@ -8,13 +8,13 @@
       <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
     </button>
     <img
-    class="mat-elevation-z8 logocompany-system"
+    class="logocompany-system"
     href="/dashboard"
   />
   </mat-toolbar>
   
   <mat-sidenav-container style="overflow: inherit;">
-    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8" style="overflow: inherit;">
+    <mat-sidenav #sidenav="matSidenav"  style="overflow: inherit;">
       <button mat-button class="menu-button" routerLink="/dashboard">
         <mat-icon>home</mat-icon>
         <span>Inicio</span>
@@ -43,7 +43,7 @@
 
     </mat-sidenav>
     <mat-sidenav-content>
-      <div class="content mat-elevation-z8">
+      <div>
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

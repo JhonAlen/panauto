@@ -65,3 +65,20 @@ padding-top: 3rem !important;
 .modal-content {
     width: 102%;
 }  
+.alert-fixed-top {
+    position: fixed;
+    top: 30px;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    font-size: 20px;
+    padding: 8px 16px;
+  }
+  .alert-fixed-top.show {
+    transform: translateY(0);
+  }
+
+.mat-drawer-container {
+    color: #000000de;
+    background-color: transparent;
+}

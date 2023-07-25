@@ -17,12 +17,14 @@ import { NotificationProviderComponent } from '@app/pop-up/notification-provider
 import { NotificationQuoteComponent } from '@app/pop-up/notification-quote/notification-quote.component';
 import { NotificationServiceOrderComponent } from '@app/pop-up/notification-service-order/notification-service-order.component';
 import { NotificationSettlementComponent } from '@app/pop-up/notification-settlement/notification-settlement.component';
+import { NotificationQuoteRequestIndexComponent } from '@app/pop-up/notification-quote-request-index/notification-quote-request-index.component';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { ignoreElements } from 'rxjs/operators';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 
 @Component({
   selector: 'app-notification-detail',
@@ -87,6 +89,10 @@ export class NotificationDetailComponent implements OnInit {
   fcreacion;
   settlementList: any[] = [];
   settlement: {};
+  quoteListProviders: any[] = [];
+  bactiva_cotizacion: boolean = false; 
+  bactiva_etiqueta: boolean = false; 
+  bocultar_tercero: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -99,7 +105,7 @@ export class NotificationDetailComponent implements OnInit {
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
       cnotificacion: [{ value: '', disabled: true }],
-      ccontratoflota: ['', Validators.required],
+      ccontratoflota: [''],
       xcliente: [{ value: '', disabled: true }],
       fdesde_pol: [{ value: '', disabled: true }],
       fhasta_pol: [{ value: '', disabled: true }],
@@ -119,30 +125,30 @@ export class NotificationDetailComponent implements OnInit {
       xdireccionpropietario: [{ value: '', disabled: true }],
       xtelefonocelularpropietario: [{ value: '', disabled: true }],
       xemailpropietario: [{ value: '', disabled: true }],
-      ctiponotificacion: ['', Validators.required],
-      ccausasiniestro: ['', Validators.required],
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      xtelefono: ['', Validators.required],
+      ctiponotificacion: [''],
+      ccausasiniestro: [''],
+      xnombre: [''],
+      xapellido: [''],
+      xtelefono: [''],
       xnombrealternativo: [''],
       xapellidoalternativo: [''],
       xtelefonoalternativo: [''],
-      bdano: [false, Validators.required],
-      btransitar: [false, Validators.required],
-      bdanootro: [false, Validators.required],
-      blesionado: [false, Validators.required],
-      bpropietario: [false, Validators.required],
-      fdia: ['', Validators.required],
-      fhora: ['', Validators.required],
-      cestado: ['', Validators.required],
-      cciudad: ['', Validators.required],
-      xdireccion: ['', Validators.required],
-      xdescripcion: ['', Validators.required],
-      btransito: [false, Validators.required],
-      bcarga: [false, Validators.required],
-      bpasajero: [false, Validators.required],
+      bdano: [false],
+      btransitar: [false],
+      bdanootro: [false],
+      blesionado: [false],
+      bpropietario: [false],
+      fdia: [''],
+      fhora: [''],
+      cestado: [''],
+      cciudad: [''],
+      xdireccion: [''],
+      xdescripcion: [''],
+      btransito: [false],
+      bcarga: [false],
+      bpasajero: [false],
       npasajero: [''],
-      xobservacion: ['', Validators.required],
+      xobservacion: [''],
       xtiponotificacion: [''],
       crecaudo: [''],
       xrecaudos: [''],
@@ -150,7 +156,8 @@ export class NotificationDetailComponent implements OnInit {
       xdocumentos: [''],
       ncantidad: [''],
       cestatusgeneral: [''],
-      ccausaanulacion: ['']
+      ccausaanulacion: [''],
+      bcotizacion: [false]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -191,6 +198,7 @@ export class NotificationDetailComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania
     };
+    console.log(params)
     this.notificationTypeList = [];
     this.http.post(`${environment.apiUrl}/api/valrep/notification-type`, params, options).subscribe((response: any) => {
       if(response.data.status){
@@ -277,13 +285,10 @@ export class NotificationDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/notification/detail`, params, options).subscribe((response: any) => {
       
-        console.log(response)
         this.detail_form.get('cnotificacion').setValue(response.data.cnotificacion);
         this.detail_form.get('ccontratoflota').setValue(response.data.ccontratoflota);
         this.detail_form.get('ccontratoflota').disable();
         this.detail_form.get('xcliente').setValue(response.data.xcliente);
-        console.log(response.data.fdesde_pol)
-        console.log(response.data.fhasta_pol)
         if(response.data.fdesde_pol) {
           let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
           this.detail_form.get('fdesde_pol').setValue(dateFormat);
@@ -369,6 +374,9 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('xobservacion').disable();
         this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
         this.detail_form.get('xestatusgeneral').disable();
+        if(this.showEditButton == true){
+          this.detail_form.get('bcotizacion').disable();
+        }
         this.noteList = [];
         if(response.data.notes){
           for(let i = 0; i < response.data.notes.length; i++){
@@ -406,6 +414,7 @@ export class NotificationDetailComponent implements OnInit {
               cdanomaterialnotificacion: response.data.materialDamages[i].cdanomaterialnotificacion,
               cdanomaterial: response.data.materialDamages[i].cdanomaterial,
               xdanomaterial: response.data.materialDamages[i].xdanomaterial,
+              xmaterial: response.data.materialDamages[i].xmaterial,
               cniveldano: response.data.materialDamages[i].cniveldano,
               xniveldano: response.data.materialDamages[i].xniveldano,
               xobservacion: response.data.materialDamages[i].xobservacion,
@@ -639,6 +648,13 @@ export class NotificationDetailComponent implements OnInit {
             });
           }
         }
+        if(this.quoteList[0]){
+          this.bactiva_etiqueta = true;
+          this.bactiva_cotizacion = false;
+        }else{
+          this.bactiva_etiqueta = false;
+          this.bactiva_cotizacion = true;
+        }
       
       this.loading_cancel = false;
     }, 
@@ -733,6 +749,16 @@ export class NotificationDetailComponent implements OnInit {
     this.showSaveButton = true;
     this.editStatus = true;
     this.editBlock = true;
+        
+    if(this.showEditButton == false){
+      this.detail_form.get('bcotizacion').enable();
+    }
+
+    if(this.detail_form.get('ctiponotificacion').value == 3 || this.detail_form.get('ctiponotificacion').value == 4 || this.detail_form.get('ctiponotificacion').value == 5 || this.detail_form.get('ctiponotificacion').value == 6){
+      this.bocultar_tercero = true;
+    }else{
+      this.bocultar_tercero = false;
+    }
   }
 
   cancelSave(){
@@ -826,6 +852,7 @@ export class NotificationDetailComponent implements OnInit {
             create: true,
             cdanomaterial: result.cdanomaterial,
             xdanomaterial: result.xdanomaterial,
+            xmaterial: result.xmaterial,
             cniveldano: result.cniveldano,
             xniveldano: result.xniveldano,
             xobservacion: result.xobservacion,
@@ -1130,13 +1157,14 @@ export class NotificationDetailComponent implements OnInit {
 
   materialDamageRowClicked(event: any){
     let materialDamage = {};
-    if(this.editStatus && !this.editBlock){ 
+    if(this.editStatus && this.editBlock){ 
       materialDamage = { 
         type: 1,
         create: event.data.create, 
         cgrid: event.data.cgrid,
         cdanomaterialnotificacion: event.data.cdanomaterialnotificacion,
         cdanomaterial: event.data.cdanomaterial,
+        xmaterial: event.data.xmaterial,
         cniveldano: event.data.cniveldano,
         xobservacion: event.data.xobservacion,
         ctipodocidentidad: event.data.ctipodocidentidad,
@@ -1158,6 +1186,7 @@ export class NotificationDetailComponent implements OnInit {
         cgrid: event.data.cgrid,
         cdanomaterialnotificacion: event.data.cdanomaterialnotificacion,
         cdanomaterial: event.data.cdanomaterial,
+        xmaterial: event.data.xmaterial,
         cniveldano: event.data.cniveldano,
         xobservacion: event.data.xobservacion,
         ctipodocidentidad: event.data.ctipodocidentidad,
@@ -1182,6 +1211,7 @@ export class NotificationDetailComponent implements OnInit {
             if(this.materialDamageList[i].cgrid == result.cgrid){
               this.materialDamageList[i].cdanomaterial = result.cdanomaterial;
               this.materialDamageList[i].xdanomaterial = result.xdanomaterial;
+              this.materialDamageList[i].xmaterial = result.xmaterial;
               this.materialDamageList[i].cniveldano = result.cniveldano;
               this.materialDamageList[i].xniveldano = result.xniveldano;
               this.materialDamageList[i].xobservacion = result.xobservacion;
@@ -1215,7 +1245,7 @@ export class NotificationDetailComponent implements OnInit {
 
   thirdpartyVehicleRowClicked(event: any){
     let thirdpartyVehicle = {};
-    if(this.editStatus && !this.editBlock){ 
+    if(this.editStatus && this.editBlock){ 
       thirdpartyVehicle = { 
         type: 1,
         create: event.data.create, 
@@ -1324,7 +1354,7 @@ export class NotificationDetailComponent implements OnInit {
               this.thirdpartyVehicleList[i].xobservacionpropietario = result.xobservacionpropietario;
               this.thirdpartyVehicleList[i].replacements = result.replacements;
               this.thirdpartyVehicleList[i].replacementsResult = result.replacementsResult;
-              this.thirdpartyGridApi.refreshCells();
+              this.thirdpartyVehicleGridApi.refreshCells();
               return;
             }
           }
@@ -1441,7 +1471,6 @@ export class NotificationDetailComponent implements OnInit {
               this.quoteList[i].baceptacion = result.baceptacion;
               //this.quoteList[i].mtotalcotizacion = result.mtotalcotizacion;
               this.quoteList[i].cimpuesto = 13;
-              //console.log(this.quoteList[i].mtotalcotizacion)
               this.quoteGridApi.refreshCells();
               return;
             }
@@ -1566,7 +1595,6 @@ export class NotificationDetailComponent implements OnInit {
           cmoneda: result.cmoneda
         }
       });
-      console.log(this.settlement)
     }
   }
 
@@ -1627,6 +1655,10 @@ export class NotificationDetailComponent implements OnInit {
       let updateReplacementList = this.replacementList.filter((row) => { return !row.create; });
       let createReplacementList = this.replacementList.filter((row) => { return row.create; });
       let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
+      let updateMaterialDamageList = this.materialDamageList.filter((row) => { return !row.create; });
+      let createMaterialDamageList = this.materialDamageList.filter((row) => { return row.create; });
+      let updateThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return !row.create; });
+      let createThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return row.create; });
       let updateProviderList = this.providerList.filter((row) => { return !row.create; });
       let createProviderList = this.providerList.filter((row) => { return row.create; });
       let updateTracingList = this.tracingList.filter((row) => { return !row.create; });
@@ -1648,6 +1680,8 @@ export class NotificationDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
+        quotesProviders: this.quoteListProviders,
+        ccanal: this.currentUser.data.ccanal,
         notes: {
           create: createNoteList,
           update: updateNoteList,
@@ -1660,6 +1694,16 @@ export class NotificationDetailComponent implements OnInit {
         },
         thirdparties: {
           update: updateThirdpartyList
+        },
+        materialDamages: {
+          create: createMaterialDamageList,
+          update: updateMaterialDamageList,
+          delete: this.materialDamageDeletedRowList
+        },
+        thirdPartyVehicles: {
+          create: createThirdPartyVehiclesList,
+          update: updateThirdPartyVehiclesList,
+          delete: this.thirdpartyVehicleDeletedRowList
         },
         providers: {
           create: createProviderList,
@@ -1678,13 +1722,12 @@ export class NotificationDetailComponent implements OnInit {
         },
         settlement: {
           create: this.settlement
-        }
+        },
       };
       url = `${environment.apiUrl}/api/notification/update`;
       this.sendFormData(params, url);
     }else{
       let tracing = { type: 3 }; 
-      console.log(this.detail_form.get('crecaudo').value)
       const modalRef = this.modalService.open(NotificationTracingComponent);
       modalRef.componentInstance.tracing = tracing;
       modalRef.result.then((result: any) => { 
@@ -1728,7 +1771,8 @@ export class NotificationDetailComponent implements OnInit {
               thirdparties: this.thirdpartyList,
               materialDamages: this.materialDamageList,
               thirdpartyVehicles: this.thirdpartyVehicleList,
-              serviceOrder: this.serviceOrderList
+              serviceOrder: this.serviceOrderList,
+              ccanal: this.currentUser.data.ccanal,
             };
             url = `${environment.apiUrl}/api/notification/create`;
             this.sendFormData(params, url);
@@ -1798,7 +1842,6 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       };
-      console.log(notificacion)
     }else{
       notificacion = { 
         edit: this.editStatus,
@@ -1828,7 +1871,6 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       }
-      console.log(notificacion)
     }
     if(this.editStatus){
     const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
@@ -1862,6 +1904,36 @@ export class NotificationDetailComponent implements OnInit {
     const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
     modalRef.componentInstance.notificacion = notificacion;
   }
+  }
+
+  changeQuoteRequest(){
+    if(this.detail_form.get('bcotizacion').value == true){
+      let quote = { cproveedor: this.providerList}
+      const modalRef = this.modalService.open(NotificationQuoteRequestIndexComponent, { size: 'xl' });
+      modalRef.componentInstance.quote = quote;
+      modalRef.result.then((result: any) => {
+
+        this.quoteListProviders = [];
+        if(result){
+          for(let j = 0; j < result.repuestos.repuestos.length; j++){
+            this.quoteListProviders.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+            })
+          }
+        }
+        console.log(this.quoteListProviders)
+      });
+    }
   }
 
   searchOwner(){
@@ -2031,6 +2103,12 @@ export class NotificationDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.detail_form.get('ctiponotificacion').value == 3 || this.detail_form.get('ctiponotificacion').value == 4 || this.detail_form.get('ctiponotificacion').value == 5 || this.detail_form.get('ctiponotificacion').value == 6){
+      this.bocultar_tercero = true;
+    }else{
+      this.bocultar_tercero = false;
+    }
   }
 
   searchDocumentation(){

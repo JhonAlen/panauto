@@ -14,16 +14,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MaterialExampleModule } from './../../../../material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
+    MaterialExampleModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatRippleModule,
@@ -33,6 +32,7 @@ import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     MatTooltipModule,
     FullCalendarModule,
     NgbModule,
+
   
   ],
   declarations: [

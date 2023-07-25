@@ -148,7 +148,8 @@ export class NotificationIndexComponent implements OnInit {
       casociado: form.casociado ? form.casociado : undefined,
       fcreacion: form.fcreacion ? new Date(form.fcreacion).toUTCString() : undefined,
       fevento: form.fevento ? new Date(form.fevento).toUTCString() : undefined,
-      xplaca: form.xplaca ? form.xplaca : undefined
+      xplaca: form.xplaca ? form.xplaca : undefined,
+      ccanal: this.currentUser.data.ccanal
     }
     this.http.post(`${environment.apiUrl}/api/notification/search`, params, options).subscribe((response : any) => {
       if(response.data.status){

@@ -34,9 +34,9 @@ export class TaxDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
-      ximpuesto: ['', Validators.required],
-      xobservacion: ['', Validators.required],
-      bactivo: [true, Validators.required]
+      ximpuesto: [''],
+      xobservacion: [''],
+      bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if (this.currentUser) {
@@ -94,7 +94,7 @@ export class TaxDetailComponent implements OnInit {
       cpais: this.currentUser.data.cpais
     };
     //  this.http.post(`${environment.apiUrl}/api/tax/detail`, params, options).subscribe((response: any) => {
-    let request = await this.webService.detailVehicleType(params);
+    let request = await this.webService.detailTax(params);
     if (request.error) {
       this.alert.message = request.message;
       this.alert.type = 'danger';

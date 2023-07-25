@@ -109,7 +109,8 @@ export class PlanIndexComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
       ctipoplan: form.ctipoplan ? form.ctipoplan : undefined,
-      xplan: form.xplan ? form.xplan : undefined
+      xplan: form.xplan ? form.xplan : undefined,
+      ccanal: this.currentUser.data.ccanal,
     }
     this.http.post(`${environment.apiUrl}/api/plan/search`, params, options).subscribe((response: any) => {
       if(response.data.status){
@@ -144,5 +145,27 @@ export class PlanIndexComponent implements OnInit {
   rowClicked(event: any){
     this.router.navigate([`products/plan-detail/${event.data.cplan}`]);
   }
+
+  // email(){
+  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   let options = { headers: headers };
+  //   let params = {
+  //     cpais: this.currentUser.data.cpais,
+  //     ccompania: this.currentUser.data.ccompania,
+  //   };
+  //   this.http.post(`${environment.apiUrl}/api/emailer/sms`, params, options).subscribe((response : any) => {
+
+  //   },
+  //   (err) => {
+  //     let code = err.error.data.code;
+  //     let message;
+  //     if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+  //     else if(code == 404){ message = "HTTP.ERROR.VALREP.PLANTYPENOTFOUND"; }
+  //     else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+  //     this.alert.message = message;
+  //     this.alert.type = 'danger';
+  //     this.alert.show = true;
+  //   });
+  // }
 
 }

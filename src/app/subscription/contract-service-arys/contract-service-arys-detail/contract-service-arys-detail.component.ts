@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-
+import { Observable, OperatorFunction } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contract-service-arys-detail',
@@ -27,7 +28,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
   search_form : UntypedFormGroup;
   loading: boolean = false;
   submitted: boolean = false;
-  clear: boolean = true;
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
@@ -90,7 +90,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
   bpago: boolean = false;
   pagos: boolean = false;
   bpagarubii: boolean = false;
-  bemitir: boolean = false;
   bpagomanual: boolean = false;
   fnacimientopropietario: string
   fnacimientopropietario2: string;
@@ -141,42 +140,79 @@ export class ContractServiceArysDetailComponent implements OnInit {
   townshipList: any[] = [];
   bactivar_rcv: boolean = false;
   planRcvList: any[] = [];
+  documentTypeList: any[] = [];
+  bactivar_casco: boolean = false;
+  months: string[] = [];
+  pipelineList: any[] = [];
+  showSuccess: boolean = false;
+  showError: boolean = false;
+  showAlert: boolean = false;
+  activaCampo: boolean = true;
+  alertMessage: string = '';
+  public model: any;
+  public selectedFlagUrl: string;
+  public countries: { name: string; flag: string; code: string }[] = [
+    { name: 'Venezuela', flag: '0/06/Flag_of_Venezuela.svg', code: '58' },
+    { name: 'Colombia', flag: '2/21/Flag_of_Colombia.svg', code: '57' },
+    { name: 'Panama', flag: 'a/ab/Flag_of_Panama.svg', code: '507' }
+  ];
 
-  
+  search: OperatorFunction<string, readonly { name; flag; code }[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map((term) =>
+        term === ''
+          ? []
+          : this.countries.filter((v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)
+      )
+    );
+
+    formatter = (x: { name: string; flag: string; code: string }) => {
+      if (x.flag) {
+        return 'https://upload.wikimedia.org/wikipedia/commons/' + x.flag;
+      } else {
+        return '';
+      }
+    };
+
+    public showFlag: boolean = false;
+    public showReminder: boolean = false;
+
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
               private router: Router,
               private http: HttpClient,
               private modalService : NgbModal,
-              private webService: WebServiceConnectionService) { }
+              private webService: WebServiceConnectionService,
+              ) { }
 
   async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      fnac:['', Validators.required],
-      cano: ['', Validators.required],
-      xcolor: ['', Validators.required],
-      cmarca: ['', Validators.required],
-      cmodelo: ['', Validators.required],
-      cversion: ['', Validators.required],
-      xrif_cliente:['', Validators.required],
-      email: ['', Validators.required],
+      xnombre: [''],
+      xapellido: [''],
+      fnac:[''],
+      cano: [''],
+      xcolor: [''],
+      cmarca: [''],
+      cmodelo: [''],
+      cversion: [''],
+      xrif_cliente:[''],
+      email: [''],
       xtelefono_prop:[''],
-      xdireccionfiscal: ['', Validators.required],
-      xserialmotor: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      xplaca: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      cplan: ['', Validators.required],
-      ccorredor:['', Validators.required],
-      ncapacidad_p: ['', Validators.required],
+      xdireccionfiscal: [''],
+      xserialmotor: [''],
+      xserialcarroceria: [''],
+      xplaca: [''],
+      xtelefono_emp: [''],
+      cplan: [''],
+      ccorredor:[''],
+      ncapacidad_p: [''],
       cmetodologiapago: [''],
-      cestado:['', Validators.required],
-      cciudad:['', Validators.required],
-      icedula:['', Validators.required],
-      femision:['', Validators.required],
+      cestado:[''],
+      cciudad:[''],
+      icedula:[''],
+      femision:[''],
       ivigencia:[''],
       xcedula: [''],
       cuso: [''],
@@ -191,10 +227,20 @@ export class ContractServiceArysDetailComponent implements OnInit {
       ccorregimiento: [''],
       ncobro: [''],
       brcv: [false],
+      xpais_proveniente: [''],
       cplan_rc: [''],
+      xcobertura: [''],
+      msuma_casco: [''],
+      mprima_casco: [''],
+      xmes: [''],
+      c_numero: [''], 
+      xtelefono: [''],
+      ccanal: ['']
     });
     this.search_form.get('xclave_club').disable();
+    this.search_form.get('xtelefono').disable();
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser.data)
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -223,17 +269,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-  
-      if(this.currentUser.data.crol == 18){
-        this.bemitir = true;
-      }
-      else if(this.currentUser.data.crol == 17){
-        this.bemitir = true;
-      }else if(this.currentUser.data.crol == 3){
-        this.bemitir = true;
-      }else{
-        this.bemitir = false;
-      }
     }
   }
 
@@ -245,6 +280,9 @@ export class ContractServiceArysDetailComponent implements OnInit {
     this.ClaseData();
     this.getTypeVehicle();
     this.getCorredorData();
+    this.getDocumentType();
+    this.getMonths();
+    this.valrepPipeline();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -269,13 +307,65 @@ export class ContractServiceArysDetailComponent implements OnInit {
       }
   }
 
+  prueba(event) {
+    this.selectedFlagUrl = 'https://upload.wikimedia.org/wikipedia/commons/' + event.item.flag;
+    this.showFlag = true;
+    if(this.selectedFlagUrl){
+      this.activaCampo = false;
+    }else{
+      this.activaCampo = true;
+    }
+    this.search_form.get('c_numero').setValue(event.item.code)
+    this.search_form.get('xtelefono').enable();
+  }
 
+  checkPhoneNumber(){
+    let code = this.search_form.get('c_numero').value;
+    this.alert.show = true;
+    this.alertMessage = `Recuerda colocar este modelo: +${code}XXXXXXXXXX. Ya el +${code} esta incluido, solo coloca el número.`;
+    this.showAlert = true;
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 5000);
+    this.loading = false;
+  }
+
+  valrepPipeline(){
+    let params ={
+      ccanal: this.currentUser.data.ccanal
+    };
+
+    this.http.post(`${environment.apiUrl}/api/valrep/sales-pipeline`, params).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.pipelineList.push({ id: response.data.list[i].ccanal, value: response.data.list[i].xcanal });
+        }
+        this.pipelineList.sort((a,b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.DEPARTMENTNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+
+    if(this.currentUser.data.ccanal){
+      this.search_form.get('ccanal').setValue(this.currentUser.data.ccanal);
+      this.search_form.get('ccanal').disable();
+    }
+  }
 
   async getPlanData(){
     let params =  {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      ctipoplan: 1
+      ctipoplan: 1,
+      ccanal: this.currentUser.data.ccanal
    
     };
   
@@ -450,6 +540,41 @@ async getModeloData(event){
       },);
   }
 
+  getDocumentType(){
+    let params =  {
+      cpais: this.currentUser.data.cpais 
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/document-type`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.documentTypeList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.documentTypeList.push({ 
+            id: response.data.list[i].ctipodocidentidad,
+            value: response.data.list[i].xtipodocidentidad,
+          });
+        }
+        this.documentTypeList.sort((a, b) => a.value > b.value ? 1 : -1)
+      }
+      },);
+  }
+
+  getMonths(){
+    this.months = [
+      'ENERO',
+      'FEBRERO',
+      'MARZO',
+      'ABRIL',
+      'MAYO',
+      'JUNIO',
+      'JULIO',
+      'AGOSTO',
+      'SEPTIEMBRE',
+      'OCTUBRE',
+      'NOVIEMBRE',
+      'DICIEMBRE'
+    ];
+  }
+
   searchVersion(event){
     this.search_form.get('cversion').setValue(event.control)
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
@@ -485,7 +610,7 @@ async getModeloData(event){
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
-        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono').setValue(response.data.xtelefonocasa);
         this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocelular);
         this.search_form.get('email').setValue(response.data.xemail);
         if(this.search_form.get('email').value){
@@ -626,7 +751,7 @@ async getModeloData(event){
   }
 
   changeRcv(){
-    if(this.search_form.get('brcv').value == true){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
       this.bactivar_rcv = true;
       let params;
       this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
@@ -641,28 +766,60 @@ async getModeloData(event){
           this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
       }, );
+    }else if(this.search_form.get('xcobertura').value == 'AMPLIA'){
+      this.bactivar_rcv = true;
+      this.bactivar_casco = true;
+      let params;
+      this.http.post(`${environment.apiUrl}/api/valrep/plan-rcv`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.planRcvList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.planRcvList.push({ 
+              id: response.data.list[i].cplan_rc,
+              value: response.data.list[i].xplan_rc,
+            });
+          }
+          this.planRcvList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }, );
     }else{
+      this.bactivar_casco = false;
       this.bactivar_rcv = false;
     }
   }
 
+  getValueCellPhone(){
+    this.search_form.get('xtelefono_emp').setValue(this.search_form.get('c_numero').value + this.search_form.get('xtelefono').value);
+  }
+
   onSubmit(form){
-    this.clear = false;
     this.submitted = true;
   
     this.submitted = true;
     this.loading = true;
     this.search_form.disable();
+    
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+
+    if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
+      this.alert.show = true;
+      this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+      this.showError = true;
+      setTimeout(() => {
+        this.showError = false;
+      }, 3000);
+      this.loading = false;
+    }
+
     let params = {
         icedula: this.search_form.get('icedula').value,
         xrif_cliente: form.xrif_cliente,
         xnombre: form.xnombre,
         xapellido: form.xapellido,
-        xtelefono_emp: form.xtelefono_emp,
+        xtelefono_emp: this.search_form.get('xtelefono_emp').value,
         xtelefono_prop: form.xtelefono_prop,
         email: form.email,
         cpais: this.currentUser.data.cpais,
@@ -674,6 +831,9 @@ async getModeloData(event){
         cmarca: marca.id,
         cmodelo: modelo.id,
         cversion: version.id,
+        xmarca: marca.value,
+        xmodelo: modelo.value,
+        xversion: version.value,
         cano:form.cano,
         cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
@@ -682,7 +842,6 @@ async getModeloData(event){
         xserialmotor: form.xserialmotor,  
         cuso: form.cuso,
         ctipovehiculo: form.ctipovehiculo,
-        cclase: form.cclase,
         fdesde_pol: form.fdesde_pol,
         fhasta_pol: form.fhasta_pol,
         ccorredor: form.ccorredor,
@@ -691,22 +850,39 @@ async getModeloData(event){
         femision: form.femision,
         xzona_postal: form.xzona_postal,
         cplan_rc: this.search_form.get('cplan_rc').value,
+        xpais_proveniente: this.search_form.get('xpais_proveniente').value,
+        xcobertura: this.search_form.get('xcobertura').value,
+        msuma_casco: this.search_form.get('msuma_casco').value,
+        mprima_casco: this.search_form.get('mprima_casco').value,
+        xmes: this.search_form.get('xmes').value,
+        xclave_club: this.search_form.get('xclave_club').value,
+        nkilometraje: this.search_form.get('nkilometraje').value,
+        ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
-          window.alert(`Se ha generado un contrato Arys, por el beneficiario ${form.xnombre + ' ' + form.xapellido}`)
-          location.reload()
+          this.alert.show = true;
+          this.alertMessage = `Se ha generado el contrato exitosamente, por el beneficiario ${form.xnombre.toUpperCase()} ${form.xapellido.toUpperCase()}`;
+          this.showSuccess = true;
+          setTimeout(() => {
+            this.showSuccess = false;
+            location.reload();
+          }, 3000);
         }
       },
       (err) => {
         let code = err.error.data.code;
+        console.log(code)
         let message;
         if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
         else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
         this.alert.show = true;
+        this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 3000);
         this.loading = false;
       })
     this.loading = false;
