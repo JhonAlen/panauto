@@ -234,7 +234,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      ccanal: this.currentUser.data.ccanal
+      ccanal: this.currentUser.data.ccanal,
+      cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/contract-arys/search-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
@@ -299,7 +300,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
       ccontratoflota: ccontratoflota,
-      ccanal: this.currentUser.data.ccanal
+      ccanal: this.currentUser.data.ccanal,
+      // cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/contract-arys/detail-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
