@@ -133,14 +133,6 @@ export class CollectionDetailComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
 
-    this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
-      if (response.data.status) {
-        this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
-        this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
-        this.ftasacambio = response.data.tasaCambio.fingreso;
-      }
-    })
-
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
@@ -148,13 +140,6 @@ export class CollectionDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-
-        /*if (response.data.xestatusgeneral == "PENDIENTE") {
-          this.verifyReceipt();
-        } else {
-          this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
-          this.detail_form.get('xestatusgeneral').disable();
-        }*/
 
         this.ccontratoflota = response.data.ccontratoflota;
 
@@ -228,31 +213,9 @@ export class CollectionDetailComponent implements OnInit {
 
         this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
         this.detail_form.get('xestatusgeneral').disable();
+        
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
-        let prima = this.detail_form.get('mprima').value.split(" ");
-
-        let prima_ds: String = String(parseFloat(prima[0]).toFixed(2));
-
-        let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );       
-
-        this.ccodigo_ubii = String(response.data.ccodigo_ubii);
-
-        initUbii(
-          'ubiiboton',
-          {
-            amount_ds: prima_ds,
-            amount_bs: prima_bs,
-            concept: "COMPRA",
-            principal: "bs",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-            orderId: this.ccodigo_ubii
-          },
-          this.callbackFn.bind(this),
-          {
-            text: 'Pagar con Ubii Pagos '
-          }
-        );
       }
     },
     (err) => {

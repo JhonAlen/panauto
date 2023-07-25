@@ -94,8 +94,7 @@ export class AdministrationPaymentComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      crecibo: this.payment.crecibo,
-      mpima_pagada: this.payment.mpima_pagada
+      crecibo: this.payment.crecibo
     };
 
     //Buscar listas de bancos.
@@ -149,12 +148,8 @@ export class AdministrationPaymentComponent implements OnInit {
       this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
         if(response.data.status){
           this.xmoneda = response.data.xmoneda;
-          //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
-          this.popup_form.get('mprima').setValue(response.data.mprima_pagada);
+          this.popup_form.get('mprima').setValue(response.data.mprima_anual);
           this.popup_form.get('mprima').disable();
-          // console.log(response.data.mprima_pagada)
-          // this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
-          // this.popup_form.get('mprima_pagada').disable();
         }
       },
       (err) => {
