@@ -82,7 +82,8 @@ export class CollectionDetailComponent implements OnInit {
       xdocidentidadcliente: [''],
       xemail: [''],
       xtelefono: [''],
-      xnombres: ['']
+      xnombres: [''],
+      mprima_anual: [''],
     })
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -216,6 +217,9 @@ export class CollectionDetailComponent implements OnInit {
         
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
+
+        this.detail_form.get('mprima_anual').setValue(response.data.mprima_anual);
+        this.detail_form.get('mprima_anual').disable();
       }
     },
     (err) => {
@@ -233,7 +237,7 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   addPayment(){
-    let payment = { crecibo: this.code , mpima_pagada : this.mprima_pagada };
+    let payment = { crecibo: this.code , mprima_anual: this.detail_form.get('mprima_anual').value };
     const modalRef = this.modalService.open(AdministrationPaymentComponent);
     modalRef.componentInstance.payment = payment;
     modalRef.result.then((result: any) => { 
