@@ -353,6 +353,11 @@ export class ContractServiceArysDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.currentUser.data.ccanal){
+      this.search_form.get('ccanal').setValue(this.currentUser.data.ccanal);
+      this.search_form.get('ccanal').disable();
+    }
   }
 
   async getPlanData(){
@@ -854,6 +859,7 @@ async getModeloData(event){
         nkilometraje: this.search_form.get('nkilometraje').value,
         ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
+        cproductor: this.currentUser.data.cproductor
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {

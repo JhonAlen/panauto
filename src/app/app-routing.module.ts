@@ -114,8 +114,6 @@ import { OwnerIndexComponent } from './thirdparties/owner/owner-index/owner-inde
 import { OwnerDetailComponent } from './thirdparties/owner/owner-detail/owner-detail.component';
 import { ProficientIndexComponent } from './thirdparties/proficient/proficient-index/proficient-index.component';
 import { ProficientDetailComponent } from './thirdparties/proficient/proficient-detail/proficient-detail.component';
-import { FleetContractManagementIndexComponent } from './subscription/fleet-contract-management/fleet-contract-management-index/fleet-contract-management-index.component';
-import { FleetContractManagementDetailComponent } from './subscription/fleet-contract-management/fleet-contract-management-detail/fleet-contract-management-detail.component';
 import { FleetLoadingComponent} from './subscription/fleet-loading/fleet-loading.component';
 import { ClaimCauseIndexComponent } from './tables/claim-cause/claim-cause-index/claim-cause-index.component';
 import { ClaimCauseDetailComponent } from './tables/claim-cause/claim-cause-detail/claim-cause-detail.component';
@@ -143,8 +141,6 @@ import { ImageIndexComponent } from './tables/image/image-index/image-index.comp
 import { ImageDetailComponent } from './tables/image/image-detail/image-detail.component';
 import { PaymentMethodologyIndexComponent } from './tables/payment-methodology/payment-methodology-index/payment-methodology-index.component';
 import { PaymentMethodologyDetailComponent } from './tables/payment-methodology/payment-methodology-detail/payment-methodology-detail.component';
-import { ClubContractManagementIndexComponent } from './subscription/club-contract-management/club-contract-management-index/club-contract-management-index.component';
-import { ClubContractManagementDetailComponent } from './subscription/club-contract-management/club-contract-management-detail/club-contract-management-detail.component';
 import { ServiceRequestIndexComponent } from './events/service-request/service-request-index/service-request-index.component';
 import { ServiceRequestDetailComponent } from './events/service-request/service-request-detail/service-request-detail.component';
 import { ClubMenuIndexComponent } from './api/club-menu/club-menu-index/club-menu-index.component';
@@ -154,11 +150,6 @@ import { ClubRoleDetailComponent } from './api/club-role/club-role-detail/club-r
 import { EmailAlertIndexComponent } from './alerts/email-alert/email-alert-index/email-alert-index.component';
 import { EmailAlertDetailComponent } from './alerts/email-alert/email-alert-detail/email-alert-detail.component';
 import { TracingIndexComponent } from './business/tracing/tracing-index/tracing-index.component';
-import { CollectionOrderFleetContractIndexComponent } from './administration/collection-order-fleet-contract/collection-order-fleet-contract-index/collection-order-fleet-contract-index.component';
-import { CollectionOrderFleetContractDetailComponent } from './administration/collection-order-fleet-contract/collection-order-fleet-contract-detail/collection-order-fleet-contract-detail.component';
-import { ProviderReportIndexComponent } from './reports/provider/provider-report-index/provider-report-index.component';
-import { ServiceOrderIndexComponent } from './events/service-order/service-order-index/service-order-index.component';
-import { ServiceOrderDetailComponent } from './events/service-order/service-order-detail/service-order-detail.component';
 import { ClausesIndexComponent } from './configuration/clauses/clauses-index/clauses-index.component';
 import { ClausesDetailComponent } from './configuration/clauses/clauses-detail/clauses-detail.component';
 import { CollectionsIndexComponent } from './tables/collections/collections-index/collections-index.component';
@@ -180,27 +171,19 @@ import { CollectionIndexComponent } from './administration/collection/collection
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
-import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
-import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
 import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
-import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
 import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
 import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
 import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
-import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
 import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
-import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
-import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
-import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 import { ContractServiceArysIndexComponent } from './subscription/contract-service-arys/contract-service-arys-index/contract-service-arys-index.component';
 import { ContractServiceArysDetailComponent } from './subscription/contract-service-arys/contract-service-arys-detail/contract-service-arys-detail.component';
-import { CorporativeIssuanceComponent } from './subscription/corporative-issuance/corporative-issuance.component';
 import { ReportsComponent } from './administration/reports/reports.component';
 import { ContractServiceArysAdministrationComponent } from './subscription/contract-service-arys-administration/contract-service-arys-administration.component';
 import { InclusionContractComponent } from './subscription/inclusion-contract/inclusion-contract.component';
@@ -398,8 +381,6 @@ const routes: Routes = [
   { path: 'thirdparties/proficient-index', component: ProficientIndexComponent, canActivate: [AuthGuard] },
   { path: 'thirdparties/proficient-detail', component: ProficientDetailComponent, canActivate: [AuthGuard] },
   { path: 'thirdparties/proficient-detail/:id', component: ProficientDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-management-detail', component: FleetContractManagementDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-management-detail/:id', component: FleetContractManagementDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-loading', component: FleetLoadingComponent, canActivate: [AuthGuard] },
   { path: 'tables/claim-cause-index', component: ClaimCauseIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/claim-cause-detail', component: ClaimCauseDetailComponent, canActivate: [AuthGuard] },
@@ -412,7 +393,6 @@ const routes: Routes = [
   { path: 'tables/material-damage-detail/:id', component: MaterialDamageDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-index', component: NotificationIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail', component: NotificationDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-individual-detail', component: FleetContractIndividualDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/parent-policy-index', component: ParentPolicyIndexComponent, canActivate: [AuthGuard] },
   { path: 'subscription/parent-policy-detail', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/parent-policy-detail/:id', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
@@ -444,9 +424,6 @@ const routes: Routes = [
   { path: 'tables/payment-methodology-index', component: PaymentMethodologyIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/payment-methodology-detail', component: PaymentMethodologyDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/payment-methodology-detail/:id', component: PaymentMethodologyDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/club-contract-management-index', component: ClubContractManagementIndexComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/club-contract-management-detail', component: ClubContractManagementDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/club-contract-management-detail/:id', component: ClubContractManagementDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/service-request-index', component: ServiceRequestIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/service-request-detail', component: ServiceRequestDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/service-request-detail/:id', component: ServiceRequestDetailComponent, canActivate: [AuthGuard] },
@@ -460,44 +437,28 @@ const routes: Routes = [
   { path: 'alerts/email-alert-detail', component: EmailAlertDetailComponent, canActivate: [AuthGuard] },
   { path: 'alerts/email-alert-detail/:id', component: EmailAlertDetailComponent, canActivate: [AuthGuard] },
   { path: 'business/tracing-index', component: TracingIndexComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-order-fleet-contract-index', component: CollectionOrderFleetContractIndexComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-order-fleet-contract-detail', component: CollectionOrderFleetContractDetailComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-order-fleet-contract-detail/:id', component: CollectionOrderFleetContractDetailComponent, canActivate: [AuthGuard] },
-  { path: 'reports/provider/provider-report-index', component: ProviderReportIndexComponent, canActivate: [AuthGuard] },
-  { path: 'events/service-order-index', component: ServiceOrderIndexComponent, canActivate: [AuthGuard] },
-  { path: 'events/service-order-detail', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
-  { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-index', component: CollectionIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-detail', component: CollectionDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-index', component: PlanRcvIndexComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail/:id', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/receipt-generation', component: ReceiptGenerationComponent, canActivate: [AuthGuard]},
   { path: 'administration/payment-record-index', component: PaymentRecordIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/bill-loading', component: BillLoadingComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-broker-detail', component: FleetContractBrokerDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/brand-model-version-index', component: BrandModelVersionIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/brand-model-version-detail', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/brand-model-version-detail/:id', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-index', component: ExchangeRateIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail/:id', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/policy-cancellations', component: PolicyCancellationsComponent, canActivate: [AuthGuard] },
   { path: 'configuration/takers-index', component: TakersIndexComponent, canActivate: [AuthGuard] },
   { path: 'configuration/takers-detail', component: TakersDetailComponent, canActivate: [AuthGuard] },
   { path: 'configuration/takers-detail/:id', component: TakersDetailComponent, canActivate: [AuthGuard] },
-  { path: 'business/pending-payments', component: PendingPaymentsComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-quotes-index', component: FleetContractQuotesIndexComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-quotes-detail', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-quotes-detail/:id', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/fleet-contract-management-index', component: FleetContractManagementIndexComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-index', component: ContractServiceArysIndexComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-detail', component: ContractServiceArysDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-detail/:id', component: ContractServiceArysDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/corporative-issuance', component: CorporativeIssuanceComponent, canActivate: [AuthGuard] },
   
   { path: 'administration/reports', component: ReportsComponent, canActivate: [AuthGuard] },
   { path: 'subscription/contract-service-arys-administration', component: ContractServiceArysAdministrationComponent, canActivate: [AuthGuard] },

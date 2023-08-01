@@ -83,7 +83,8 @@ export class CollectionIndexComponent implements OnInit {
       ccompania: this.currentUser.data.ccompania,
       xplaca: form.xplaca,
       ccorredor: this.currentUser.data.ccorredor,
-      ccanal: this.currentUser.data.ccanal
+      ccanal: this.currentUser.data.ccanal,
+      cproductor: this.currentUser.data.cproductor
     }
     this.http.post(`${environment.apiUrl}/api/administration-collection/search`, params, options).subscribe((response : any) => {
       if(response.data.list){

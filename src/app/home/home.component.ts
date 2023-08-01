@@ -72,6 +72,8 @@ export class HomeComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
+      ccanal: this.currentUser.data.ccanal,
+      cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/home/contract`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -140,6 +142,8 @@ export class HomeComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
+      ccanal: this.currentUser.data.ccanal,
+      cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/home/notifications`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -154,24 +158,6 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
-  // getCountArysService(){
-  //   //busca usuario que inicio sesión
-  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   let options = { headers: headers };
-  //   let params = {
-  //     cusuario: this.currentUser.data.cusuario
-  //   };
-  //   this.http.post(`${environment.apiUrl}/api/home/arys-service`, params, options).subscribe((response : any) => {
-  //     if(response.data.npersonas_arys){
-  //       this.home_form.get('npersonas_arys').setValue(response.data.npersonas_arys)
-  //       this.home_form.get('npersonas_arys').disable();
-  //     }else{
-  //       this.home_form.get('npersonas_arys').setValue(0)
-  //       this.home_form.get('npersonas_arys').disable();
-  //     }
-  //   });
-  // }
 
   getUser(){
     //busca usuario que inicio sesión
@@ -193,7 +179,10 @@ export class HomeComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cusuario: this.currentUser.data.cusuario
+      cusuario: this.currentUser.data.cusuario,
+      ccanal: this.currentUser.data.ccanal,
+      ccompania: this.currentUser.data.ccompania,
+      cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/home/amounts-paid`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -213,7 +202,10 @@ export class HomeComponent implements OnInit {
      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let options = { headers: headers };
      let params = {
-       cusuario: this.currentUser.data.cusuario
+       cusuario: this.currentUser.data.cusuario,
+       ccanal: this.currentUser.data.ccanal,
+       ccompania: this.currentUser.data.ccompania,
+       cproductor: this.currentUser.data.cproductor
      };
      this.http.post(`${environment.apiUrl}/api/home/amounts-outstanding`, params, options).subscribe((response : any) => {
        if(response.data.status){
@@ -233,7 +225,10 @@ export class HomeComponent implements OnInit {
      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      let options = { headers: headers };
      let params = {
-       cusuario: this.currentUser.data.cusuario
+       cusuario: this.currentUser.data.cusuario,
+       ccanal: this.currentUser.data.ccanal,
+       ccompania: this.currentUser.data.ccompania,
+       cproductor: this.currentUser.data.cproductor
      };
      this.http.post(`${environment.apiUrl}/api/home/count-notifications`, params, options).subscribe((response : any) => {
        if(response.data.status){

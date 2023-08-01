@@ -234,7 +234,8 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      ccanal: this.currentUser.data.ccanal
+      ccanal: this.currentUser.data.ccanal,
+      cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/contract-arys/search-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
@@ -298,7 +299,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      ccontratoflota: ccontratoflota
+      ccontratoflota: ccontratoflota,
+      ccanal: this.currentUser.data.ccanal,
+      // cproductor: this.currentUser.data.cproductor
     };
     this.http.post(`${environment.apiUrl}/api/contract-arys/detail-contract-arys`, params, options).subscribe((response : any) => {
       this.contractList = [];
@@ -335,7 +338,7 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         this.xsucursalemision = response.data.xsucursalemision;
         this.xsucursalsuscriptora = response.data.xsucursalsuscriptora;
         this.ccorredor = response.data.ccorredor;
-        this.xnombrecorredor = response.data.xcorredor;
+        this.xnombrecorredor = response.data.xcanal;
         this.xnombrepropietario = response.data.xnombrepropietario;
         this.xapellidopropietario = response.data.xapellidopropietario;
         this.xtipodocidentidadpropietario = response.data.xtipodocidentidadpropietario ;
@@ -652,9 +655,9 @@ export class ContractServiceArysAdministrationComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [70, 100, 100, 100, 35, '*'],
+            widths: [100, '*'],
             body: [
-              [{text: 'Agente Autorizado:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecorredor, border: [false, false, false, false]}, {text: 'Documento de Identidad:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcorredor, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocorredor, border: [false, false, true, false]} ]
+              [{text: 'Agente Autorizado:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecorredor, border: [false, false, true, false]}]
             ]
           }
         },

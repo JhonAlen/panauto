@@ -43,6 +43,7 @@
     "boxicons": "^2.0.9",
     "chartist": "^1.1.2",
     "classlist.js": "^1.1.20150312",
+    "file-saver": "^2.0.5",
     "fullcalendar": "^6.1.5",
     "html2canvas": "^1.4.1",
     "jquery": "^3.5.1",
