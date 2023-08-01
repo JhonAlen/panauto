@@ -7,6 +7,8 @@ import { AdministrationPaymentComponent } from '@app/pop-up/administration-payme
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,8 @@ import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbCarouselConfig]
 })
 export class HomeComponent implements OnInit {
+
+  view: number[];
 
   saleData = [
     { name: "Mobiles", value: 105000 },
@@ -39,6 +43,7 @@ export class HomeComponent implements OnInit {
   notificationCountList: any[] = [];
 
   constructor(config: NgbCarouselConfig,
+              private breakpointObserver: BreakpointObserver,
               private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
               public http: HttpClient,
@@ -94,6 +99,38 @@ export class HomeComponent implements OnInit {
     this.getAmountsCharged();
     this.getAmountsOutstanding();
     this.getNotificationCount();
+
+
+    this.breakpointObserver.observe([
+      Breakpoints.WebPortrait,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge,
+    ]).pipe(
+      map(result => {
+        if (result.breakpoints[Breakpoints.XLarge]) {
+          return [800, 600]; 
+          // Modifica estos valores según tus necesidades para pantallas extra grandes
+        
+        } else if (result.breakpoints[Breakpoints.Large]) {
+          return [340, 250]; 
+          // Modifica estos valores según tus necesidades para pantallas grandes
+        
+        }else if (result.breakpoints[Breakpoints.WebPortrait]) {
+          return [300, 250]; 
+        // Modifica estos valores según tus necesidades para pantallas grandes
+      
+        }else if (result.breakpoints[Breakpoints.Medium]) {
+          return [480, 400];
+          // Modifica estos valores según tus necesidades para pantallas medianas
+        
+        } else {
+          return [320, 280]; 
+          // Modifica estos valores según tus necesidades para pantallas pequeñas
+        }
+      })
+    ).subscribe(view => this.view = view);
+
   }
 
   getDataNotification(){

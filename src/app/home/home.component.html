@@ -80,12 +80,12 @@
         <div class="card z-index-2 ">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
             <div class="bg-gradient-success shadow-primary border-radius-lg py-3 pe-1">
-              <div class="chart">
+              <div class="chart chart-container" ngx-charts-resize>
                 <ngx-charts-pie-chart 
                 [results]="monthsoutstandingList"
                 [legend]="false"
                 
-                [view]="[480,400]"
+                [view]="view"
                 [labels]="true" >
                 </ngx-charts-pie-chart>
               </div>
@@ -106,9 +106,9 @@
         <div class="card z-index-2  ">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
             <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
-              <div class="chart">
+              <div class="chart chart-container" ngx-charts-resize>
                 <ngx-charts-bar-vertical 
-                    [view]="[480,400]"
+                    [view]="view"
                     [results]="monthschargedList"
                     [xAxisLabel]="'Meses'"
                   
@@ -138,7 +138,7 @@
         <div class="card z-index-2 ">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
             <div class="bg-gradient-success shadow-dark border-radius-lg py-3 pe-1">
-              <div class="chart">
+              <div class="chart chart-container" ngx-charts-resize>
                 <ngx-charts-pie-grid 
                 [results]="notificationCountList" >
                 </ngx-charts-pie-grid>

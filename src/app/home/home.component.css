@@ -619,3 +619,26 @@ input {
 p{
   color: black;
 }
+
+.chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .chart-container {
+    width: 100%;
+  }
+}
+
+/* Ejemplo de ajuste de márgenes en un gráfico */
+ngx-charts-bar-vertical {
+  margin: 20px;
+}
+
+/* Ejemplo de ajuste del tamaño del gráfico */
+ngx-charts-bar-vertical {
+  width: 100%;
+  height: 300px;
+}
