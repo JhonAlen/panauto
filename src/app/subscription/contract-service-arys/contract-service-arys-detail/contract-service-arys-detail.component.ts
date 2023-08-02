@@ -148,6 +148,10 @@ export class ContractServiceArysDetailComponent implements OnInit {
   showError: boolean = false;
   showAlert: boolean = false;
   activaCampo: boolean = true;
+  activateModalBrand: boolean = true;
+  marcaInput: string = '';
+  modeloInput: string = '';
+  versionInput: string = '';
   alertMessage: string = '';
   public model: any;
   public selectedFlagUrl: string;
@@ -235,7 +239,10 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xmes: [''],
       c_numero: [''], 
       xtelefono: [''],
-      ccanal: ['']
+      ccanal: [''],
+      xmarcanueva: [''],
+      xmodelonuevo: [''],
+      xversionnuevo: [''],
     });
     this.search_form.get('xclave_club').disable();
     this.search_form.get('xtelefono').disable();
@@ -790,6 +797,33 @@ async getModeloData(event){
 
   getValueCellPhone(){
     this.search_form.get('xtelefono_emp').setValue(this.search_form.get('c_numero').value + this.search_form.get('xtelefono').value);
+  }
+
+  onMarcaInput(event: any) {
+    this.marcaInput = event.target.value;
+  }
+
+  createMarca() {
+    this.search_form.get('xmarcanueva').setValue(this.marcaInput)
+    console.log('Marca:' + this.search_form.get('xmarcanueva').value);
+  }
+
+  onModeloInput(event: any) {
+    this.modeloInput = event.target.value;
+  }
+
+  createModelo(){
+    this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
+    console.log('Modelo:' + this.search_form.get('xmodelonuevo').value);
+  }
+
+  onVersionInput(event: any) {
+    this.versionInput = event.target.value;
+  }
+
+  createVersion(){
+    this.search_form.get('xversionnuevo').setValue(this.versionInput)
+    console.log('Version:' + this.search_form.get('xversionnuevo').value);
   }
 
   onSubmit(form){
