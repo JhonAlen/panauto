@@ -238,9 +238,9 @@
                       <label class="form-label" for="form3Examplev5">Marca</label>
                       <div>
                         <ng-autocomplete [data]="marcaList" [searchKeyword]="keyword" 
-                                         placeholder="Seleccionar Marca" (keyup)="onMarcaInput($event)"
-                                         [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundMarcaTemplate"
-                                         [(ngModel)]="marcaInput">
+                                          placeholder="Seleccionar Marca" (selected)="getModeloData($event)"
+                                          [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundMarcaTemplate"
+                                          [(ngModel)]="marcaInput" (keyup)="onMarcaInput($event)">
                         </ng-autocomplete>
                         
                         <ng-template #itemTemplate let-item>
@@ -248,10 +248,23 @@
                         </ng-template>
                         
                         <!-- Personaliza el template para "Marca" -->
-                        <ng-template #notFoundMarcaTemplate let-notFound>
+                        <ng-template #notFoundMarcaTemplate let-notFound let-item>
                           <div>
                             <p>No se encontraron marcas.</p>
-                            <button type="button" class="btn btn-success" (click)="createMarca(marcaInput)">Agregar Marca</button>
+                            <div class="add-to-basket--button-wrap" data-js="add-to-basket--wrapper" [attr.data-state]="buttonState">
+                              <button class="btn" [attr.data-add-to-basket]="buttonState" name="button" type="submit" data-js="add-to-basket"
+                                (click)="createMarca(marcaInput)">
+                                <span [attr.data-js]="innerTextState">{{ buttonText }}</span>
+                                <span class="add-to-basket--tick-animation">
+                                  <svg class="add-to-basket--tick-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37">
+                                    <path class="circ path" style="fill:none;stroke:#00ab49;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:10;"
+                                      d="M30.5,6.5L30.5,6.5c6.6,6.6,6.6,17.4,0,24l0,0c-6.6,6.6-17.4,6.6-24,0l0,0c-6.6-6.6-6.6-17.4,0-24l0,0C13.1-0.2,23.9-0.2,30.5,6.5z" />
+                                    <polyline class="tick path" style="fill:none;stroke:#00ab49;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:10;"
+                                      points="11.6,20 15.9,24.2 26.4,13.8 " />
+                                  </svg>
+                                </span>
+                              </button>
+                            </div>
                           </div>
                         </ng-template>
                       </div>
@@ -265,7 +278,7 @@
                         <ng-autocomplete [data]="modeloList" [searchKeyword]="keyword" 
                                         placeholder="Seleccionar Modelo" (selected)='getVersionData($event)'
                                         [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundModeloTemplate"
-                                        [(ngModel)]="modeloInput">                                 
+                                        [(ngModel)]="modeloInput" (keyup)="onModeloInput($event)">                                 
                         </ng-autocomplete>
                                   
                         <ng-template #itemTemplate let-item>
@@ -308,7 +321,9 @@
                       </div>
                     </div>
                   </div>
+                  <!-- holaaaaaa -->
 
+                  <!-- eeeeeeee -->
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required">Año del automovi</label>

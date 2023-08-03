@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators , FormBuilder} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -20,8 +20,14 @@ import { debounceTime, map } from 'rxjs/operators';
 export class ContractServiceArysDetailComponent implements OnInit {
 
   private serviceGridApi;
+  @Input() showSpinner: boolean = false;
+  result: boolean | null = null;
+  buttonState: 'ready' | 'loading' | 'added' = 'ready';
+  buttonText: string = 'Agregar Marca';
+  innerTextState: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
   checked = false;
   indeterminate = false;
+
   labelPosition: 'before' | 'after' = 'after';
   disabled = false;
   currentUser;
@@ -279,6 +285,21 @@ export class ContractServiceArysDetailComponent implements OnInit {
     }
   }
 
+  addToBasket() {
+    if (this.buttonState === 'ready') {
+      this.buttonState = 'loading';
+      this.innerTextState = 'add-to-basket--inner-text-loading';
+      this.buttonText = 'Guardando';
+
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonState = 'added';
+        this.innerTextState = 'add-to-basket--inner-text';
+        this.buttonText = 'Guardado';
+      }, 2200);
+    }
+  }
+
   async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
@@ -490,7 +511,11 @@ async getCity(){
       },);
   } 
 
-async getModeloData(event){
+  // onMarcaInput(event: any) {
+  //   this.marcaInput = event.target.value;
+  // }
+
+async getModeloData(event: any){
   this.keyword;
   this.search_form.get('cmarca').setValue(event.control)
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
@@ -517,6 +542,15 @@ async getModeloData(event){
       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
+
+// Método para manejar la selección de la marca
+// getModeloData(selectedMarca: any) {
+//   const marcaEnLista = this.marcaList.find((marca) => marca.control === selectedMarca.control);
+  
+//   if (marcaEnLista) {
+//     console.log('Marca seleccionada: ' + marcaEnLista.value);
+//   }
+// }
 
   async getVersionData(event){
     this.keyword;
@@ -546,7 +580,20 @@ async getModeloData(event){
       }
       },);
   }
-
+  simulateLoading() {
+    this.loading = true;
+    this.result = null;
+  
+    // Simulación de carga
+    setTimeout(() => {
+      // Simulación de resultado (true o false)
+      const isSuccess = Math.random() < 0.5;
+  
+      this.loading = false;
+      this.result = isSuccess;
+      console.log(this.result)
+    }, 2000); // Cambia el tiempo según lo que requieras en tu caso real
+  }
   getDocumentType(){
     let params =  {
       cpais: this.currentUser.data.cpais 
@@ -804,7 +851,19 @@ async getModeloData(event){
   }
 
   createMarca() {
-    this.search_form.get('xmarcanueva').setValue(this.marcaInput)
+    if (this.buttonState === 'ready') {
+      this.search_form.get('xmarcanueva').setValue(this.marcaInput)
+      this.buttonState = 'loading';
+      this.innerTextState = 'add-to-basket--inner-text-loading';
+      this.buttonText = 'Guardando';
+
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonState = 'added';
+        this.innerTextState = 'add-to-basket--inner-text';
+        this.buttonText = 'Guardado';
+      }, 2200);
+    }
     console.log('Marca:' + this.search_form.get('xmarcanueva').value);
   }
 
@@ -813,7 +872,20 @@ async getModeloData(event){
   }
 
   createModelo(){
-    this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
+    if (this.buttonState === 'ready') {
+      this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
+      this.buttonState = 'loading';
+      this.innerTextState = 'add-to-basket--inner-text-loading';
+      this.buttonText = 'Guardando';
+
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonState = 'added';
+        this.innerTextState = 'add-to-basket--inner-text';
+        this.buttonText = 'Guardado';
+      }, 2200);
+    }
+    
     console.log('Modelo:' + this.search_form.get('xmodelonuevo').value);
   }
 
@@ -822,7 +894,19 @@ async getModeloData(event){
   }
 
   createVersion(){
-    this.search_form.get('xversionnuevo').setValue(this.versionInput)
+    if (this.buttonState === 'ready') {
+      this.search_form.get('xversionnuevo').setValue(this.versionInput)
+      this.buttonState = 'loading';
+      this.innerTextState = 'add-to-basket--inner-text-loading';
+      this.buttonText = 'Guardando';
+
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonState = 'added';
+        this.innerTextState = 'add-to-basket--inner-text';
+        this.buttonText = 'Guardado';
+      }, 2200);
+    }
     console.log('Version:' + this.search_form.get('xversionnuevo').value);
   }
 
