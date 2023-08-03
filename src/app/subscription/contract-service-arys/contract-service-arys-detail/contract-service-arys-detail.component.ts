@@ -22,9 +22,18 @@ export class ContractServiceArysDetailComponent implements OnInit {
   private serviceGridApi;
   @Input() showSpinner: boolean = false;
   result: boolean | null = null;
-  buttonState: 'ready' | 'loading' | 'added' = 'ready';
-  buttonText: string = 'Agregar Marca';
-  innerTextState: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+  // buttonState: 'ready' | 'loading' | 'added' = 'ready';
+  // buttonText: string = 'Agregar Marca';
+  // innerTextState: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+  buttonStateMarca: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextMarca: string = 'Agregar Marca';
+innerTextStateMarca: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+buttonStateModelo: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextModelo: string = 'Agregar Modelo';
+innerTextStateModelo: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+buttonStateVersion: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextVersion: string = 'Agregar Versión';
+innerTextStateVersion: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
   checked = false;
   indeterminate = false;
 
@@ -282,21 +291,6 @@ export class ContractServiceArysDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-    }
-  }
-
-  addToBasket() {
-    if (this.buttonState === 'ready') {
-      this.buttonState = 'loading';
-      this.innerTextState = 'add-to-basket--inner-text-loading';
-      this.buttonText = 'Guardando';
-
-      // Simulate an API call with a setTimeout
-      setTimeout(() => {
-        this.buttonState = 'added';
-        this.innerTextState = 'add-to-basket--inner-text';
-        this.buttonText = 'Guardado';
-      }, 2200);
     }
   }
 
@@ -846,68 +840,129 @@ async getModeloData(event: any){
     this.search_form.get('xtelefono_emp').setValue(this.search_form.get('c_numero').value + this.search_form.get('xtelefono').value);
   }
 
+  // onMarcaInput(event: any) {
+  //   this.marcaInput = event.target.value;
+  // }
+
+  // createMarca() {
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xmarcanueva').setValue(this.marcaInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+  //     this.buttonText = '';
+
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //       this.buttonText = '';
+  //     }, 2200);
+  //   }
+  //   console.log('Marca:' + this.search_form.get('xmarcanueva').value);
+  // }
+
+  // onModeloInput(event: any) {
+  //   this.modeloInput = event.target.value;
+  // }
+
+  // createModelo(){
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //     }, 2200);
+  //   }
+    
+  //   console.log('Modelo:' + this.search_form.get('xmodelonuevo').value);
+  // }
+
+  // onVersionInput(event: any) {
+  //   this.versionInput = event.target.value;
+  // }
+
+  // createVersion(){
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xversionnuevo').setValue(this.versionInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //     }, 2200);
+  //   }
+  //   console.log('Version:' + this.search_form.get('xversionnuevo').value);
+  // }
+
   onMarcaInput(event: any) {
     this.marcaInput = event.target.value;
   }
-
+  
   createMarca() {
-    if (this.buttonState === 'ready') {
-      this.search_form.get('xmarcanueva').setValue(this.marcaInput)
-      this.buttonState = 'loading';
-      this.innerTextState = 'add-to-basket--inner-text-loading';
-      this.buttonText = 'Guardando';
-
+    if (this.buttonStateMarca === 'ready') {
+      this.search_form.get('xmarcanueva').setValue(this.marcaInput);
+      this.buttonStateMarca = 'loading';
+      this.innerTextStateMarca = 'add-to-basket--inner-text-loading';
+      this.buttonTextMarca = '';
+  
       // Simulate an API call with a setTimeout
       setTimeout(() => {
-        this.buttonState = 'added';
-        this.innerTextState = 'add-to-basket--inner-text';
-        this.buttonText = 'Guardado';
-      }, 2200);
+        this.buttonStateMarca = 'added';
+        this.innerTextStateMarca = 'add-to-basket--inner-text';
+        this.buttonTextMarca = '';
+      }, 700);
     }
-    console.log('Marca:' + this.search_form.get('xmarcanueva').value);
   }
-
+  
   onModeloInput(event: any) {
     this.modeloInput = event.target.value;
   }
-
+  
   createModelo(){
-    if (this.buttonState === 'ready') {
-      this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
-      this.buttonState = 'loading';
-      this.innerTextState = 'add-to-basket--inner-text-loading';
-      this.buttonText = 'Guardando';
-
+    if (this.buttonStateModelo === 'ready') {
+      this.search_form.get('xmodelonuevo').setValue(this.modeloInput);
+      this.buttonStateModelo = 'loading';
+      this.innerTextStateModelo = 'add-to-basket--inner-text-loading';
+      this.buttonTextModelo = '';
       // Simulate an API call with a setTimeout
       setTimeout(() => {
-        this.buttonState = 'added';
-        this.innerTextState = 'add-to-basket--inner-text';
-        this.buttonText = 'Guardado';
-      }, 2200);
+        this.buttonStateModelo = 'added';
+        this.innerTextStateModelo = 'add-to-basket--inner-text';
+        this.buttonTextModelo = '';
+      }, 700);
     }
-    
-    console.log('Modelo:' + this.search_form.get('xmodelonuevo').value);
   }
-
+  
   onVersionInput(event: any) {
     this.versionInput = event.target.value;
   }
-
+  
   createVersion(){
-    if (this.buttonState === 'ready') {
-      this.search_form.get('xversionnuevo').setValue(this.versionInput)
-      this.buttonState = 'loading';
-      this.innerTextState = 'add-to-basket--inner-text-loading';
-      this.buttonText = 'Guardando';
-
+    if (this.buttonStateVersion === 'ready') {
+      this.search_form.get('xversionnuevo').setValue(this.versionInput);
+      this.buttonStateVersion = 'loading';
+      this.innerTextStateVersion = 'add-to-basket--inner-text-loading';
+      this.buttonTextVersion = '';
       // Simulate an API call with a setTimeout
       setTimeout(() => {
-        this.buttonState = 'added';
-        this.innerTextState = 'add-to-basket--inner-text';
-        this.buttonText = 'Guardado';
-      }, 2200);
+        this.buttonStateVersion = 'added';
+        this.innerTextStateVersion = 'add-to-basket--inner-text';
+        this.buttonTextVersion = '';
+
+        this.alert.show = true;
+        this.alertMessage = `¡Recuerda colocar El año del Vehículo y el Numero de Pasajero!`;
+        this.showAlert = true;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 5000);
+        this.loading = false;
+      }, 700);
     }
-    console.log('Version:' + this.search_form.get('xversionnuevo').value);
   }
 
   onSubmit(form){
@@ -977,7 +1032,10 @@ async getModeloData(event: any){
         nkilometraje: this.search_form.get('nkilometraje').value,
         ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
-        cproductor: this.currentUser.data.cproductor
+        cproductor: this.currentUser.data.cproductor,
+        xmarcanueva: this.search_form.get('xmarcanueva').value,
+        xmodelonuevo: this.search_form.get('xmodelonuevo').value,
+        xversionnuevo: this.search_form.get('xversionnuevo').value,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
