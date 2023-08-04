@@ -972,10 +972,20 @@ async getModeloData(event: any){
     this.loading = true;
     this.search_form.disable();
     
-    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
-    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
-    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    let cmarcaValue = this.search_form.get('cmarca').value;
+    let cmodeloValue = this.search_form.get('cmodelo').value;
+    let cversionValue = this.search_form.get('cversion').value;
+    let cplanValue = this.search_form.get('cplan').value;
+
+    console.log(cmarcaValue)
+    console.log(cmodeloValue)
+    console.log(cversionValue)
+    console.log(cplanValue)
+  
+    let marca = this.marcaList.find(element => element.control === (cmarcaValue ? parseInt(cmarcaValue) : null));
+    let modelo = this.modeloList.find(element => element.control === (cmodeloValue ? parseInt(cmodeloValue) : null));
+    let version = this.versionList.find(element => element.control === (cversionValue ? parseInt(cversionValue) : null));
+    let plan = this.planList.find(element => element.control === (cplanValue ? parseInt(cplanValue) : null));
 
     if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
       this.alert.show = true;
@@ -985,6 +995,7 @@ async getModeloData(event: any){
         this.showError = false;
       }, 3000);
       this.loading = false;
+      
     }
 
     let params = {
@@ -1001,12 +1012,12 @@ async getModeloData(event: any){
         ccorregimiento: this.search_form.get('ccorregimiento').value,
         xdireccionfiscal: form.xdireccionfiscal,
         xplaca: form.xplaca,
-        cmarca: marca.id,
-        cmodelo: modelo.id,
-        cversion: version.id,
-        xmarca: marca.value,
-        xmodelo: modelo.value,
-        xversion: version.value,
+        cmarca: marca?.id,
+        cmodelo: modelo?.id,
+        cversion: version?.id,
+        xmarca: marca?.value,
+        xmodelo: modelo?.value,
+        xversion: version?.value,
         cano:form.cano,
         cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
@@ -1044,7 +1055,7 @@ async getModeloData(event: any){
           this.showSuccess = true;
           setTimeout(() => {
             this.showSuccess = false;
-            location.reload();
+            // location.reload();
           }, 3000);
         }
       },
