@@ -512,6 +512,7 @@ async getCity(){
 async getModeloData(event: any){
   this.keyword;
   this.search_form.get('cmarca').setValue(event.control)
+  console.log(this.search_form.get('cmarca').value)
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -977,15 +978,35 @@ async getModeloData(event: any){
     let cversionValue = this.search_form.get('cversion').value;
     let cplanValue = this.search_form.get('cplan').value;
 
-    console.log(cmarcaValue)
-    console.log(cmodeloValue)
-    console.log(cversionValue)
-    console.log(cplanValue)
-  
-    let marca = this.marcaList.find(element => element.control === (cmarcaValue ? parseInt(cmarcaValue) : null));
-    let modelo = this.modeloList.find(element => element.control === (cmodeloValue ? parseInt(cmodeloValue) : null));
-    let version = this.versionList.find(element => element.control === (cversionValue ? parseInt(cversionValue) : null));
-    let plan = this.planList.find(element => element.control === (cplanValue ? parseInt(cplanValue) : null));
+    let marca;
+    let modelo;
+    let version;
+    let plan;
+
+    if (cmarcaValue !== 0) {
+      marca = this.marcaList.find((element) => element.control === parseInt(cmarcaValue));
+    } else {
+      marca = this.marcaList.find((element) => element.control === 0);
+    }
+
+    if (cmodeloValue !== 0) {
+      modelo = this.modeloList.find((element) => element.control === parseInt(cmodeloValue));
+    } else {
+      modelo = this.modeloList.find((element) => element.control === 0);
+    }
+
+    if (cversionValue !== 0) {
+      version = this.versionList.find((element) => element.control === parseInt(cversionValue));
+    } else {
+      version = this.versionList.find((element) => element.control === 0);
+    }
+
+    if (cplanValue !== 0) {
+      plan = this.planList.find((element) => element.control === parseInt(cplanValue));
+    } else {
+      plan = this.planList.find((element) => element.control === 0);
+    }
+
 
     if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
       this.alert.show = true;
@@ -1012,14 +1033,14 @@ async getModeloData(event: any){
         ccorregimiento: this.search_form.get('ccorregimiento').value,
         xdireccionfiscal: form.xdireccionfiscal,
         xplaca: form.xplaca,
-        cmarca: marca?.id,
-        cmodelo: modelo?.id,
-        cversion: version?.id,
-        xmarca: marca?.value,
-        xmodelo: modelo?.value,
-        xversion: version?.value,
+        cmarca: marca ? marca.id : 0,
+        cmodelo: modelo ? modelo.id : 0,
+        cversion: version ? version.id : 0,
+        xmarca: marca ? marca.value : '',
+        xmodelo: modelo ? modelo.value : '',
+        xversion: version ? version.value : '',
+        cplan: plan ? plan.id : 0,
         cano:form.cano,
-        cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
         xcolor: this.search_form.get('xcolor').value,    
         xserialcarroceria: form.xserialcarroceria,
