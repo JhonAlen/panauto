@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators , FormBuilder} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -20,8 +20,23 @@ import { debounceTime, map } from 'rxjs/operators';
 export class ContractServiceArysDetailComponent implements OnInit {
 
   private serviceGridApi;
+  @Input() showSpinner: boolean = false;
+  result: boolean | null = null;
+  // buttonState: 'ready' | 'loading' | 'added' = 'ready';
+  // buttonText: string = 'Agregar Marca';
+  // innerTextState: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+  buttonStateMarca: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextMarca: string = 'Agregar Marca';
+innerTextStateMarca: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+buttonStateModelo: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextModelo: string = 'Agregar Modelo';
+innerTextStateModelo: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
+buttonStateVersion: 'ready' | 'loading' | 'added' = 'ready';
+buttonTextVersion: string = 'Agregar Versión';
+innerTextStateVersion: 'add-to-basket--inner-text' | 'add-to-basket--inner-text-loading' = 'add-to-basket--inner-text';
   checked = false;
   indeterminate = false;
+
   labelPosition: 'before' | 'after' = 'after';
   disabled = false;
   currentUser;
@@ -148,6 +163,10 @@ export class ContractServiceArysDetailComponent implements OnInit {
   showError: boolean = false;
   showAlert: boolean = false;
   activaCampo: boolean = true;
+  activateModalBrand: boolean = true;
+  marcaInput: string = '';
+  modeloInput: string = '';
+  versionInput: string = '';
   alertMessage: string = '';
   public model: any;
   public selectedFlagUrl: string;
@@ -235,7 +254,10 @@ export class ContractServiceArysDetailComponent implements OnInit {
       xmes: [''],
       c_numero: [''], 
       xtelefono: [''],
-      ccanal: ['']
+      ccanal: [''],
+      xmarcanueva: [''],
+      xmodelonuevo: [''],
+      xversionnuevo: [''],
     });
     this.search_form.get('xclave_club').disable();
     this.search_form.get('xtelefono').disable();
@@ -483,9 +505,14 @@ async getCity(){
       },);
   } 
 
-async getModeloData(event){
+  // onMarcaInput(event: any) {
+  //   this.marcaInput = event.target.value;
+  // }
+
+async getModeloData(event: any){
   this.keyword;
   this.search_form.get('cmarca').setValue(event.control)
+  console.log(this.search_form.get('cmarca').value)
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -510,6 +537,15 @@ async getModeloData(event){
       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
+
+// Método para manejar la selección de la marca
+// getModeloData(selectedMarca: any) {
+//   const marcaEnLista = this.marcaList.find((marca) => marca.control === selectedMarca.control);
+  
+//   if (marcaEnLista) {
+//     console.log('Marca seleccionada: ' + marcaEnLista.value);
+//   }
+// }
 
   async getVersionData(event){
     this.keyword;
@@ -539,7 +575,20 @@ async getModeloData(event){
       }
       },);
   }
-
+  simulateLoading() {
+    this.loading = true;
+    this.result = null;
+  
+    // Simulación de carga
+    setTimeout(() => {
+      // Simulación de resultado (true o false)
+      const isSuccess = Math.random() < 0.5;
+  
+      this.loading = false;
+      this.result = isSuccess;
+      console.log(this.result)
+    }, 2000); // Cambia el tiempo según lo que requieras en tu caso real
+  }
   getDocumentType(){
     let params =  {
       cpais: this.currentUser.data.cpais 
@@ -792,6 +841,131 @@ async getModeloData(event){
     this.search_form.get('xtelefono_emp').setValue(this.search_form.get('c_numero').value + this.search_form.get('xtelefono').value);
   }
 
+  // onMarcaInput(event: any) {
+  //   this.marcaInput = event.target.value;
+  // }
+
+  // createMarca() {
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xmarcanueva').setValue(this.marcaInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+  //     this.buttonText = '';
+
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //       this.buttonText = '';
+  //     }, 2200);
+  //   }
+  //   console.log('Marca:' + this.search_form.get('xmarcanueva').value);
+  // }
+
+  // onModeloInput(event: any) {
+  //   this.modeloInput = event.target.value;
+  // }
+
+  // createModelo(){
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xmodelonuevo').setValue(this.modeloInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //     }, 2200);
+  //   }
+    
+  //   console.log('Modelo:' + this.search_form.get('xmodelonuevo').value);
+  // }
+
+  // onVersionInput(event: any) {
+  //   this.versionInput = event.target.value;
+  // }
+
+  // createVersion(){
+  //   if (this.buttonState === 'ready') {
+  //     this.search_form.get('xversionnuevo').setValue(this.versionInput)
+  //     this.buttonState = 'loading';
+  //     this.innerTextState = 'add-to-basket--inner-text-loading';
+
+  //     // Simulate an API call with a setTimeout
+  //     setTimeout(() => {
+  //       this.buttonState = 'added';
+  //       this.innerTextState = 'add-to-basket--inner-text';
+  //     }, 2200);
+  //   }
+  //   console.log('Version:' + this.search_form.get('xversionnuevo').value);
+  // }
+
+  onMarcaInput(event: any) {
+    this.marcaInput = event.target.value;
+  }
+  
+  createMarca() {
+    if (this.buttonStateMarca === 'ready') {
+      this.search_form.get('xmarcanueva').setValue(this.marcaInput);
+      this.buttonStateMarca = 'loading';
+      this.innerTextStateMarca = 'add-to-basket--inner-text-loading';
+      this.buttonTextMarca = '';
+  
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonStateMarca = 'added';
+        this.innerTextStateMarca = 'add-to-basket--inner-text';
+        this.buttonTextMarca = '';
+      }, 700);
+    }
+  }
+  
+  onModeloInput(event: any) {
+    this.modeloInput = event.target.value;
+  }
+  
+  createModelo(){
+    if (this.buttonStateModelo === 'ready') {
+      this.search_form.get('xmodelonuevo').setValue(this.modeloInput);
+      this.buttonStateModelo = 'loading';
+      this.innerTextStateModelo = 'add-to-basket--inner-text-loading';
+      this.buttonTextModelo = '';
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonStateModelo = 'added';
+        this.innerTextStateModelo = 'add-to-basket--inner-text';
+        this.buttonTextModelo = '';
+      }, 700);
+    }
+  }
+  
+  onVersionInput(event: any) {
+    this.versionInput = event.target.value;
+  }
+  
+  createVersion(){
+    if (this.buttonStateVersion === 'ready') {
+      this.search_form.get('xversionnuevo').setValue(this.versionInput);
+      this.buttonStateVersion = 'loading';
+      this.innerTextStateVersion = 'add-to-basket--inner-text-loading';
+      this.buttonTextVersion = '';
+      // Simulate an API call with a setTimeout
+      setTimeout(() => {
+        this.buttonStateVersion = 'added';
+        this.innerTextStateVersion = 'add-to-basket--inner-text';
+        this.buttonTextVersion = '';
+
+        this.alert.show = true;
+        this.alertMessage = `¡Recuerda colocar El año del Vehículo y el Numero de Pasajero!`;
+        this.showAlert = true;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 5000);
+        this.loading = false;
+      }, 700);
+    }
+  }
+
   onSubmit(form){
     this.submitted = true;
   
@@ -799,20 +973,51 @@ async getModeloData(event){
     this.loading = true;
     this.search_form.disable();
     
-    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
-    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
-    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    let cmarcaValue = this.search_form.get('cmarca').value;
+    let cmodeloValue = this.search_form.get('cmodelo').value;
+    let cversionValue = this.search_form.get('cversion').value;
+    let cplanValue = this.search_form.get('cplan').value;
 
-    if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
-      this.alert.show = true;
-      this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
-      this.showError = true;
-      setTimeout(() => {
-        this.showError = false;
-      }, 3000);
-      this.loading = false;
+    let marca;
+    let modelo;
+    let version;
+    let plan;
+
+    if (cmarcaValue !== 0) {
+      marca = this.marcaList.find((element) => element.control === parseInt(cmarcaValue));
+    } else {
+      marca = this.marcaList.find((element) => element.control === 0);
     }
+
+    if (cmodeloValue !== 0) {
+      modelo = this.modeloList.find((element) => element.control === parseInt(cmodeloValue));
+    } else {
+      modelo = this.modeloList.find((element) => element.control === 0);
+    }
+
+    if (cversionValue !== 0) {
+      version = this.versionList.find((element) => element.control === parseInt(cversionValue));
+    } else {
+      version = this.versionList.find((element) => element.control === 0);
+    }
+
+    if (cplanValue !== 0) {
+      plan = this.planList.find((element) => element.control === parseInt(cplanValue));
+    } else {
+      plan = this.planList.find((element) => element.control === 0);
+    }
+
+
+    // if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
+    //   this.alert.show = true;
+    //   this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+    //   this.showError = true;
+    //   setTimeout(() => {
+    //     this.showError = false;
+    //   }, 3000);
+    //   this.loading = false;
+      
+    // }
 
     let params = {
         icedula: this.search_form.get('icedula').value,
@@ -828,14 +1033,14 @@ async getModeloData(event){
         ccorregimiento: this.search_form.get('ccorregimiento').value,
         xdireccionfiscal: form.xdireccionfiscal,
         xplaca: form.xplaca,
-        cmarca: marca.id,
-        cmodelo: modelo.id,
-        cversion: version.id,
-        xmarca: marca.value,
-        xmodelo: modelo.value,
-        xversion: version.value,
+        cmarca: marca ? marca.id : 0,
+        cmodelo: modelo ? modelo.id : 0,
+        cversion: version ? version.id : 0,
+        xmarca: marca ? marca.value : '',
+        xmodelo: modelo ? modelo.value : '',
+        xversion: version ? version.value : '',
+        cplan: plan ? plan.id : 0,
         cano:form.cano,
-        cplan: plan.id,
         ncapacidad_p: form.ncapacidad_p,
         xcolor: this.search_form.get('xcolor').value,    
         xserialcarroceria: form.xserialcarroceria,
@@ -859,7 +1064,10 @@ async getModeloData(event){
         nkilometraje: this.search_form.get('nkilometraje').value,
         ccanal: this.currentUser.data.ccanal,
         cusuario: this.currentUser.data.cusuario,
-        cproductor: this.currentUser.data.cproductor
+        cproductor: this.currentUser.data.cproductor,
+        xmarcanueva: this.search_form.get('xmarcanueva').value,
+        xmodelonuevo: this.search_form.get('xmodelonuevo').value,
+        xversionnuevo: this.search_form.get('xversionnuevo').value,
       };
       this.http.post( `${environment.apiUrl}/api/contract-arys/create`,params).subscribe((response : any) => {
         if (response.data.status) {
@@ -868,7 +1076,7 @@ async getModeloData(event){
           this.showSuccess = true;
           setTimeout(() => {
             this.showSuccess = false;
-            location.reload();
+            // location.reload();
           }, 3000);
         }
       },
