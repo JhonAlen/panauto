@@ -1008,16 +1008,16 @@ async getModeloData(event: any){
     }
 
 
-    if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
-      this.alert.show = true;
-      this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
-      this.showError = true;
-      setTimeout(() => {
-        this.showError = false;
-      }, 3000);
-      this.loading = false;
+    // if(marca == undefined || modelo == undefined || version == undefined || plan == undefined){
+    //   this.alert.show = true;
+    //   this.alertMessage = 'Ha ocurrido un error al generar el contrato.';
+    //   this.showError = true;
+    //   setTimeout(() => {
+    //     this.showError = false;
+    //   }, 3000);
+    //   this.loading = false;
       
-    }
+    // }
 
     let params = {
         icedula: this.search_form.get('icedula').value,
